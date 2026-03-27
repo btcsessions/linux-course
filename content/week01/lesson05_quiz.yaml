@@ -1,0 +1,42 @@
+lesson_id: 5
+questions:
+  - type: multiple_choice
+    question: "Which command opens the manual page for the 'ls' command?"
+    choices:
+      - "help ls"
+      - "info ls"
+      - "man ls"
+      - "doc ls"
+    answer: 2
+    explanation: "The 'man' command opens the manual page for any command. 'man ls' displays the full documentation for ls, including all available options and their descriptions."
+
+  - type: fill_in_blank
+    question: "To search for commands related to a keyword, you can use the ___ command."
+    answer: "apropos"
+    accept: ["apropos", "man -k"]
+    explanation: "The 'apropos' command searches the short descriptions in all installed man pages for a keyword. For example, 'apropos calendar' finds commands related to calendars."
+
+  - type: true_false
+    question: "The 'which' command can find shell builtins like 'cd'."
+    answer: false
+    explanation: "The 'which' command only locates external program files in your PATH. Shell builtins like 'cd' are part of the shell itself and are not separate programs. Use 'type cd' to identify builtins."
+
+  - type: multiple_choice
+    question: "While reading a man page, which key do you press to quit?"
+    choices:
+      - "Escape"
+      - "Ctrl+C"
+      - "q"
+      - "x"
+    answer: 2
+    explanation: "Man pages are displayed using a pager (usually 'less'). Pressing 'q' quits the pager and returns you to the shell prompt."
+
+  - type: multiple_choice
+    question: "What does the 'type' command tell you about a command?"
+    choices:
+      - "The file size of the command"
+      - "Whether it is an alias, builtin, external program, or function"
+      - "The version number of the command"
+      - "How many times the command has been run"
+    answer: 1
+    explanation: "The 'type' command identifies what kind of command a name refers to -- whether it is an alias, a shell builtin, an external program (with its path), or a shell function."

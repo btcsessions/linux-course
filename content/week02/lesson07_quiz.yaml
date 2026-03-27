@@ -1,0 +1,42 @@
+lesson_id: 7
+questions:
+  - type: multiple_choice
+    question: "Which command copies the directory `photos/` and all its contents to `photos_backup/`?"
+    choices:
+      - "cp photos/ photos_backup/"
+      - "cp -r photos/ photos_backup/"
+      - "mv photos/ photos_backup/"
+      - "cp -d photos/ photos_backup/"
+    answer: 1
+    explanation: "The `-r` (recursive) flag is required to copy a directory and its contents. Without it, `cp` refuses to copy directories."
+
+  - type: true_false
+    question: "The `mv` command requires the `-r` flag to move a directory."
+    answer: false
+    explanation: "Unlike `cp`, the `mv` command works on directories without any special flag. It simply updates the directory entry."
+
+  - type: fill_in_blank
+    question: "What flag makes `cp` ask before overwriting an existing file?"
+    answer: "-i"
+    accept: ["-i", "--interactive", "i"]
+    explanation: "The `-i` (interactive) flag prompts you for confirmation before overwriting an existing destination file."
+
+  - type: multiple_choice
+    question: "What happens when you run `mv report.txt archive/` and the `archive/` directory does not exist?"
+    choices:
+      - "An error is displayed"
+      - "The file is renamed to `archive`"
+      - "The directory `archive/` is created automatically"
+      - "The file is deleted"
+    answer: 1
+    explanation: "If the destination does not exist and is not a directory, `mv` treats it as a rename operation. `report.txt` would be renamed to `archive` (a file, not a directory)."
+
+  - type: multiple_choice
+    question: "Which is true about `mv` on the same filesystem?"
+    choices:
+      - "It is slow because it copies all bytes"
+      - "It is nearly instant because it only updates a directory entry"
+      - "It requires root permissions"
+      - "It always creates a backup of the original"
+    answer: 1
+    explanation: "On the same filesystem, `mv` is nearly instant regardless of file size because it only changes the directory entry pointing to the data, without copying any bytes."

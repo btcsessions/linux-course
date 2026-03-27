@@ -1,0 +1,120 @@
+week: 5
+questions:
+  # Lesson 21: grep Fundamentals (3 questions)
+  - type: multiple_choice
+    question: "What does the command 'grep -rl \"TODO\" /home/user/project/' do?"
+    choices:
+      - "Counts TODO occurrences in each file"
+      - "Recursively lists only filenames that contain 'TODO'"
+      - "Deletes lines containing TODO from all files"
+      - "Replaces TODO with an empty string recursively"
+    answer: 1
+    explanation: "The -r flag makes grep search recursively through directories, and the -l flag tells it to print only the filenames of matching files rather than the matching lines themselves."
+
+  - type: fill_in_blank
+    question: "To show all lines in a file that do NOT contain the word 'debug', you would run: grep ___ 'debug' file.txt"
+    answer: "-v"
+    accept: ["-v", "v"]
+    explanation: "The -v flag inverts the match, causing grep to print lines that do NOT contain the given pattern."
+
+  - type: true_false
+    question: "The grep pattern 'test$' matches lines that start with the word 'test'."
+    answer: false
+    explanation: "The $ anchor matches the END of a line, not the start. So 'test$' matches lines that end with 'test'. The ^ anchor matches the start of a line."
+
+  # Lesson 22: Regular Expressions for grep (3 questions)
+  - type: multiple_choice
+    question: "What is the difference between 'grep' and 'grep -E'?"
+    choices:
+      - "grep -E searches recursively"
+      - "grep -E enables extended regular expressions, allowing +, ?, {}, | without backslashes"
+      - "grep -E is case-insensitive"
+      - "grep -E only matches exact strings"
+    answer: 1
+    explanation: "grep uses Basic Regular Expressions (BRE) by default, where +, ?, {}, and | must be escaped. grep -E uses Extended Regular Expressions (ERE), where these characters have special meaning without escaping."
+
+  - type: multiple_choice
+    question: "Which pattern matches a string of exactly 5 digits?"
+    choices:
+      - "grep -E '[0-9]*5'"
+      - "grep -E '[0-9]{5}'"
+      - "grep -E '[0-9]+'"
+      - "grep -E '[5]{0-9}'"
+    answer: 1
+    explanation: "The {5} quantifier means 'exactly 5 repetitions' of the preceding element. [0-9]{5} matches exactly five consecutive digits."
+
+  - type: fill_in_blank
+    question: "In a regular expression, the character class [^a-z] matches any character that is NOT a ___."
+    answer: "lowercase letter"
+    accept: ["lowercase letter", "lower case letter", "lowercase character", "lower-case letter"]
+    explanation: "A caret (^) inside square brackets negates the character class. [^a-z] matches any character that is not a lowercase letter from a to z."
+
+  # Lesson 23: sed Basics (3 questions)
+  - type: multiple_choice
+    question: "What happens when you run 'sed 's/old/new/' file.txt' without the -i flag?"
+    choices:
+      - "The file is modified in place"
+      - "The modified text is printed to the terminal; the file is unchanged"
+      - "A backup copy of the file is created"
+      - "An error occurs because -i is required"
+    answer: 1
+    explanation: "By default, sed writes its output to standard output (the terminal). The original file is not modified unless you use the -i flag."
+
+  - type: true_false
+    question: "The sed command 'sed 's/cat/dog/' file.txt' replaces all occurrences of 'cat' with 'dog' on every line."
+    answer: false
+    explanation: "Without the g flag, sed only replaces the FIRST occurrence on each line. To replace all occurrences, you need 'sed s/cat/dog/g file.txt'."
+
+  - type: fill_in_blank
+    question: "To delete all blank lines from a file using sed, you use: sed '/^$/___' file.txt"
+    answer: "d"
+    accept: ["d"]
+    explanation: "The d command in sed deletes lines matching the address pattern. /^$/ matches blank lines (start of line immediately followed by end of line), and d removes them."
+
+  # Lesson 24: Advanced sed and awk (3 questions)
+  - type: multiple_choice
+    question: "Given a colon-separated file, which awk command prints the first and third fields?"
+    choices:
+      - "awk '{print $1, $3}' file"
+      - "awk -F: '{print $1, $3}' file"
+      - "awk -d: '{print $1, $3}' file"
+      - "awk --sep=: '{print $1, $3}' file"
+    answer: 1
+    explanation: "The -F flag sets the field separator. -F: tells awk to split lines on colons. Then $1 and $3 refer to the first and third colon-separated fields."
+
+  - type: true_false
+    question: "In awk, the variable $0 represents the entire current line."
+    answer: true
+    explanation: "$0 in awk refers to the entire current input line (record), while $1, $2, etc. refer to individual fields within that line."
+
+  - type: multiple_choice
+    question: "What does this awk command do: awk 'NR > 1 {sum += $3} END {print sum}' data.txt?"
+    choices:
+      - "Prints the third field of each line"
+      - "Skips the header line and prints the sum of all values in the third column"
+      - "Counts the number of lines in the file"
+      - "Prints lines where field 3 is greater than 1"
+    answer: 1
+    explanation: "NR > 1 skips line 1 (the header). For all remaining lines, $3 is added to sum. The END block runs after all input is processed and prints the accumulated total."
+
+  # Lesson 25: Putting Text Tools Together (3 questions)
+  - type: multiple_choice
+    question: "Which pipeline finds the 10 most common words in a file?"
+    choices:
+      - "cat file | wc -w | head -10"
+      - "grep -c '.' file | sort | head -10"
+      - "cat file | tr ' ' '\\n' | sort | uniq -c | sort -rn | head -10"
+      - "awk '{print NF}' file | sort -rn | head -10"
+    answer: 2
+    explanation: "This pipeline: (1) converts spaces to newlines to put one word per line, (2) sorts to group identical words, (3) counts with uniq -c, (4) sorts numerically in reverse, (5) takes the top 10."
+
+  - type: fill_in_blank
+    question: "The sort flag that sorts in reverse numerical order is ___."
+    answer: "-rn"
+    accept: ["-rn", "-nr", "rn", "nr"]
+    explanation: "The -n flag tells sort to compare numerically (not alphabetically), and -r reverses the order. Combined as -rn, it sorts numbers from highest to lowest."
+
+  - type: true_false
+    question: "The pipeline 'cat file | uniq' reliably removes all duplicate lines from a file."
+    answer: false
+    explanation: "uniq only removes ADJACENT duplicate lines. If duplicates are not next to each other, they will not be removed. You must sort first: 'sort file | uniq' reliably removes all duplicates."

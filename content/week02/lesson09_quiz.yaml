@@ -1,0 +1,42 @@
+lesson_id: 9
+questions:
+  - type: multiple_choice
+    question: "What does the wildcard `*` match in a glob pattern?"
+    choices:
+      - "Exactly one character"
+      - "Zero or more characters"
+      - "Only alphabetic characters"
+      - "Only filenames in the current directory that are not hidden"
+    answer: 1
+    explanation: "The `*` wildcard matches zero or more characters in a filename. For example, `*.txt` matches any file ending in `.txt`, regardless of name length."
+
+  - type: fill_in_blank
+    question: "The glob pattern `file?.txt` would match `file1.txt` but not `file10.txt` because `?` matches exactly ___ character(s)."
+    answer: "one"
+    accept: ["one", "1", "exactly one"]
+    explanation: "The `?` wildcard matches exactly one character. `file10.txt` has two characters (`10`) where `?` expects one, so it does not match."
+
+  - type: true_false
+    question: "Brace expansion like `{a,b,c}` only works if files named `a`, `b`, and `c` exist."
+    answer: false
+    explanation: "Brace expansion generates strings regardless of whether matching files exist. It is processed before the shell checks the filesystem. `echo {a,b,c}` always produces `a b c`."
+
+  - type: multiple_choice
+    question: "Which pattern matches `file1.txt` and `file2.txt` but NOT `file3.txt`?"
+    choices:
+      - "file*.txt"
+      - "file?.txt"
+      - "file[12].txt"
+      - "file{1,2,3}.txt"
+    answer: 2
+    explanation: "The character class `[12]` matches exactly one character that is either `1` or `2`. This excludes `3`, so `file3.txt` does not match."
+
+  - type: multiple_choice
+    question: "What does `cp config.conf{,.bak}` expand to?"
+    choices:
+      - "cp config.conf .bak"
+      - "cp config.conf config.conf.bak"
+      - "cp config.conf, config.conf.bak"
+      - "cp {config.conf} {config.conf.bak}"
+    answer: 1
+    explanation: "Brace expansion with `{,.bak}` produces two strings: the empty string and `.bak`. Appended to `config.conf`, this gives `config.conf` and `config.conf.bak`, making the full command `cp config.conf config.conf.bak`."

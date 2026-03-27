@@ -1,0 +1,42 @@
+lesson_id: 1
+questions:
+  - type: multiple_choice
+    question: "What is the role of the shell in a Linux system?"
+    choices:
+      - "It draws the desktop icons and windows"
+      - "It interprets text commands and communicates with the operating system"
+      - "It connects your computer to the internet"
+      - "It is the hardware keyboard attached to your computer"
+    answer: 1
+    explanation: "The shell is a program that reads text commands you type and translates them into actions the operating system performs. The terminal emulator provides the window, but the shell does the interpreting."
+
+  - type: fill_in_blank
+    question: "The command ___ prints your current username to the screen."
+    answer: "whoami"
+    accept: ["whoami"]
+    explanation: "The 'whoami' command outputs the username of the currently logged-in user."
+
+  - type: true_false
+    question: "On Linux, the commands 'whoami' and 'Whoami' are treated as the same command."
+    answer: false
+    explanation: "Linux is case-sensitive. 'whoami' is a valid command, but 'Whoami' or 'WHOAMI' will produce a 'command not found' error."
+
+  - type: multiple_choice
+    question: "In the prompt 'alex@cachyos ~ $', what does the '~' represent?"
+    choices:
+      - "The root directory"
+      - "The user's home directory"
+      - "The /tmp directory"
+      - "The previous directory you were in"
+    answer: 1
+    explanation: "The tilde (~) is a shorthand for the current user's home directory, typically /home/username."
+
+  - type: multiple_choice
+    question: "Which command clears the terminal screen without deleting your command history?"
+    choices:
+      - "reset"
+      - "delete"
+      - "clear"
+      - "wipe"
+    answer: 2
+    explanation: "The 'clear' command (or the Ctrl+L shortcut) clears the visible terminal screen. Your command history and previous output are not erased -- you can usually scroll up to see them."

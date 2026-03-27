@@ -1,0 +1,123 @@
+lesson_id: null
+week: 6
+title: "Week 6 Review -- Streams, Pipes, Variables, Jobs, and Shell Efficiency"
+questions:
+  # Lesson 26 - Standard Streams and Redirection
+  - type: multiple_choice
+    question: "Which file descriptor number represents standard input (stdin)?"
+    choices:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+    answer: "0"
+    explanation: "File descriptor 0 is stdin, 1 is stdout, and 2 is stderr. These three standard streams are opened automatically for every process."
+
+  - type: fill_in_blank
+    question: "To append the output of a command to an existing file called log.txt (without overwriting), you use the ____ operator."
+    answer: ">>"
+    accept: [">>"]
+    explanation: "The >> operator appends stdout to the specified file. The > operator would overwrite the file's contents."
+
+  - type: true_false
+    question: "Redirecting to /dev/null permanently deletes data from your system."
+    answer: false
+    explanation: "/dev/null discards data written to it, but it does not delete any existing files or data on your system. It is simply a sink that accepts and throws away input."
+
+  # Lesson 27 - Pipes
+  - type: multiple_choice
+    question: "In the pipeline 'cat file.txt | sort | uniq | wc -l', what does wc -l count?"
+    choices:
+      - "The total number of characters in file.txt"
+      - "The number of unique lines in file.txt"
+      - "The number of duplicate lines in file.txt"
+      - "The total number of words in file.txt"
+    answer: "The number of unique lines in file.txt"
+    explanation: "cat reads the file, sort orders the lines, uniq removes adjacent duplicates (which works correctly because sort grouped them), and wc -l counts the remaining unique lines."
+
+  - type: fill_in_blank
+    question: "The ____ command reads from stdin, writes to a file, and also passes data through to stdout."
+    answer: "tee"
+    accept: ["tee"]
+    explanation: "tee is like a T-junction for data. It splits the stream, sending a copy to a file while letting the rest continue through the pipeline."
+
+  - type: multiple_choice
+    question: "Which command converts standard input into arguments for another command?"
+    choices:
+      - "tee"
+      - "xargs"
+      - "pipe"
+      - "exec"
+    answer: "xargs"
+    explanation: "xargs reads items from stdin and executes a specified command with those items as arguments. It is essential when a command does not accept input from stdin directly."
+
+  # Lesson 28 - Environment Variables
+  - type: fill_in_blank
+    question: "To make the variable EDITOR=vim available to child processes, you run: ____ EDITOR=vim"
+    answer: "export"
+    accept: ["export"]
+    explanation: "export promotes a shell variable to an environment variable, making it visible to any process spawned from the current shell."
+
+  - type: true_false
+    question: "The $PATH variable is a space-separated list of directories where the shell searches for commands."
+    answer: false
+    explanation: "$PATH is colon-separated, not space-separated. For example: /usr/local/bin:/usr/bin:/bin. Each directory is checked in order from left to right."
+
+  - type: multiple_choice
+    question: "Which file is typically sourced when you open a new interactive bash terminal on CachyOS?"
+    choices:
+      - "/etc/profile"
+      - "~/.bash_profile"
+      - "~/.bashrc"
+      - "~/.config/fish/config.fish"
+    answer: "~/.bashrc"
+    explanation: "Terminal emulators on CachyOS typically open interactive non-login shells, which source ~/.bashrc. Login shells read /etc/profile and ~/.bash_profile instead."
+
+  # Lesson 29 - Job Control
+  - type: multiple_choice
+    question: "What happens when you press Ctrl+Z while a command is running in the foreground?"
+    choices:
+      - "The command is terminated immediately"
+      - "The command is suspended and can be resumed later"
+      - "The command is moved to the background and continues running"
+      - "The terminal closes"
+    answer: "The command is suspended and can be resumed later"
+    explanation: "Ctrl+Z sends SIGTSTP which suspends the process. It remains in memory but is paused. Use fg to resume in the foreground or bg to resume in the background."
+
+  - type: fill_in_blank
+    question: "To start a command called backup.sh so that it survives after you close the terminal, you would run: ____ ./backup.sh &"
+    answer: "nohup"
+    accept: ["nohup"]
+    explanation: "nohup makes a command immune to the SIGHUP signal that is sent when the terminal closes. Combined with &, the command runs in the background and persists after logout."
+
+  - type: true_false
+    question: "The disown command can only be used before starting a process."
+    answer: false
+    explanation: "disown is used after a process is already running in the background. It removes the job from the shell's job table so SIGHUP will not be sent to it on logout."
+
+  # Lesson 30 - Shell History and Efficiency
+  - type: multiple_choice
+    question: "Which keyboard shortcut starts a reverse search through your command history in bash?"
+    choices:
+      - "Ctrl+H"
+      - "Ctrl+R"
+      - "Ctrl+S"
+      - "Ctrl+F"
+    answer: "Ctrl+R"
+    explanation: "Ctrl+R starts an incremental reverse search. As you type characters, bash finds the most recent command matching your input. Press Ctrl+R again to cycle through older matches."
+
+  - type: fill_in_blank
+    question: "To run the previous command with sudo prepended, you type: sudo ____"
+    answer: "!!"
+    accept: ["!!"]
+    explanation: "!! expands to the entire previous command. 'sudo !!' is one of the most common bash shortcuts, used when you forget to run a command with elevated privileges."
+
+  - type: multiple_choice
+    question: "What does the || operator do between two commands?"
+    choices:
+      - "Runs the second command only if the first succeeds"
+      - "Runs both commands in parallel"
+      - "Runs the second command only if the first fails"
+      - "Pipes stdout of the first to stdin of the second"
+    answer: "Runs the second command only if the first fails"
+    explanation: "|| is the OR operator. It runs the right-hand command only when the left-hand command exits with a non-zero status (failure). It is the opposite of &&."

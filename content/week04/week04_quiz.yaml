@@ -1,0 +1,126 @@
+week: 4
+title: "Week 4 Review: Users, Permissions, and Processes"
+questions:
+  # Lesson 16 - Users and Groups
+  - type: multiple_choice
+    question: "On CachyOS, what UID is assigned to the first regular user created during installation?"
+    choices:
+      - "0"
+      - "100"
+      - "999"
+      - "1000"
+    answer: "1000"
+    explanation: "CachyOS follows the Arch Linux convention where regular users start at UID 1000. UID 0 is root, and UIDs 1-999 are reserved for system accounts."
+
+  - type: fill_in_blank
+    question: "The command to display your UID, GID, and all group memberships is: ____"
+    answer: "id"
+    accept: ["id", "id $(whoami)"]
+    explanation: "The id command shows your numeric user ID, primary group ID, and all supplementary groups in a single line."
+
+  - type: true_false
+    question: "The 'su -' command requires you to enter your own password, not the target user's password."
+    answer: false
+    explanation: "The su command requires the password of the target user (root by default). This is different from sudo, which uses your own password."
+
+  # Lesson 17 - Understanding File Permissions
+  - type: multiple_choice
+    question: "What does the permission string 'drwxr-x---' indicate?"
+    choices:
+      - "A regular file readable by everyone"
+      - "A directory where the owner has full access, the group can read and enter, and others have no access"
+      - "A symbolic link with restricted permissions"
+      - "A directory where only root can enter"
+    answer: "A directory where the owner has full access, the group can read and enter, and others have no access"
+    explanation: "The 'd' indicates a directory. Owner has rwx (full access), group has r-x (read and enter but not modify), and others have --- (no access)."
+
+  - type: multiple_choice
+    question: "What does the read (r) permission mean on a directory?"
+    choices:
+      - "You can read files inside the directory"
+      - "You can list the names of files inside the directory"
+      - "You can enter the directory with cd"
+      - "You can delete the directory"
+    answer: "You can list the names of files inside the directory"
+    explanation: "The read permission on a directory allows listing file names with ls. Entering the directory requires execute (x), and reading file contents requires read on the files themselves."
+
+  - type: true_false
+    question: "An uppercase 'S' in the owner's execute position means the setuid bit is set and the execute bit is also set."
+    answer: false
+    explanation: "An uppercase 'S' means the setuid bit is set but the underlying execute bit is NOT set. A lowercase 's' indicates both setuid and execute are set. An uppercase S is usually a misconfiguration."
+
+  # Lesson 18 - Changing Permissions with chmod
+  - type: fill_in_blank
+    question: "To make a script called setup.sh executable for everyone, the shortest command is: ____"
+    answer: "chmod +x setup.sh"
+    accept: ["chmod +x setup.sh", "chmod a+x setup.sh"]
+    explanation: "chmod +x (equivalent to chmod a+x) adds the execute bit for owner, group, and others. This is the most common chmod command for scripts."
+
+  - type: multiple_choice
+    question: "What octal permission value represents rw-rw-r--?"
+    choices:
+      - "644"
+      - "664"
+      - "775"
+      - "654"
+    answer: "664"
+    explanation: "rw- = 4+2+0 = 6 for owner, rw- = 4+2+0 = 6 for group, r-- = 4+0+0 = 4 for others. Combined: 664."
+
+  - type: multiple_choice
+    question: "What is the key difference between symbolic and octal mode in chmod?"
+    choices:
+      - "Symbolic mode is faster"
+      - "Octal mode can only remove permissions"
+      - "Symbolic mode modifies specific bits while octal mode sets all bits at once"
+      - "Octal mode only works on directories"
+    answer: "Symbolic mode modifies specific bits while octal mode sets all bits at once"
+    explanation: "Symbolic mode (like u+x) adds or removes individual permission bits without affecting others. Octal mode (like 755) replaces all nine permission bits at once."
+
+  # Lesson 19 - Ownership with chown and chgrp
+  - type: fill_in_blank
+    question: "To change both the owner to 'deploy' and the group to 'web' for site.html, you would run: ____"
+    answer: "sudo chown deploy:web site.html"
+    accept: ["sudo chown deploy:web site.html", "chown deploy:web site.html", "sudo chown deploy:web ./site.html"]
+    explanation: "The chown command with user:group syntax changes both owner and group in one operation. sudo is required because changing ownership needs root privileges."
+
+  - type: true_false
+    question: "You can use chgrp without sudo if you own the file and the target group is one you belong to."
+    answer: true
+    explanation: "Linux allows you to change the group of files you own to any group you are a member of without root privileges. Changing to a group you do not belong to requires sudo."
+
+  - type: multiple_choice
+    question: "Why does Linux restrict file ownership changes to root?"
+    choices:
+      - "To prevent users from creating too many files"
+      - "To prevent quota evasion and privilege escalation"
+      - "Because regular users cannot access the /etc/passwd file"
+      - "To ensure files are always owned by the same user"
+    answer: "To prevent quota evasion and privilege escalation"
+    explanation: "If any user could change file ownership, they could evade disk quotas by giving large files to other users, or create setuid programs owned by root for privilege escalation."
+
+  # Lesson 20 - Process Basics
+  - type: multiple_choice
+    question: "What process state code does a zombie process show in the STAT column of 'ps aux'?"
+    choices:
+      - "R"
+      - "S"
+      - "D"
+      - "Z"
+    answer: "Z"
+    explanation: "Z stands for zombie -- a process that has terminated but whose parent has not yet read its exit status. Zombies consume no resources but occupy a slot in the process table."
+
+  - type: multiple_choice
+    question: "What signal does 'kill' send by default when no signal is specified?"
+    choices:
+      - "SIGKILL (9)"
+      - "SIGTERM (15)"
+      - "SIGHUP (1)"
+      - "SIGINT (2)"
+    answer: "SIGTERM (15)"
+    explanation: "By default, kill sends SIGTERM (signal 15), which requests a graceful shutdown. The process can catch this signal to perform cleanup. SIGKILL (9) must be specified explicitly with kill -9."
+
+  - type: fill_in_blank
+    question: "To kill all processes named 'node' with a single command, you would run: ____"
+    answer: "killall node"
+    accept: ["killall node", "killall -15 node", "killall -SIGTERM node"]
+    explanation: "The killall command sends a signal to all processes matching the given name. By default it sends SIGTERM for a graceful shutdown."

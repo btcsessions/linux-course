@@ -1,0 +1,42 @@
+lesson_id: 19
+questions:
+  - type: multiple_choice
+    question: "What does 'chown alex:developers report.txt' do?"
+    choices:
+      - "Changes the owner to alex and removes the group"
+      - "Changes the owner to alex and the group to developers"
+      - "Changes only the group to developers"
+      - "Changes the owner to developers and the group to alex"
+    answer: "Changes the owner to alex and the group to developers"
+    explanation: "The chown command with user:group syntax changes both the owner and the group in a single operation. The user comes before the colon, the group after."
+
+  - type: true_false
+    question: "A regular (non-root) user can always change the owner of files they own to any other user."
+    answer: false
+    explanation: "Only root can change file ownership. This restriction prevents quota evasion and privilege escalation. Regular users must use sudo to run chown."
+
+  - type: fill_in_blank
+    question: "To recursively change the group of /srv/website and all its contents to 'http', you would run: ____"
+    answer: "sudo chgrp -R http /srv/website"
+    accept: ["sudo chgrp -R http /srv/website", "sudo chown -R :http /srv/website", "sudo chgrp -R http /srv/website/"]
+    explanation: "The chgrp command with -R applies the group change recursively. sudo is required because you are likely changing to a group you may not belong to."
+
+  - type: multiple_choice
+    question: "What is the difference between 'chown alex: file' (with a trailing colon) and 'chown alex file' (without)?"
+    choices:
+      - "There is no difference"
+      - "The trailing colon also sets the group to alex's login group"
+      - "The trailing colon removes the group entirely"
+      - "The trailing colon makes the change recursive"
+    answer: "The trailing colon also sets the group to alex's login group"
+    explanation: "When you include a colon but omit the group name, chown sets the group to the specified user's primary login group. Without the colon, only the owner is changed."
+
+  - type: multiple_choice
+    question: "When can you use chgrp without sudo?"
+    choices:
+      - "Never -- chgrp always requires sudo"
+      - "When you own the file and the target group is one you belong to"
+      - "Only when changing to the root group"
+      - "Only on files in your home directory"
+    answer: "When you own the file and the target group is one you belong to"
+    explanation: "You can change the group of files you own to any group you are a member of without needing root privileges. Changing to a group you do not belong to requires sudo."

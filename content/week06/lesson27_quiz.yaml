@@ -1,0 +1,38 @@
+lesson_id: 27
+questions:
+  - type: multiple_choice
+    question: "What does the pipe operator | do?"
+    choices:
+      - "Redirects stdout to a file"
+      - "Connects the stdout of one command to the stdin of the next"
+      - "Runs two commands sequentially"
+      - "Sends stderr to another command"
+    answer: "Connects the stdout of one command to the stdin of the next"
+    explanation: "The pipe operator takes the standard output of the command on its left and feeds it as standard input to the command on its right."
+
+  - type: fill_in_blank
+    question: "To display command output on screen and also save it to results.txt, you would use: ls | ____ results.txt"
+    answer: "tee"
+    accept: ["tee", "tee "]
+    explanation: "The tee command reads from stdin, writes to a file, and also passes the data through to stdout."
+
+  - type: true_false
+    question: "The command 'sort file.txt | uniq' requires the input to be sorted first for uniq to work correctly."
+    answer: true
+    explanation: "uniq only removes adjacent duplicate lines. If duplicates are not next to each other, they will not be collapsed. That is why sort is run before uniq."
+
+  - type: multiple_choice
+    question: "What flag should you use with xargs when filenames may contain spaces?"
+    choices:
+      - "-I {}"
+      - "-n 1"
+      - "-0"
+      - "-p"
+    answer: "-0"
+    explanation: "The -0 flag tells xargs to use the null character as a delimiter instead of whitespace, which safely handles filenames with spaces or special characters."
+
+  - type: fill_in_blank
+    question: "To count the number of lines containing 'error' in a log file using a pipe, you would run: grep 'error' log.txt | ____"
+    answer: "wc -l"
+    accept: ["wc -l", "wc -l "]
+    explanation: "wc -l counts the number of lines in its input. Combined with grep, this counts how many lines match the pattern."

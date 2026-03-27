@@ -1,0 +1,42 @@
+lesson_id: 4
+questions:
+  - type: multiple_choice
+    question: "Which ls flag shows hidden files (files starting with a dot)?"
+    choices:
+      - "ls -l"
+      - "ls -h"
+      - "ls -a"
+      - "ls -R"
+    answer: 2
+    explanation: "The '-a' flag stands for 'all' and shows hidden files (those whose names begin with a dot), including the '.' and '..' directory entries. Use '-A' to show hidden files without '.' and '..'."
+
+  - type: fill_in_blank
+    question: "In the output of ls -l, a line beginning with the letter 'd' indicates that the entry is a ___."
+    answer: "directory"
+    accept: ["directory", "dir", "folder"]
+    explanation: "The first character of the permissions string in ls -l output indicates the file type. 'd' means directory, '-' means regular file, and 'l' means symbolic link."
+
+  - type: true_false
+    question: "The command 'ls -lh' displays file sizes in human-readable format such as K, M, and G."
+    answer: true
+    explanation: "The '-h' flag stands for 'human-readable'. When combined with '-l', it converts raw byte counts into easier-to-read units like 4.0K, 1.5M, or 2.1G."
+
+  - type: multiple_choice
+    question: "What does 'ls -lt' do?"
+    choices:
+      - "Lists files in long format sorted alphabetically"
+      - "Lists files in long format sorted by size"
+      - "Lists files in long format sorted by modification time (newest first)"
+      - "Lists files in long format including hidden files"
+    answer: 2
+    explanation: "The '-t' flag sorts by modification time with the most recently modified files appearing first. Combined with '-l' for long format, 'ls -lt' is a common way to find recently changed files."
+
+  - type: multiple_choice
+    question: "In the ls -l output '-rwxr-xr--', what permissions does the file's owner have?"
+    choices:
+      - "Read only"
+      - "Read and write"
+      - "Read, write, and execute"
+      - "No permissions"
+    answer: 2
+    explanation: "The permissions string is divided into three groups of three after the file type character. The first group (positions 2-4) shows owner permissions. 'rwx' means the owner can read, write, and execute the file."

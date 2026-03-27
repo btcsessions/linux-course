@@ -1,0 +1,42 @@
+lesson_id: 23
+questions:
+  - type: multiple_choice
+    question: "What is the difference between 's/old/new/' and 's/old/new/g' in sed?"
+    choices:
+      - "The g flag makes the search case-insensitive"
+      - "Without g, only the first occurrence on each line is replaced; with g, all occurrences are replaced"
+      - "The g flag causes sed to modify the file in place"
+      - "Without g, sed only processes the first line of the file"
+    answer: 1
+    explanation: "The g (global) flag at the end of a sed substitution command tells sed to replace ALL occurrences on each line. Without it, only the first match on each line is replaced."
+
+  - type: fill_in_blank
+    question: "To edit a file in place with sed while creating a backup with a .bak extension, you use the ___ flag."
+    answer: "-i.bak"
+    accept: ["-i.bak", "-i .bak"]
+    explanation: "The -i.bak flag tells sed to edit the file in place and save a backup copy with the .bak extension appended to the original filename."
+
+  - type: true_false
+    question: "The sed command 'sed '/^#/d' file.txt' deletes all lines that start with the # character."
+    answer: true
+    explanation: "The pattern /^#/ matches lines beginning with #, and the d command deletes those lines. This is commonly used to strip comment lines from configuration files."
+
+  - type: multiple_choice
+    question: "Which sed command prints only lines 10 through 20 of a file?"
+    choices:
+      - "sed '10,20d' file.txt"
+      - "sed -n '10,20p' file.txt"
+      - "sed '10,20s/.*/ /' file.txt"
+      - "sed '10,20' file.txt"
+    answer: 1
+    explanation: "The -n flag suppresses default output, and the p command prints matching lines. Together, 'sed -n 10,20p' prints only lines 10 through 20."
+
+  - type: multiple_choice
+    question: "What does the sed command 'sed '/database/s/prod/staging/' config.txt' do?"
+    choices:
+      - "Replaces 'prod' with 'staging' on every line"
+      - "Deletes lines containing 'database'"
+      - "Replaces 'prod' with 'staging' only on lines that contain 'database'"
+      - "Replaces 'database' with 'prod' on lines containing 'staging'"
+    answer: 2
+    explanation: "The /database/ part is an address that limits the substitution to lines matching 'database'. Only on those lines does sed replace 'prod' with 'staging'."

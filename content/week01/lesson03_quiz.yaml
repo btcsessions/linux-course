@@ -1,0 +1,42 @@
+lesson_id: 3
+questions:
+  - type: multiple_choice
+    question: "What does 'cd ..' do?"
+    choices:
+      - "Changes to the home directory"
+      - "Changes to the root directory"
+      - "Changes to the parent directory (one level up)"
+      - "Changes to the previous directory you were in"
+    answer: 2
+    explanation: "The '..' symbol represents the parent directory. Running 'cd ..' moves you one level up in the filesystem tree. For example, from /home/alex/Documents you would move to /home/alex."
+
+  - type: fill_in_blank
+    question: "To return to your home directory from anywhere, you can type cd ___ or simply type cd with no arguments."
+    answer: "~"
+    accept: ["~", "$HOME", "~/" ]
+    explanation: "The tilde (~) is a shortcut for your home directory. Both 'cd ~' and 'cd' with no arguments take you to your home directory."
+
+  - type: true_false
+    question: "The command 'cd -' takes you to the root directory."
+    answer: false
+    explanation: "The 'cd -' command takes you to the previous directory you were in, not the root directory. It toggles between your current and previous locations. To go to the root directory, you would use 'cd /'."
+
+  - type: multiple_choice
+    question: "You are in /home/alex/Documents/school. Which command takes you to /home/alex/Documents/work?"
+    choices:
+      - "cd /work"
+      - "cd ../work"
+      - "cd ~/school/work"
+      - "cd work"
+    answer: 1
+    explanation: "From /home/alex/Documents/school, 'cd ../work' goes up one level to /home/alex/Documents and then into the 'work' directory. This uses a relative path with '..' to reach a sibling directory."
+
+  - type: multiple_choice
+    question: "What happens when you press the Tab key while typing a directory name after cd?"
+    choices:
+      - "It inserts a tab character into the command"
+      - "It cancels the current command"
+      - "It attempts to auto-complete the directory name"
+      - "It lists all files in the current directory"
+    answer: 2
+    explanation: "Tab completion is a shell feature that automatically completes directory and file names. If there is only one match, it completes fully. If there are multiple matches, pressing Tab a second time shows the possible completions."

@@ -1,0 +1,42 @@
+lesson_id: 2
+questions:
+  - type: multiple_choice
+    question: "What does the pwd command display?"
+    choices:
+      - "The list of files in the current directory"
+      - "The full absolute path of your current working directory"
+      - "Your username and hostname"
+      - "The contents of the previous directory"
+    answer: 1
+    explanation: "pwd stands for 'print working directory'. It outputs the absolute path of the directory you are currently in, such as /home/alex."
+
+  - type: fill_in_blank
+    question: "The top-level directory in the Linux filesystem, written as a single forward slash, is called the ___ directory."
+    answer: "root"
+    accept: ["root", "root directory", "/"]
+    explanation: "The root directory '/' is the very top of the Linux filesystem tree. Every file and directory on the system exists somewhere beneath it."
+
+  - type: true_false
+    question: "The path 'Documents/report.txt' is an absolute path."
+    answer: false
+    explanation: "An absolute path always starts with '/'. Since 'Documents/report.txt' does not start with '/', it is a relative path -- its meaning depends on your current working directory."
+
+  - type: multiple_choice
+    question: "Which directory typically contains system-wide configuration files on Linux?"
+    choices:
+      - "/home"
+      - "/tmp"
+      - "/etc"
+      - "/dev"
+    answer: 2
+    explanation: "/etc contains system-wide configuration files such as /etc/pacman.conf, /etc/hostname, and many others. It is one of the most important directories for system administration."
+
+  - type: multiple_choice
+    question: "On CachyOS, where does your personal home directory typically reside?"
+    choices:
+      - "/root/username"
+      - "/usr/home/username"
+      - "/home/username"
+      - "/var/home/username"
+    answer: 2
+    explanation: "Regular user home directories are located under /home. For example, user 'alex' has the home directory /home/alex. The /root directory is the home directory for the root (administrator) user only."

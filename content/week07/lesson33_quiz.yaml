@@ -1,0 +1,42 @@
+lesson_id: 33
+questions:
+  - type: multiple_choice
+    question: "Which command shows free disk space on all mounted filesystems in human-readable format?"
+    choices:
+      - "du -sh /"
+      - "df -h"
+      - "lsblk -f"
+      - "free -h"
+    answer: 1
+    explanation: "The 'df -h' command displays disk free space for all mounted filesystems with sizes in human-readable units (KB, MB, GB). 'du' measures directory sizes, 'lsblk' lists block devices, and 'free' shows memory usage."
+
+  - type: fill_in_blank
+    question: "To find the total size of the /var/log directory in human-readable format, run: du ___ /var/log"
+    answer: "-sh"
+    accept: ["-sh", "-hs"]
+    explanation: "The flags -s (summary) and -h (human-readable) together give you a single total size for the directory in a readable format like '247M' instead of a number in kilobytes."
+
+  - type: true_false
+    question: "In Linux, storage devices are accessed using drive letters like C: and D: similar to Windows."
+    answer: false
+    explanation: "Linux does not use drive letters. Instead, storage devices are mounted at directories in the filesystem tree (mount points). For example, a USB drive might be mounted at /run/media/username/USB rather than appearing as D: drive."
+
+  - type: multiple_choice
+    question: "What does the 'lsblk -f' command add to the standard lsblk output?"
+    choices:
+      - "File counts for each partition"
+      - "Filesystem type, label, UUID, and available space"
+      - "A list of all files on each partition"
+      - "The speed of each disk in MB/s"
+    answer: 1
+    explanation: "The -f flag adds filesystem information including the filesystem type (ext4, btrfs, vfat), label, UUID, and available space for each partition."
+
+  - type: multiple_choice
+    question: "Which command displays mount points in a clean tree format?"
+    choices:
+      - "mount --tree"
+      - "lsblk -m"
+      - "findmnt"
+      - "df --mounts"
+    answer: 2
+    explanation: "The 'findmnt' command shows all mount points in a readable tree structure. It is a cleaner alternative to running 'mount' with no arguments, which produces verbose output."

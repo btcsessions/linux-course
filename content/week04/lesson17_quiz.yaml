@@ -1,0 +1,42 @@
+lesson_id: 17
+questions:
+  - type: multiple_choice
+    question: "Given the permission string '-rwxr-x---', who can execute the file?"
+    choices:
+      - "Only the owner"
+      - "The owner and members of the file's group"
+      - "Everyone"
+      - "Nobody"
+    answer: "The owner and members of the file's group"
+    explanation: "The owner triplet (rwx) and the group triplet (r-x) both have the execute bit set. Others (---) have no permissions at all."
+
+  - type: true_false
+    question: "To delete a file, you need write permission on the file itself."
+    answer: false
+    explanation: "To delete a file you need write and execute permission on the parent directory, not on the file itself."
+
+  - type: fill_in_blank
+    question: "The command to see detailed permission information including octal mode for a file called report.txt is: ____"
+    answer: "stat report.txt"
+    accept: ["stat report.txt", "stat ./report.txt"]
+    explanation: "The stat command shows comprehensive file metadata including both the octal and symbolic permission representation."
+
+  - type: multiple_choice
+    question: "What does the execute (x) permission mean on a directory?"
+    choices:
+      - "You can run the directory as a program"
+      - "You can list the files inside the directory"
+      - "You can enter the directory and access file metadata"
+      - "You can delete the directory"
+    answer: "You can enter the directory and access file metadata"
+    explanation: "The execute bit on a directory allows you to cd into it and access the metadata (permissions, sizes) of files within it. Listing file names requires read (r)."
+
+  - type: multiple_choice
+    question: "What does a lowercase 't' in the others' execute position (e.g., drwxrwxrwt) indicate?"
+    choices:
+      - "The file is temporary"
+      - "The setuid bit is set"
+      - "The sticky bit is set and others have execute permission"
+      - "The file is a symbolic link"
+    answer: "The sticky bit is set and others have execute permission"
+    explanation: "A lowercase 't' means the sticky bit is set and the underlying execute bit is also set. On directories like /tmp, this prevents users from deleting each other's files."

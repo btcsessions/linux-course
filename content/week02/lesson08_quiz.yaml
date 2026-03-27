@@ -1,0 +1,42 @@
+lesson_id: 8
+questions:
+  - type: multiple_choice
+    question: "What happens when you delete a file with `rm` on the command line?"
+    choices:
+      - "It moves to the Recycle Bin"
+      - "It is permanently deleted with no recovery"
+      - "It is marked as hidden"
+      - "It is compressed and archived"
+    answer: 1
+    explanation: "The `rm` command permanently deletes files. Unlike the desktop file manager, there is no Recycle Bin or Trash -- the file is gone forever."
+
+  - type: fill_in_blank
+    question: "Which command removes an empty directory?"
+    answer: "rmdir"
+    accept: ["rmdir"]
+    explanation: "`rmdir` removes directories, but only if they are completely empty. For non-empty directories, you need `rm -r`."
+
+  - type: true_false
+    question: "The command `rm -r` can delete a directory and all of its contents."
+    answer: true
+    explanation: "The `-r` (recursive) flag tells `rm` to descend into a directory and delete everything inside it, then remove the directory itself."
+
+  - type: multiple_choice
+    question: "Why is `rm -rf` considered dangerous?"
+    choices:
+      - "It runs very slowly"
+      - "It only works as root"
+      - "It deletes recursively and forcefully without any confirmation"
+      - "It corrupts the filesystem"
+    answer: 2
+    explanation: "`rm -rf` combines recursive deletion with force mode, meaning it silently deletes everything in the target path without asking for confirmation. A typo can be catastrophic."
+
+  - type: multiple_choice
+    question: "What does the `-i` flag do when used with `rm`?"
+    choices:
+      - "Ignores errors"
+      - "Inverts the operation (restores files)"
+      - "Prompts for confirmation before each deletion"
+      - "Runs in interactive shell mode"
+    answer: 2
+    explanation: "The `-i` (interactive) flag makes `rm` ask you to confirm each deletion before it happens. Type `y` to confirm or `n` to skip."

@@ -1,0 +1,38 @@
+lesson_id: 28
+questions:
+  - type: multiple_choice
+    question: "Which command makes a shell variable available to child processes?"
+    choices:
+      - "set"
+      - "export"
+      - "alias"
+      - "source"
+    answer: "export"
+    explanation: "The export command promotes a shell variable to an environment variable, making it visible to any child process launched from the current shell."
+
+  - type: fill_in_blank
+    question: "To print the current value of the PATH variable, you would run: echo ____"
+    answer: "$PATH"
+    accept: ["$PATH", "${PATH}"]
+    explanation: "The $ prefix tells the shell to expand the variable name to its value. echo $PATH displays the colon-separated list of directories the shell searches for commands."
+
+  - type: true_false
+    question: "On CachyOS with bash, the file ~/.bashrc is executed every time you open an interactive terminal."
+    answer: true
+    explanation: "Most terminal emulators on CachyOS open an interactive non-login shell, which sources ~/.bashrc. This makes it the primary file for user customizations."
+
+  - type: multiple_choice
+    question: "What happens if you accidentally set PATH to an empty string?"
+    choices:
+      - "Nothing changes until you reboot"
+      - "Only built-in shell commands still work; external commands cannot be found"
+      - "The system automatically restores the default PATH"
+      - "All running programs immediately stop"
+    answer: "Only built-in shell commands still work; external commands cannot be found"
+    explanation: "If PATH is empty, the shell has no directories to search for executables. Built-in commands like cd and echo still work because they are part of the shell itself, but external programs like ls or grep will produce 'command not found' errors."
+
+  - type: fill_in_blank
+    question: "To reload your ~/.bashrc without closing the terminal, you run: ____ ~/.bashrc"
+    answer: "source"
+    accept: ["source", "."]
+    explanation: "The source command (or its shorthand .) reads and executes the file in the current shell session, applying any changes immediately."

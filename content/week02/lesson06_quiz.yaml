@@ -1,0 +1,42 @@
+lesson_id: 6
+questions:
+  - type: multiple_choice
+    question: "What does the `touch` command do when the specified file does not exist?"
+    choices:
+      - "Displays an error message"
+      - "Creates an empty file with that name"
+      - "Creates a directory with that name"
+      - "Opens a text editor"
+    answer: 1
+    explanation: "When the target file does not exist, `touch` creates a new empty file. If it already exists, `touch` updates its timestamp."
+
+  - type: fill_in_blank
+    question: "What flag do you pass to `mkdir` to create parent directories automatically?"
+    answer: "-p"
+    accept: ["-p", "--parents", "p"]
+    explanation: "The `-p` (or `--parents`) flag tells mkdir to create all necessary parent directories in the given path."
+
+  - type: true_false
+    question: "On Linux, `File.txt` and `file.txt` refer to the same file."
+    answer: false
+    explanation: "Linux filesystems are case-sensitive. `File.txt` and `file.txt` are two distinct files."
+
+  - type: multiple_choice
+    question: "Which command creates the entire path `a/b/c/d` even if none of those directories exist yet?"
+    choices:
+      - "mkdir a/b/c/d"
+      - "mkdir -p a/b/c/d"
+      - "touch -p a/b/c/d"
+      - "mkdir --recursive a/b/c/d"
+    answer: 1
+    explanation: "`mkdir -p a/b/c/d` creates every missing directory along the path. Plain `mkdir` would fail if `a/b/c` did not exist."
+
+  - type: multiple_choice
+    question: "What makes a file hidden in Linux?"
+    choices:
+      - "Setting a hidden attribute with `chattr`"
+      - "Placing it in the /hidden directory"
+      - "Starting its name with a dot (.)"
+      - "Removing read permissions"
+    answer: 2
+    explanation: "Any file or directory whose name starts with a dot (.) is hidden from normal `ls` output. Use `ls -a` to see hidden files."

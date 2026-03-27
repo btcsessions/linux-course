@@ -1,0 +1,169 @@
+lesson_id: null
+week: 7
+title: "Week 7 Comprehensive Quiz"
+questions:
+  # Lesson 31 - pacman basics
+  - type: multiple_choice
+    question: "What does the capital letter flag -Q mean in pacman?"
+    choices:
+      - "Quit pacman"
+      - "Query the local installed package database"
+      - "Queue packages for installation"
+      - "Query the remote sync database"
+    answer: 1
+    explanation: "The -Q flag tells pacman to query the local database of installed packages. For remote repository operations, you use -S (sync)."
+
+  - type: fill_in_blank
+    question: "To find which installed package owns the file /usr/bin/vim, run: pacman ___ /usr/bin/vim"
+    answer: "-Qo"
+    accept: ["-Qo"]
+    explanation: "The -Qo flag queries the local package database to find which package owns a specific file on your filesystem."
+
+  - type: multiple_choice
+    question: "Which command removes a package along with its configuration files and unneeded dependencies?"
+    choices:
+      - "sudo pacman -R pkg"
+      - "sudo pacman -Rs pkg"
+      - "sudo pacman -Rns pkg"
+      - "sudo pacman -Rdd pkg"
+    answer: 2
+    explanation: "The -Rns flags combine removal (-R) with removing unneeded dependencies (-s) and backup configuration files (-n) for the cleanest uninstall."
+
+  # Lesson 32 - Updates and AUR
+  - type: true_false
+    question: "On a rolling release system like CachyOS, it is safe to go several months without updating and then install a new package."
+    answer: false
+    explanation: "On a rolling release, going months without updates means hundreds of packages fall behind. Installing a new package built against current libraries on a stale system can cause breakage. Regular updates (at least weekly) are recommended."
+
+  - type: multiple_choice
+    question: "What is the primary purpose of the AUR (Arch User Repository)?"
+    choices:
+      - "To provide pre-compiled binary packages faster than the official repos"
+      - "To host community-maintained build scripts for software not in the official repos"
+      - "To replace pacman with a newer package manager"
+      - "To store system backups and recovery images"
+    answer: 1
+    explanation: "The AUR contains PKGBUILDs (build scripts) submitted by community members for software that is not available in the official Arch/CachyOS repositories. Most packages are built from source on your machine."
+
+  - type: fill_in_blank
+    question: "To clean the pacman package cache keeping only the 3 most recent versions, run: sudo ___ -r"
+    answer: "paccache"
+    accept: ["paccache"]
+    explanation: "The paccache tool (from pacman-contrib) manages the package cache. Running 'paccache -r' removes all cached versions except the three most recent for each package."
+
+  # Lesson 33 - Disk and Storage
+  - type: multiple_choice
+    question: "Which command shows disk free space for all mounted filesystems?"
+    choices:
+      - "du -h"
+      - "df -h"
+      - "lsblk"
+      - "fdisk -l"
+    answer: 1
+    explanation: "The 'df -h' (disk free, human-readable) command shows total, used, and available space for each mounted filesystem. 'du' measures directory sizes, 'lsblk' lists block devices, and 'fdisk' manages partition tables."
+
+  - type: fill_in_blank
+    question: "To show the size of each item in the current directory in human-readable format, run: du ___ *"
+    answer: "-sh"
+    accept: ["-sh", "-hs"]
+    explanation: "The -s flag gives a summary (total per item) and -h makes sizes human-readable. Together, 'du -sh *' shows the size of each file and subdirectory in the current directory."
+
+  - type: multiple_choice
+    question: "What does the 'findmnt' command display?"
+    choices:
+      - "Files that have been recently modified"
+      - "Mount points in a readable tree format"
+      - "The largest files on each mounted filesystem"
+      - "Network file shares available on the LAN"
+    answer: 1
+    explanation: "findmnt displays all current mount points in a tree structure, showing the target directory, source device, filesystem type, and mount options."
+
+  # Lesson 34 - Networking
+  - type: true_false
+    question: "On Linux, the 'ping' command will run indefinitely by default unless you press Ctrl+C or use the -c flag."
+    answer: true
+    explanation: "Unlike Windows where ping sends 4 packets by default, Linux ping runs continuously until interrupted. Use 'ping -c 4 host' to send exactly 4 packets and stop."
+
+  - type: multiple_choice
+    question: "Which command shows your machine's IP addresses and network interfaces?"
+    choices:
+      - "ip route"
+      - "ip addr"
+      - "ss -tlnp"
+      - "dig localhost"
+    answer: 1
+    explanation: "The 'ip addr' command (or 'ip a' for short) lists all network interfaces and their assigned IP addresses. 'ip route' shows routing tables, 'ss' shows socket connections, and 'dig' performs DNS lookups."
+
+  - type: multiple_choice
+    question: "What does 'ss -tlnp' show?"
+    choices:
+      - "All active outgoing TCP connections"
+      - "TCP listening sockets with port numbers and process names"
+      - "UDP traffic statistics"
+      - "Network interface speeds"
+    answer: 1
+    explanation: "The flags mean: -t (TCP), -l (listening only), -n (numeric ports), -p (show process). Together they show which services are listening for incoming TCP connections on your machine."
+
+  # Lesson 35 - systemd
+  - type: multiple_choice
+    question: "What is the difference between 'systemctl enable' and 'systemctl start'?"
+    choices:
+      - "There is no difference; they do the same thing"
+      - "'enable' starts the service now; 'start' starts it at boot"
+      - "'enable' sets the service to start at boot; 'start' runs it immediately"
+      - "'enable' installs the service; 'start' configures it"
+    answer: 2
+    explanation: "The 'enable' command creates symlinks so the service starts automatically at boot. The 'start' command runs the service right now but has no effect on boot behavior. Use 'enable --now' to do both."
+
+  - type: fill_in_blank
+    question: "To follow the system log in real time (like tail -f), run: journalctl ___"
+    answer: "-f"
+    accept: ["-f", "--follow"]
+    explanation: "The -f flag (or --follow) shows new log entries as they appear in real time. Press Ctrl+C to stop following."
+
+  - type: multiple_choice
+    question: "Which command shows logs only from the current boot for a specific service?"
+    choices:
+      - "journalctl -b -u sshd"
+      - "journalctl --boot --service sshd"
+      - "systemctl logs -b sshd"
+      - "journalctl -f -u sshd"
+    answer: 0
+    explanation: "The -b flag limits to the current boot and -u filters by unit (service) name. Together, 'journalctl -b -u sshd' shows only SSH daemon logs from this boot session."
+
+  # Review questions from earlier weeks
+  - type: multiple_choice
+    question: "Which command lists the contents of a directory in long format with human-readable sizes?"
+    choices:
+      - "ls -a"
+      - "ls -lh"
+      - "dir -l"
+      - "list --long"
+    answer: 1
+    explanation: "The 'ls -lh' command combines long format (-l) with human-readable file sizes (-h). This shows permissions, owner, size, and modification date for each file."
+
+  - type: fill_in_blank
+    question: "To search for the word 'error' in all .log files in the current directory, run: grep 'error' ___"
+    answer: "*.log"
+    accept: ["*.log", "./*.log"]
+    explanation: "The glob pattern *.log matches all files ending in .log in the current directory. grep will search each matching file for lines containing 'error'."
+
+  - type: true_false
+    question: "The pipe operator (|) sends the output of one command as input to another command."
+    answer: true
+    explanation: "The pipe (|) is one of the most powerful shell features. It connects the stdout of the left command to the stdin of the right command, allowing you to chain tools together."
+
+  - type: multiple_choice
+    question: "What does 'chmod 755 script.sh' do?"
+    choices:
+      - "Makes the file readable by owner only"
+      - "Deletes the file permissions entirely"
+      - "Gives the owner full permissions and others read/execute permissions"
+      - "Encrypts the file with a password"
+    answer: 2
+    explanation: "The permission 755 means: owner gets read+write+execute (7), group gets read+execute (5), and others get read+execute (5). This is a common permission set for executable scripts."
+
+  - type: true_false
+    question: "The 'wget -c' flag allows you to resume a partially downloaded file."
+    answer: true
+    explanation: "The -c (continue) flag tells wget to check the size of the existing local file and resume downloading from where it left off. This is useful for large files on unreliable connections."

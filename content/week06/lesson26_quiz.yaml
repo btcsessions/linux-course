@@ -1,0 +1,38 @@
+lesson_id: 26
+questions:
+  - type: multiple_choice
+    question: "Which file descriptor number corresponds to stderr?"
+    choices:
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+    answer: "2"
+    explanation: "Standard error (stderr) is file descriptor 2. stdin is 0 and stdout is 1."
+
+  - type: true_false
+    question: "The >> operator overwrites the contents of a file."
+    answer: false
+    explanation: ">> appends to the file. The > operator is the one that overwrites existing contents."
+
+  - type: fill_in_blank
+    question: "To redirect both stdout and stderr of a command to a file called output.txt, you can write: command ____ output.txt"
+    answer: "&>"
+    accept: ["&>", "&> "]
+    explanation: "&> redirects both stdout and stderr to the specified file. It is shorthand for > output.txt 2>&1."
+
+  - type: multiple_choice
+    question: "What does /dev/null do when you redirect output to it?"
+    choices:
+      - "Saves output to a hidden file"
+      - "Silently discards all data written to it"
+      - "Sends output to the system log"
+      - "Compresses the output"
+    answer: "Silently discards all data written to it"
+    explanation: "/dev/null is a special file that accepts and discards all input. It is often called the bit bucket."
+
+  - type: fill_in_blank
+    question: "To redirect only error messages from a command to errors.log, you would write: command ____ errors.log"
+    answer: "2>"
+    accept: ["2>", "2> "]
+    explanation: "The 2> operator redirects file descriptor 2 (stderr) to the specified file."

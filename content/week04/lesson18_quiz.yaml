@@ -1,0 +1,42 @@
+lesson_id: 18
+questions:
+  - type: multiple_choice
+    question: "What does the command 'chmod go-w report.txt' do?"
+    choices:
+      - "Removes write permission from the owner"
+      - "Removes write permission from group and others"
+      - "Adds write permission for group and others"
+      - "Sets the file to read-only for everyone"
+    answer: "Removes write permission from group and others"
+    explanation: "'go' targets group and others, '-' removes permissions, and 'w' specifies write. So this removes write permission from group and others, leaving all other bits unchanged."
+
+  - type: fill_in_blank
+    question: "The octal permission 755 translates to the symbolic string: ____"
+    answer: "rwxr-xr-x"
+    accept: ["rwxr-xr-x", "-rwxr-xr-x"]
+    explanation: "7 = rwx (4+2+1) for the owner, 5 = r-x (4+0+1) for the group, 5 = r-x (4+0+1) for others."
+
+  - type: true_false
+    question: "The command 'chmod 644 file.txt' and 'chmod u=rw,go=r file.txt' produce the same result."
+    answer: true
+    explanation: "Both set the permissions to rw-r--r--. Octal 6 = rw- for owner, 4 = r-- for group, 4 = r-- for others. The symbolic form explicitly sets the same bits."
+
+  - type: multiple_choice
+    question: "What is the correct octal value for the permission string rw-------?"
+    choices:
+      - "700"
+      - "644"
+      - "600"
+      - "400"
+    answer: "600"
+    explanation: "rw- = 4+2+0 = 6 for the owner, --- = 0 for group, --- = 0 for others, giving 600."
+
+  - type: multiple_choice
+    question: "Why is running 'chmod -R 777' on a directory generally a bad idea?"
+    choices:
+      - "It makes all files executable, which is unnecessary and insecure"
+      - "It removes all permissions from the directory"
+      - "It only affects the directory itself, not the contents"
+      - "It changes ownership of the files to root"
+    answer: "It makes all files executable, which is unnecessary and insecure"
+    explanation: "chmod -R 777 gives full read, write, and execute permissions to everyone for every file and subdirectory. This is a security risk because it allows any user to modify or execute any file, and data files should not normally be executable."

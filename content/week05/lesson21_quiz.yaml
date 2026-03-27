@@ -1,0 +1,42 @@
+lesson_id: 21
+questions:
+  - type: multiple_choice
+    question: "Which grep flag makes the search case-insensitive?"
+    choices:
+      - "-n"
+      - "-i"
+      - "-v"
+      - "-c"
+    answer: 1
+    explanation: "The -i flag tells grep to ignore case distinctions, so 'error', 'Error', and 'ERROR' would all match the same pattern."
+
+  - type: fill_in_blank
+    question: "To count the number of matching lines instead of displaying them, use grep with the ___ flag."
+    answer: "-c"
+    accept: ["-c", "c"]
+    explanation: "The -c flag causes grep to print only the count of matching lines rather than the lines themselves."
+
+  - type: true_false
+    question: "The command 'grep -r pattern /path/' will search through all files in /path/ and its subdirectories."
+    answer: true
+    explanation: "The -r (recursive) flag tells grep to descend into subdirectories and search all files it finds within the given path."
+
+  - type: multiple_choice
+    question: "What does the command 'grep -v \"INFO\" server.log' display?"
+    choices:
+      - "Only lines containing INFO"
+      - "All lines except those containing INFO"
+      - "The line numbers of lines containing INFO"
+      - "A count of lines containing INFO"
+    answer: 1
+    explanation: "The -v flag inverts the match, so grep prints every line that does NOT contain the pattern 'INFO'."
+
+  - type: multiple_choice
+    question: "Which grep flag shows only the names of files that contain a match, rather than the matching lines?"
+    choices:
+      - "-n"
+      - "-c"
+      - "-l"
+      - "-r"
+    answer: 2
+    explanation: "The -l flag tells grep to print only the filenames that contain at least one match, suppressing the actual matching lines."

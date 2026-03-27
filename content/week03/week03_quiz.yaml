@@ -1,0 +1,127 @@
+lesson_id: null
+week: 3
+title: "Week 3 Review Quiz"
+questions:
+  # Lesson 11 - Viewing File Contents (questions 1-3)
+  - type: multiple_choice
+    question: "Which command would you use to monitor a log file in real time, seeing new lines as they are written?"
+    choices:
+      - "cat -f logfile"
+      - "less -f logfile"
+      - "tail -f logfile"
+      - "head -f logfile"
+    answer: "tail -f logfile"
+    explanation: "tail -f (follow) keeps the command running and displays new lines as they are appended to the file. Press Ctrl+C to stop."
+
+  - type: fill_in_blank
+    question: "To display the last 25 lines of a file called server.log, you would run: ____"
+    answer: "tail -n 25 server.log"
+    accept: ["tail -n 25 server.log", "tail -25 server.log", "tail --lines=25 server.log"]
+    explanation: "tail shows the end of a file, and -n 25 limits the output to the last 25 lines."
+
+  - type: true_false
+    question: "The less pager allows both forward and backward scrolling through a file, while more only scrolls forward."
+    answer: true
+    explanation: "less supports full bidirectional navigation (Space/b for pages, j/k for lines) plus searching, making it superior to the forward-only more pager."
+
+  # Lesson 12 - nano (questions 4-6)
+  - type: multiple_choice
+    question: "In nano, what does the ^ symbol represent in the shortcut bar at the bottom of the screen?"
+    choices:
+      - "The Alt key"
+      - "The Shift key"
+      - "The Ctrl key"
+      - "The Escape key"
+    answer: "The Ctrl key"
+    explanation: "In nano's notation, ^ means Ctrl. So ^O means Ctrl+O (save), ^X means Ctrl+X (exit), and so on."
+
+  - type: fill_in_blank
+    question: "To open a file at line 42 in nano, you would run: ____"
+    answer: "nano +42 filename"
+    accept: ["nano +42 filename", "nano +42 file"]
+    explanation: "The +N syntax tells nano to place the cursor on line N when opening the file."
+
+  - type: multiple_choice
+    question: "Which nano shortcut performs a search-and-replace operation?"
+    choices:
+      - "Ctrl+W"
+      - "Ctrl+R"
+      - "Ctrl+\\"
+      - "Ctrl+F"
+    answer: "Ctrl+\\"
+    explanation: "Ctrl+\\ opens the search-and-replace dialog. Ctrl+W is for search only (without replace)."
+
+  # Lesson 13 - vim (questions 7-9)
+  - type: multiple_choice
+    question: "You opened vim by accident and need to exit immediately without saving. What do you type?"
+    choices:
+      - ":w and Enter"
+      - ":q and Enter"
+      - ":q! and Enter"
+      - "Ctrl+X"
+    answer: ":q! and Enter"
+    explanation: ":q! forces vim to quit without saving any changes. This is the emergency exit. Make sure you press Esc first to ensure you are in Normal mode."
+
+  - type: true_false
+    question: "In vim, pressing i in Normal mode enters Insert mode, allowing you to type text."
+    answer: true
+    explanation: "i enters Insert mode with the cursor before the current character. The bottom of the screen shows -- INSERT -- to confirm. Press Esc to return to Normal mode."
+
+  - type: fill_in_blank
+    question: "In vim Normal mode, to undo the last change you press: ____"
+    answer: "u"
+    accept: ["u"]
+    explanation: "u is the undo command in vim Normal mode. You can press it multiple times to undo further back. Ctrl+r is redo."
+
+  # Lesson 14 - File Metadata and Types (questions 10-12)
+  - type: multiple_choice
+    question: "How does the file command determine what type of data a file contains?"
+    choices:
+      - "By reading the file extension"
+      - "By checking the file permissions"
+      - "By examining the file's content and magic bytes"
+      - "By looking at the file size"
+    answer: "By examining the file's content and magic bytes"
+    explanation: "The file command inspects special signatures (magic bytes) at the beginning of the file to identify its type, independent of the filename or extension."
+
+  - type: multiple_choice
+    question: "Which command shows all three of a file's timestamps (access, modify, and change) with full precision?"
+    choices:
+      - "ls -l"
+      - "file"
+      - "wc"
+      - "stat"
+    answer: "stat"
+    explanation: "stat shows all timestamps (access, modify, change, and birth) with nanosecond precision, along with size, permissions, and ownership details."
+
+  - type: fill_in_blank
+    question: "The output of 'wc myfile.txt' shows '10 50 320 myfile.txt'. The file has ____ words."
+    answer: "50"
+    accept: ["50"]
+    explanation: "wc output format is: lines words bytes filename. So 10 is lines, 50 is words, and 320 is bytes."
+
+  # Lesson 15 - Comparing and Sorting (questions 13-15)
+  - type: multiple_choice
+    question: "In unified diff output (diff -u), what does a line starting with - indicate?"
+    choices:
+      - "A line added in the new file"
+      - "A line removed from the original file"
+      - "An unchanged context line"
+      - "A comment"
+    answer: "A line removed from the original file"
+    explanation: "In unified diff format, - prefixed lines were in the original but removed in the modified version, + lines were added, and lines without a prefix are unchanged context."
+
+  - type: true_false
+    question: "Running 'uniq file.txt' without sorting first will remove all duplicate lines in the file."
+    answer: false
+    explanation: "uniq only removes adjacent duplicate lines. If duplicates are scattered throughout the file, you must sort first to bring them together: sort file.txt | uniq."
+
+  - type: multiple_choice
+    question: "Which command extracts the third field from a comma-separated file?"
+    choices:
+      - "cut -f3 file.csv"
+      - "cut -d',' -f3 file.csv"
+      - "sort -t',' -k3 file.csv"
+      - "uniq -f3 file.csv"
+    answer: "cut -d',' -f3 file.csv"
+    explanation: "cut -d',' sets the delimiter to comma, and -f3 extracts the third field. Without -d, cut defaults to tab as the delimiter."

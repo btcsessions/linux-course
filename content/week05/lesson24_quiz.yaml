@@ -1,0 +1,42 @@
+lesson_id: 24
+questions:
+  - type: multiple_choice
+    question: "In awk, what does '$3' refer to?"
+    choices:
+      - "The third line of the file"
+      - "The third field (column) of the current line"
+      - "The literal string '$3'"
+      - "Three dollars"
+    answer: 1
+    explanation: "In awk, $1, $2, $3, etc. refer to the first, second, third fields of the current line. Fields are split by whitespace (or by the character specified with -F)."
+
+  - type: fill_in_blank
+    question: "To set the field separator to a colon in awk, you use the ___ flag followed by a colon."
+    answer: "-F"
+    accept: ["-F", "F", "-F:"]
+    explanation: "The -F flag sets the input field separator. For example, 'awk -F: '{print $1}'' splits each line on colons, which is essential for parsing /etc/passwd and similar colon-delimited files."
+
+  - type: true_false
+    question: "The awk variable NR holds the number of fields in the current line."
+    answer: false
+    explanation: "NR holds the current record (line) number. The variable that holds the number of fields is NF. So on the third line of input, NR is 3, while NF depends on how many fields that line contains."
+
+  - type: multiple_choice
+    question: "What does the awk command 'awk '$4 > 80000 {print $2}' employees.txt' do?"
+    choices:
+      - "Prints field 2 of every line"
+      - "Prints field 2 only on lines where field 4 is greater than 80000"
+      - "Prints lines with more than 80000 fields"
+      - "Replaces field 4 with 80000"
+    answer: 1
+    explanation: "The condition '$4 > 80000' filters lines to only those where the fourth field exceeds 80000. For matching lines, awk prints the second field."
+
+  - type: multiple_choice
+    question: "Which sed command applies a substitution ONLY to lines 5 through 10?"
+    choices:
+      - "sed 's/old/new/5,10' file.txt"
+      - "sed '5,10s/old/new/' file.txt"
+      - "sed -n '5,10s/old/new/' file.txt"
+      - "sed '5-10s/old/new/' file.txt"
+    answer: 1
+    explanation: "In sed, the address range '5,10' placed before the s command limits the substitution to lines 5 through 10. The range uses a comma, not a dash."

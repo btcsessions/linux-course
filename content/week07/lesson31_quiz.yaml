@@ -1,0 +1,42 @@
+lesson_id: 31
+questions:
+  - type: multiple_choice
+    question: "Which pacman command searches the remote repositories for a package named 'vim'?"
+    choices:
+      - "pacman -Q vim"
+      - "pacman -Ss vim"
+      - "pacman -Ql vim"
+      - "pacman -R vim"
+    answer: 1
+    explanation: "The -Ss flag searches the sync (remote) database for packages matching the given term. -Q queries locally installed packages, -Ql lists files of an installed package, and -R removes a package."
+
+  - type: fill_in_blank
+    question: "To remove a package along with its unneeded dependencies, use: sudo pacman ___ <package>"
+    answer: "-Rs"
+    accept: ["-Rs"]
+    explanation: "The -Rs flag removes the package and any dependencies that were installed for it and are no longer needed by other packages."
+
+  - type: true_false
+    question: "Running 'sudo pacman -Sy' followed by 'sudo pacman -S firefox' (without -u) is the recommended way to install packages on CachyOS."
+    answer: false
+    explanation: "On a rolling release like CachyOS, refreshing the database with -Sy and then installing without upgrading (-u) can cause partial upgrade issues. The safe approach is 'sudo pacman -Syu' first, then install."
+
+  - type: multiple_choice
+    question: "What does 'pacman -Qo /usr/bin/git' do?"
+    choices:
+      - "Queries the remote database for the git package"
+      - "Removes the git binary from the system"
+      - "Shows which installed package owns the file /usr/bin/git"
+      - "Lists all files in the git package"
+    answer: 2
+    explanation: "The -Qo flag queries the local package database to find which installed package owns a specific file on disk."
+
+  - type: multiple_choice
+    question: "What is special about the 'cachyos' repository compared to the standard Arch 'extra' repository?"
+    choices:
+      - "It contains only AUR packages"
+      - "It provides packages optimized with modern CPU instruction sets"
+      - "It is only available on paid subscriptions"
+      - "It replaces the kernel with a custom Windows kernel"
+    answer: 1
+    explanation: "The CachyOS repository provides packages rebuilt with optimizations for modern CPUs (x86-64-v3/v4 instruction sets), which can improve performance on supported hardware."

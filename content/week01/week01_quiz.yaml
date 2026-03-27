@@ -1,0 +1,125 @@
+lesson_id: 0
+questions:
+  # Lesson 1: Welcome to the Terminal
+  - type: multiple_choice
+    question: "What is the relationship between a terminal emulator and a shell?"
+    choices:
+      - "They are two names for the same program"
+      - "The terminal emulator provides the window; the shell interprets commands inside it"
+      - "The shell provides the window; the terminal emulator interprets commands"
+      - "The terminal emulator is used on Linux and the shell is used on Windows"
+    answer: 1
+    explanation: "The terminal emulator is the graphical window application (like Konsole or Alacritty). The shell (like bash or fish) is the program running inside it that reads your commands and communicates with the operating system."
+
+  - type: fill_in_blank
+    question: "The command ___ prints the current date and time to the terminal."
+    answer: "date"
+    accept: ["date"]
+    explanation: "The 'date' command displays the current date and time. You can customize its output format with options like date +\"%Y-%m-%d\"."
+
+  - type: true_false
+    question: "A '#' symbol at the end of the shell prompt indicates you are logged in as a normal user."
+    answer: false
+    explanation: "A '#' prompt indicates you are logged in as the root (administrator) user. Normal users see a '$' prompt. Be extra careful when you see '#' because root has unrestricted access to the system."
+
+  # Lesson 2: pwd and the Filesystem Tree
+  - type: multiple_choice
+    question: "What does pwd stand for?"
+    choices:
+      - "print working data"
+      - "present working directory"
+      - "print working directory"
+      - "path working directory"
+    answer: 2
+    explanation: "pwd stands for 'print working directory'. It displays the absolute path of the directory you are currently located in."
+
+  - type: multiple_choice
+    question: "Which directory contains system-wide configuration files such as pacman.conf?"
+    choices:
+      - "/home"
+      - "/usr"
+      - "/var"
+      - "/etc"
+    answer: 3
+    explanation: "/etc contains system-wide configuration files. On CachyOS, important files like /etc/pacman.conf (package manager config) and /etc/hostname live here."
+
+  - type: true_false
+    question: "The path 'Documents/notes.txt' is an absolute path."
+    answer: false
+    explanation: "Absolute paths always start with '/'. Since 'Documents/notes.txt' does not begin with '/', it is a relative path whose meaning depends on your current working directory."
+
+  # Lesson 3: Navigating with cd
+  - type: multiple_choice
+    question: "Which command takes you to your home directory from any location?"
+    choices:
+      - "cd /"
+      - "cd .."
+      - "cd -"
+      - "cd ~"
+    answer: 3
+    explanation: "The 'cd ~' command takes you to your home directory from anywhere. You can also just type 'cd' with no arguments for the same effect. 'cd /' goes to the root directory, 'cd ..' goes up one level, and 'cd -' goes to the previous directory."
+
+  - type: fill_in_blank
+    question: "To switch back to the previous directory you were in, you can run cd ___."
+    answer: "-"
+    accept: ["-"]
+    explanation: "The 'cd -' command toggles between your current directory and the last directory you were in. It also prints the directory it switches to."
+
+  - type: multiple_choice
+    question: "You are in /home/alex/projects. What is the result of running 'cd ../Documents'?"
+    choices:
+      - "You move to /home/alex/projects/Documents"
+      - "You move to /home/alex/Documents"
+      - "You move to /Documents"
+      - "You get an error because '..' cannot be combined with a directory name"
+    answer: 1
+    explanation: "The '..' moves up one level from /home/alex/projects to /home/alex, then '/Documents' descends into the Documents directory, landing you at /home/alex/Documents."
+
+  # Lesson 4: Listing Files with ls
+  - type: multiple_choice
+    question: "Which flag combination shows hidden files in long format with human-readable sizes?"
+    choices:
+      - "ls -R"
+      - "ls -lt"
+      - "ls -lah"
+      - "ls -lS"
+    answer: 2
+    explanation: "The flags combine as: -l for long format, -a for all files (including hidden), and -h for human-readable file sizes. They can be combined as 'ls -lah' or 'ls -l -a -h'."
+
+  - type: fill_in_blank
+    question: "In Linux, files and directories whose names start with a ___ are hidden from a normal ls listing."
+    answer: "dot"
+    accept: ["dot", ".", "period"]
+    explanation: "Any file or directory with a name beginning with a dot (.) is considered hidden. Examples include .bashrc, .config, and .gitignore. Use 'ls -a' to see them."
+
+  - type: true_false
+    question: "The 'ls -R' command lists the contents of a directory and all of its subdirectories recursively."
+    answer: true
+    explanation: "The '-R' flag stands for recursive. It makes ls descend into every subdirectory and list their contents as well, showing the complete directory tree."
+
+  # Lesson 5: Getting Help
+  - type: multiple_choice
+    question: "While viewing a man page, how do you search for a specific term?"
+    choices:
+      - "Press Ctrl+F and type the term"
+      - "Type / followed by the term and press Enter"
+      - "Press s and type the term"
+      - "You cannot search within man pages"
+    answer: 1
+    explanation: "Man pages are displayed using the 'less' pager. To search forward, type '/' followed by your search term and press Enter. Press 'n' to find the next match and 'N' to go to the previous match."
+
+  - type: multiple_choice
+    question: "Which command would you use to find the location of a program's binary, source, and man page?"
+    choices:
+      - "which"
+      - "type"
+      - "whereis"
+      - "apropos"
+    answer: 2
+    explanation: "The 'whereis' command searches for a command's binary, source code, and man page locations. 'which' only finds the binary, 'type' identifies the command type, and 'apropos' searches man page descriptions by keyword."
+
+  - type: fill_in_blank
+    question: "The ___ command searches man page descriptions to help you find commands related to a keyword."
+    answer: "apropos"
+    accept: ["apropos", "man -k"]
+    explanation: "When you know what you want to do but not which command does it, 'apropos keyword' searches all man page short descriptions for matches. For example, 'apropos calendar' finds the 'cal' command."

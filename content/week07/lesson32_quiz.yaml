@@ -1,0 +1,42 @@
+lesson_id: 32
+questions:
+  - type: multiple_choice
+    question: "What is the correct command for a full system update on CachyOS?"
+    choices:
+      - "sudo pacman -Sy"
+      - "sudo pacman -Su"
+      - "sudo pacman -Syu"
+      - "sudo pacman -Rsu"
+    answer: 2
+    explanation: "The command 'sudo pacman -Syu' refreshes the package database (-y) and upgrades all installed packages (-u) in one step. Using -Sy alone only refreshes the database without upgrading, which can lead to partial upgrade issues."
+
+  - type: true_false
+    question: "It is safe to run 'sudo pacman -Sy' followed by 'sudo pacman -S firefox' without upgrading the rest of the system first."
+    answer: false
+    explanation: "On a rolling release like CachyOS, refreshing the database without upgrading creates a partial upgrade scenario. The newly installed package may depend on library versions that are not yet installed, causing breakage."
+
+  - type: fill_in_blank
+    question: "The AUR stands for Arch ___ Repository."
+    answer: "User"
+    accept: ["User", "user"]
+    explanation: "The Arch User Repository (AUR) is a community-driven collection of build scripts for software not available in the official Arch/CachyOS repositories."
+
+  - type: multiple_choice
+    question: "Which command cleans the pacman package cache while keeping the three most recent versions of each package?"
+    choices:
+      - "sudo pacman -Scc"
+      - "sudo paccache -r"
+      - "sudo pacman -Rns cache"
+      - "sudo paru -c"
+    answer: 1
+    explanation: "The 'paccache -r' command (from pacman-contrib) removes all cached package versions except the three most recent for each package. 'pacman -Scc' is more aggressive and removes everything from the cache."
+
+  - type: multiple_choice
+    question: "What does 'paru -Qm' list?"
+    choices:
+      - "All packages available in the official repositories"
+      - "Packages that need to be updated"
+      - "Packages not found in any sync database (typically AUR packages)"
+      - "Packages that are broken or corrupted"
+    answer: 2
+    explanation: "The -Qm flag lists 'foreign' packages -- those installed on your system that do not exist in any configured sync repository. These are typically packages installed from the AUR or built manually."

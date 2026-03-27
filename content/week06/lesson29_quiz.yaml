@@ -1,0 +1,38 @@
+lesson_id: 29
+questions:
+  - type: multiple_choice
+    question: "What does appending & to a command do?"
+    choices:
+      - "Runs the command with elevated privileges"
+      - "Redirects the command's stderr"
+      - "Runs the command in the background"
+      - "Pipes the command output to another command"
+    answer: "Runs the command in the background"
+    explanation: "The & operator launches the command in the background, returning control of the terminal to you immediately while the command continues to run."
+
+  - type: true_false
+    question: "Pressing Ctrl+Z kills the currently running foreground process."
+    answer: false
+    explanation: "Ctrl+Z suspends (pauses) the process by sending SIGTSTP. The process is not terminated -- it is stopped and can be resumed with fg or bg."
+
+  - type: fill_in_blank
+    question: "To resume a stopped background job number 2, keeping it in the background, you would run: ____ %2"
+    answer: "bg"
+    accept: ["bg"]
+    explanation: "The bg command resumes a stopped job and keeps it running in the background, so your terminal remains free."
+
+  - type: multiple_choice
+    question: "Which command detaches an already-running background job so it survives after you close the terminal?"
+    choices:
+      - "nohup"
+      - "disown"
+      - "bg"
+      - "jobs"
+    answer: "disown"
+    explanation: "disown removes a job from the shell's job table, preventing the shell from sending SIGHUP when the terminal closes. nohup must be used when starting the command, not after."
+
+  - type: fill_in_blank
+    question: "To list all jobs managed by the current shell session, including their PIDs, you would run: ____ -l"
+    answer: "jobs"
+    accept: ["jobs"]
+    explanation: "The jobs command lists all background and stopped jobs in the current shell. The -l flag adds the process ID to the output."

@@ -1,0 +1,42 @@
+lesson_id: 12
+questions:
+  - type: multiple_choice
+    question: "Which shortcut saves (writes out) a file in nano?"
+    choices:
+      - "Ctrl+S"
+      - "Ctrl+O"
+      - "Ctrl+W"
+      - "Ctrl+X"
+    answer: "Ctrl+O"
+    explanation: "Ctrl+O (Write Out) is nano's save command. Ctrl+X exits, Ctrl+W searches, and Ctrl+S is not a standard nano shortcut."
+
+  - type: true_false
+    question: "Pressing Ctrl+X in nano will immediately close the editor without asking to save unsaved changes."
+    answer: false
+    explanation: "If there are unsaved changes, nano will prompt you to save before exiting. You can choose Y (yes), N (no), or Ctrl+C (cancel)."
+
+  - type: fill_in_blank
+    question: "To search for text inside nano, you press: ____"
+    answer: "Ctrl+W"
+    accept: ["Ctrl+W", "ctrl+w", "^W"]
+    explanation: "Ctrl+W opens the search prompt in nano. Type your search term and press Enter to find the first match."
+
+  - type: multiple_choice
+    question: "What does Ctrl+K do in nano?"
+    choices:
+      - "Opens the help screen"
+      - "Kills (exits) nano"
+      - "Cuts the current line"
+      - "Copies the current line"
+    answer: "Cuts the current line"
+    explanation: "Ctrl+K cuts (removes) the current line and places it in the paste buffer. Use Ctrl+U to paste it back."
+
+  - type: multiple_choice
+    question: "How do you perform a search-and-replace operation in nano?"
+    choices:
+      - "Ctrl+R"
+      - "Ctrl+H"
+      - "Ctrl+\\"
+      - "Ctrl+F"
+    answer: "Ctrl+\\"
+    explanation: "Ctrl+\\ opens nano's search-and-replace dialog. You enter the search term, then the replacement, and choose how to apply it."

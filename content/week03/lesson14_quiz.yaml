@@ -1,0 +1,42 @@
+lesson_id: 14
+questions:
+  - type: multiple_choice
+    question: "What does the file command use to determine a file's type?"
+    choices:
+      - "The file extension (.txt, .jpg, etc.)"
+      - "The file size"
+      - "The file's content and magic bytes"
+      - "The file's permissions"
+    answer: "The file's content and magic bytes"
+    explanation: "The file command reads special signatures (magic bytes) at the beginning of a file to determine its true type, regardless of the filename or extension."
+
+  - type: fill_in_blank
+    question: "To count only the number of lines in a file called report.txt, you would run: ____"
+    answer: "wc -l report.txt"
+    accept: ["wc -l report.txt", "wc --lines report.txt"]
+    explanation: "The -l flag tells wc to output only the line count rather than the full lines/words/bytes summary."
+
+  - type: true_false
+    question: "On Linux, a file named image.txt could actually contain JPEG image data."
+    answer: true
+    explanation: "Linux does not rely on file extensions to determine content type. The file command would reveal its true nature by examining the content."
+
+  - type: multiple_choice
+    question: "Which command shows detailed metadata including timestamps, permissions, and ownership of a file?"
+    choices:
+      - "file"
+      - "ls"
+      - "stat"
+      - "wc"
+    answer: "stat"
+    explanation: "stat displays comprehensive filesystem metadata including all timestamps (access, modify, change, birth), permissions in both octal and symbolic notation, and owner/group information."
+
+  - type: multiple_choice
+    question: "When you run 'wc readme.txt' and see '5 29 193 readme.txt', what does 29 represent?"
+    choices:
+      - "The number of lines"
+      - "The number of words"
+      - "The number of bytes"
+      - "The number of characters"
+    answer: "The number of words"
+    explanation: "The default wc output shows three numbers: lines, words, and bytes, in that order. So 5 is lines, 29 is words, and 193 is bytes."

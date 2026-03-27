@@ -1,0 +1,42 @@
+lesson_id: 20
+questions:
+  - type: multiple_choice
+    question: "What does the 'x' flag in 'ps aux' do?"
+    choices:
+      - "Shows extra columns of information"
+      - "Sorts processes by CPU usage"
+      - "Includes processes without a controlling terminal"
+      - "Shows only the current user's processes"
+    answer: "Includes processes without a controlling terminal"
+    explanation: "The 'x' flag tells ps to include processes that are not attached to a terminal, such as daemons and background services. Without it, ps only shows processes with a controlling TTY."
+
+  - type: true_false
+    question: "The 'kill' command always terminates a process immediately."
+    answer: false
+    explanation: "By default, kill sends SIGTERM (signal 15), which is a graceful shutdown request. The process can catch this signal and perform cleanup. Only kill -9 (SIGKILL) forces immediate termination and cannot be caught."
+
+  - type: fill_in_blank
+    question: "To find the PID of all running processes named 'nginx', you would run: ____"
+    answer: "pgrep nginx"
+    accept: ["pgrep nginx", "pgrep -l nginx", "pgrep -a nginx"]
+    explanation: "pgrep searches for processes by name and returns their PIDs. The -l flag adds the process name and -a shows the full command line."
+
+  - type: multiple_choice
+    question: "What keyboard shortcut sends SIGINT to a foreground process in the terminal?"
+    choices:
+      - "Ctrl+Z"
+      - "Ctrl+C"
+      - "Ctrl+D"
+      - "Ctrl+\\"
+    answer: "Ctrl+C"
+    explanation: "Ctrl+C sends SIGINT (signal 2) to the foreground process, which typically causes it to terminate. Ctrl+Z sends SIGTSTP to suspend it, and Ctrl+\\ sends SIGQUIT."
+
+  - type: multiple_choice
+    question: "Why should 'kill -9' be used as a last resort?"
+    choices:
+      - "It requires root privileges"
+      - "It only works on system processes"
+      - "It terminates the process immediately without allowing cleanup"
+      - "It restarts the process instead of stopping it"
+    answer: "It terminates the process immediately without allowing cleanup"
+    explanation: "SIGKILL (signal 9) cannot be caught or ignored by the process. It is terminated immediately without a chance to save data, close file handles, or remove temporary files. Always try a regular kill (SIGTERM) first."

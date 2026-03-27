@@ -1,0 +1,42 @@
+lesson_id: 15
+questions:
+  - type: multiple_choice
+    question: "What does a line starting with + mean in unified diff output (diff -u)?"
+    choices:
+      - "The line was removed from the original file"
+      - "The line was added in the modified file"
+      - "The line is unchanged context"
+      - "The line contains a syntax error"
+    answer: "The line was added in the modified file"
+    explanation: "In unified diff format, lines prefixed with + are additions in the modified file, lines with - are removals from the original, and lines with no prefix are unchanged context."
+
+  - type: fill_in_blank
+    question: "To sort a file of numbers in descending (largest first) order, you would run: sort ____ numbers.txt"
+    answer: "-rn"
+    accept: ["-rn", "-nr", "-r -n", "-n -r", "--reverse --numeric-sort"]
+    explanation: "The -n flag enables numeric sorting (instead of alphabetical) and -r reverses the order, giving you largest to smallest."
+
+  - type: true_false
+    question: "The uniq command removes all duplicate lines from a file, even if the duplicates are not adjacent."
+    answer: false
+    explanation: "uniq only removes ADJACENT duplicate lines. To remove all duplicates, you must sort the file first so that duplicates become adjacent: sort file | uniq."
+
+  - type: multiple_choice
+    question: "Which command extracts the second field from a colon-delimited file?"
+    choices:
+      - "cut -d':' -f2 file"
+      - "cut -c2 file"
+      - "sort -t':' -k2 file"
+      - "uniq -f2 file"
+    answer: "cut -d':' -f2 file"
+    explanation: "cut -d':' sets the delimiter to colon, and -f2 selects the second field. This is the standard way to extract columns from delimited data."
+
+  - type: multiple_choice
+    question: "What does the pipeline 'sort data.txt | uniq -c | sort -rn' accomplish?"
+    choices:
+      - "Removes all duplicate lines and saves the result"
+      - "Counts occurrences of each unique line and lists them from most to least frequent"
+      - "Sorts the file three times for accuracy"
+      - "Finds lines that appear exactly once"
+    answer: "Counts occurrences of each unique line and lists them from most to least frequent"
+    explanation: "This classic pipeline first sorts to group duplicates, then uniq -c counts each group, and finally sort -rn orders by count descending to show the most frequent items first."

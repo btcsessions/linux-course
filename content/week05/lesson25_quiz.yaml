@@ -1,0 +1,42 @@
+lesson_id: 25
+questions:
+  - type: multiple_choice
+    question: "Why must you always pipe through 'sort' before using 'uniq' to remove duplicates?"
+    choices:
+      - "uniq requires input to be in alphabetical order to function"
+      - "uniq only removes adjacent duplicate lines, so sorting groups identical lines together first"
+      - "sort converts text to lowercase which uniq needs"
+      - "uniq cannot read from a pipe without sort"
+    answer: 1
+    explanation: "The uniq command only compares adjacent lines. If duplicate lines are scattered throughout the input, uniq will miss them. Sorting first ensures all identical lines are grouped together."
+
+  - type: fill_in_blank
+    question: "The pipeline 'awk '{print $1}' file | sort | uniq -c | sort -rn' is the classic pattern to find the ___ frequent values in a field."
+    answer: "most"
+    accept: ["most", "most frequent", "top"]
+    explanation: "This is the 'top N' pipeline pattern: extract a field, sort to group, count with uniq -c, then reverse-numeric sort to put the highest counts first."
+
+  - type: true_false
+    question: "The command 'sort -u file.txt' is equivalent to 'sort file.txt | uniq'."
+    answer: true
+    explanation: "The -u flag on sort tells it to output only unique lines after sorting, which produces the same result as piping sorted output through uniq."
+
+  - type: multiple_choice
+    question: "Given an Apache access log, which pipeline correctly counts requests per HTTP status code?"
+    choices:
+      - "grep '[0-9]' access.log | wc -l"
+      - "awk '{print $9}' access.log | sort | uniq -c | sort -rn"
+      - "sed 's/.*//' access.log | sort"
+      - "cat access.log | uniq -c"
+    answer: 1
+    explanation: "In a standard Apache log, the HTTP status code is typically in field 9. Extracting that field with awk, then sorting and counting with uniq -c gives you the count per status code. The final sort -rn orders by frequency."
+
+  - type: multiple_choice
+    question: "When building a complex pipeline, what is the recommended approach?"
+    choices:
+      - "Write the entire pipeline at once, then debug if it fails"
+      - "Build it incrementally, adding one stage at a time and checking output"
+      - "Store each stage's output in a temporary file"
+      - "Use a single awk script instead of a pipeline"
+    answer: 1
+    explanation: "Building pipelines incrementally lets you verify each stage produces the expected output before adding the next. This makes it easy to catch field-number errors, quoting issues, or unexpected data formats."

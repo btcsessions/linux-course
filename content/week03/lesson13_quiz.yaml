@@ -1,0 +1,42 @@
+lesson_id: 13
+questions:
+  - type: multiple_choice
+    question: "When you first open a file in vim, which mode are you in?"
+    choices:
+      - "Insert mode"
+      - "Command-line mode"
+      - "Normal mode"
+      - "Visual mode"
+    answer: "Normal mode"
+    explanation: "vim always starts in Normal mode. You must press i (or another insert key) to begin typing text."
+
+  - type: fill_in_blank
+    question: "To save and quit vim in one command, you type: ____"
+    answer: ":wq"
+    accept: [":wq", ":wq!", "ZZ"]
+    explanation: ":wq writes the file and then quits. ZZ is a shortcut that does the same thing without needing the colon."
+
+  - type: true_false
+    question: "Pressing :q! in vim will save your changes and then exit."
+    answer: false
+    explanation: ":q! forces vim to quit WITHOUT saving any changes. It is the emergency exit. Use :wq to save and quit."
+
+  - type: multiple_choice
+    question: "Which key do you press to enter Insert mode in vim (inserting before the cursor)?"
+    choices:
+      - "a"
+      - "Esc"
+      - "i"
+      - ":"
+    answer: "i"
+    explanation: "Pressing i enters Insert mode and places the cursor before the current character. Pressing a would insert after the cursor."
+
+  - type: multiple_choice
+    question: "In Normal mode, what does the command dd do?"
+    choices:
+      - "Duplicates the current line"
+      - "Deletes the character under the cursor"
+      - "Deletes (cuts) the entire current line"
+      - "Downloads a file"
+    answer: "Deletes (cuts) the entire current line"
+    explanation: "dd removes the entire current line and places it in the paste buffer. You can paste it elsewhere with p."

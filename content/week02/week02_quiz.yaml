@@ -1,0 +1,127 @@
+lesson_id: null
+week: 2
+title: "Week 2 Review: File Management"
+questions:
+  # Lesson 6: Creating Files and Directories
+  - type: multiple_choice
+    question: "What does `touch` do when run on a file that already exists?"
+    choices:
+      - "Deletes the file and creates a new empty one"
+      - "Displays the file contents"
+      - "Updates the file's modification timestamp without changing its contents"
+      - "Appends a newline to the file"
+    answer: 2
+    explanation: "When the target file already exists, `touch` updates its access and modification timestamps to the current time. The file's contents and size are not changed."
+
+  - type: fill_in_blank
+    question: "The command `mkdir -p a/b/c` creates directory `c` along with any missing ___ directories."
+    answer: "parent"
+    accept: ["parent", "parents", "intermediate"]
+    explanation: "The `-p` flag stands for 'parents'. It creates all missing directories in the specified path, so `a/` and `a/b/` are created if they do not exist."
+
+  - type: true_false
+    question: "A filename starting with a dot (`.`) is hidden from normal `ls` output on Linux."
+    answer: true
+    explanation: "Files and directories whose names begin with `.` are hidden by convention. They appear only when you use `ls -a` or `ls -A`."
+
+  # Lesson 7: Copying and Moving
+  - type: multiple_choice
+    question: "Which flag is required to copy a directory with `cp`?"
+    choices:
+      - "-d"
+      - "-r"
+      - "-f"
+      - "-a"
+    answer: 1
+    explanation: "The `-r` (recursive) flag is required to copy a directory and all of its contents. Without it, `cp` refuses to copy directories."
+
+  - type: multiple_choice
+    question: "What is the difference between `cp` and `mv`?"
+    choices:
+      - "`cp` works on files, `mv` works on directories"
+      - "`cp` duplicates the file leaving the original, `mv` moves it (original is gone)"
+      - "`cp` is faster than `mv`"
+      - "`mv` requires root permissions"
+    answer: 1
+    explanation: "`cp` creates a duplicate of the file, keeping the original in place. `mv` relocates the file -- the original no longer exists at its old location."
+
+  - type: fill_in_blank
+    question: "To rename a file called `old.txt` to `new.txt`, you would use the ___ command."
+    answer: "mv"
+    accept: ["mv", "mv old.txt new.txt"]
+    explanation: "The `mv` command serves double duty: it both moves and renames files. `mv old.txt new.txt` renames the file in place."
+
+  # Lesson 8: Removing Files and Directories
+  - type: true_false
+    question: "Files deleted with `rm` on the command line can be recovered from the Recycle Bin."
+    answer: false
+    explanation: "The `rm` command permanently deletes files. There is no Recycle Bin or Trash for command-line deletions. The file is gone and cannot be recovered through normal means."
+
+  - type: multiple_choice
+    question: "What does `rmdir` do if the directory is not empty?"
+    choices:
+      - "Deletes the directory and all its contents"
+      - "Moves the contents to /tmp first, then deletes the directory"
+      - "Displays an error and refuses to remove the directory"
+      - "Asks for confirmation before deleting"
+    answer: 2
+    explanation: "`rmdir` only removes empty directories. If the directory contains any files or subdirectories, it displays an error and does nothing. Use `rm -r` to remove non-empty directories."
+
+  - type: multiple_choice
+    question: "Which command safely removes a non-empty directory while asking for confirmation on each file?"
+    choices:
+      - "rmdir -i mydir/"
+      - "rm -ri mydir/"
+      - "rm -rf mydir/"
+      - "delete -confirm mydir/"
+    answer: 1
+    explanation: "`rm -ri` combines recursive (`-r`) and interactive (`-i`) flags. It descends into the directory and asks you to confirm before deleting each file and subdirectory."
+
+  # Lesson 9: Wildcards and Globbing
+  - type: multiple_choice
+    question: "Which wildcard matches exactly one character?"
+    choices:
+      - "`*`"
+      - "`?`"
+      - "`[a-z]`"
+      - "`{a,b}`"
+    answer: 1
+    explanation: "The `?` wildcard matches exactly one character. For example, `file?.txt` matches `file1.txt` or `fileA.txt` but not `file10.txt`."
+
+  - type: fill_in_blank
+    question: "The glob pattern `[!0-9]` matches any character that is NOT a ___."
+    answer: "digit"
+    accept: ["digit", "number", "numeral"]
+    explanation: "The `!` (or `^`) inside square brackets negates the character class. `[!0-9]` matches any single character that is not in the range 0 through 9."
+
+  - type: true_false
+    question: "The glob pattern `*` matches hidden files (those starting with a dot) by default."
+    answer: false
+    explanation: "By default, the `*` wildcard does not match filenames starting with a dot. You must use `.*` explicitly to match hidden files, or use `ls -a` to see them."
+
+  # Lesson 10: Finding Files with find and locate
+  - type: multiple_choice
+    question: "Which command finds all `.conf` files larger than 10 kilobytes in `/etc`?"
+    choices:
+      - "locate /etc/*.conf +10k"
+      - "find /etc -name \"*.conf\" -size +10k"
+      - "search /etc --name *.conf --min-size 10k"
+      - "find /etc -type conf -size 10k"
+    answer: 1
+    explanation: "`find` supports combining multiple tests. `-name \"*.conf\"` filters by name and `-size +10k` filters for files larger than 10 kilobytes."
+
+  - type: multiple_choice
+    question: "Why might `locate` not find a file you just created?"
+    choices:
+      - "locate only works for root users"
+      - "locate searches a pre-built database that may not include recent changes"
+      - "locate only searches the /usr directory"
+      - "locate cannot find files smaller than 1 KB"
+    answer: 1
+    explanation: "`locate` searches a database that is typically updated once per day. Files created after the last database update will not appear. Run `sudo updatedb` to refresh the database."
+
+  - type: fill_in_blank
+    question: "In `find . -name \"*.tmp\" -exec rm {} \\;`, the `{}` is replaced by each matching ___."
+    answer: "filename"
+    accept: ["filename", "file", "file name", "filepath", "file path", "path"]
+    explanation: "The `{}` placeholder in `-exec` is replaced by each filename that `find` matches. The `\\;` marks the end of the command to execute."

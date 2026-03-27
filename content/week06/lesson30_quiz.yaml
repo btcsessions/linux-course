@@ -1,0 +1,38 @@
+lesson_id: 30
+questions:
+  - type: multiple_choice
+    question: "What does the !! shortcut expand to in bash?"
+    choices:
+      - "The first command in your history"
+      - "The last argument of the previous command"
+      - "The entire previous command"
+      - "The current working directory"
+    answer: "The entire previous command"
+    explanation: "!! (bang-bang) expands to the full text of the most recently executed command. It is commonly used as 'sudo !!' when you forget to run something with elevated privileges."
+
+  - type: fill_in_blank
+    question: "To embed the output of the date command inside an echo statement, you would write: echo \"Today is ____\""
+    answer: "$(date)"
+    accept: ["$(date)", "`date`"]
+    explanation: "$() is command substitution. The shell runs the command inside the parentheses, captures its output, and inserts it into the surrounding command."
+
+  - type: true_false
+    question: "The && operator runs the next command regardless of whether the previous command succeeded."
+    answer: false
+    explanation: "&& only runs the next command if the previous one exited with status 0 (success). To run commands regardless of outcome, use the ; operator."
+
+  - type: multiple_choice
+    question: "What does !$ refer to in bash history expansion?"
+    choices:
+      - "The last command you ran"
+      - "The first argument of the previous command"
+      - "The last argument of the previous command"
+      - "The exit status of the previous command"
+    answer: "The last argument of the previous command"
+    explanation: "!$ expands to the last argument of the most recent command. For example, after 'mkdir /tmp/newdir', running 'cd !$' becomes 'cd /tmp/newdir'."
+
+  - type: fill_in_blank
+    question: "To calculate 2 to the power of 8 using bash arithmetic expansion, you would write: echo $(( 2 ____ 8 ))"
+    answer: "**"
+    accept: ["**"]
+    explanation: "The ** operator in bash arithmetic expansion performs exponentiation. $(( 2 ** 8 )) evaluates to 256."

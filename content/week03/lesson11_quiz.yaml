@@ -1,0 +1,42 @@
+lesson_id: 11
+questions:
+  - type: multiple_choice
+    question: "Which command is best for interactively browsing a large file with both forward and backward scrolling?"
+    choices:
+      - "cat"
+      - "more"
+      - "less"
+      - "head"
+    answer: "less"
+    explanation: "less allows both forward and backward scrolling, searching, and other interactive features, making it ideal for browsing large files."
+
+  - type: fill_in_blank
+    question: "To display the first 20 lines of a file called data.txt, you would run: ____"
+    answer: "head -n 20 data.txt"
+    accept: ["head -n 20 data.txt", "head -20 data.txt", "head --lines=20 data.txt"]
+    explanation: "The head command with -n 20 limits output to the first 20 lines of the specified file."
+
+  - type: true_false
+    question: "The command 'tail -f logfile.log' will continuously display new lines as they are appended to the file."
+    answer: true
+    explanation: "The -f (follow) flag causes tail to keep watching the file and display new content as it is written."
+
+  - type: multiple_choice
+    question: "What does the -n flag do in 'cat -n filename'?"
+    choices:
+      - "Suppresses blank lines"
+      - "Numbers all output lines"
+      - "Shows only non-printable characters"
+      - "Limits output to N lines"
+    answer: "Numbers all output lines"
+    explanation: "The -n flag in cat numbers every line of output, which is useful for referencing specific lines."
+
+  - type: multiple_choice
+    question: "Inside the less pager, which key searches forward for a pattern?"
+    choices:
+      - "s"
+      - "?"
+      - "/"
+      - "n"
+    answer: "/"
+    explanation: "Pressing / in less opens a forward search prompt. Use ? for backward search, and n to jump to the next match."

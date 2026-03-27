@@ -1,0 +1,42 @@
+lesson_id: 34
+questions:
+  - type: multiple_choice
+    question: "Which command tests whether a remote host is reachable and measures the round-trip time?"
+    choices:
+      - "curl"
+      - "traceroute"
+      - "ping"
+      - "ss"
+    answer: 2
+    explanation: "The 'ping' command sends ICMP echo requests to a remote host and measures the round-trip time. It is the first tool to use when diagnosing connectivity issues."
+
+  - type: fill_in_blank
+    question: "To see your machine's IP addresses in a compact one-line-per-interface format, run: ip ___ addr"
+    answer: "-br"
+    accept: ["-br", "-brief"]
+    explanation: "The -br (brief) flag gives a compact summary with one line per network interface, showing the interface name, state, and IP addresses."
+
+  - type: true_false
+    question: "The 'ss -tlnp' command shows all active outgoing TCP connections."
+    answer: false
+    explanation: "The -l flag in 'ss -tlnp' filters for listening sockets only -- services waiting for incoming connections. To see active outgoing connections, use 'ss -tn' without the -l flag."
+
+  - type: multiple_choice
+    question: "If 'ping 8.8.8.8' works but 'ping archlinux.org' fails, what is most likely the problem?"
+    choices:
+      - "Your network cable is unplugged"
+      - "DNS resolution is not working"
+      - "The archlinux.org server is down"
+      - "Your firewall is blocking all traffic"
+    answer: 1
+    explanation: "If you can reach an IP address directly but cannot resolve a domain name, the issue is with DNS. Your network connection is working (you can reach 8.8.8.8), but your system cannot translate domain names to IP addresses."
+
+  - type: multiple_choice
+    question: "Which curl flag should you use to follow HTTP redirects when downloading a file?"
+    choices:
+      - "-o"
+      - "-I"
+      - "-L"
+      - "-v"
+    answer: 2
+    explanation: "The -L flag tells curl to follow HTTP redirects (301, 302, etc.). Without it, curl stops at the redirect response and you may get an empty or incomplete file instead of the actual content."

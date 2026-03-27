@@ -1,0 +1,42 @@
+lesson_id: 35
+questions:
+  - type: multiple_choice
+    question: "Which command checks the current status of a systemd service?"
+    choices:
+      - "systemctl start sshd"
+      - "systemctl status sshd"
+      - "systemctl enable sshd"
+      - "journalctl -u sshd"
+    answer: 1
+    explanation: "The 'systemctl status' command shows whether a service is running, its PID, memory usage, and recent log entries. 'start' would start it, 'enable' sets it to start at boot, and 'journalctl -u' shows its full log history."
+
+  - type: fill_in_blank
+    question: "To enable a service and start it immediately in one command, use: sudo systemctl enable ___ sshd"
+    answer: "--now"
+    accept: ["--now"]
+    explanation: "The --now flag combines enable (start at boot) with start (run immediately) into a single command, saving you from running two separate commands."
+
+  - type: true_false
+    question: "Running 'sudo systemctl enable sshd' will immediately start the SSH service."
+    answer: false
+    explanation: "The 'enable' command only creates a symlink so the service starts at boot. It does not start the service right away. To also start it immediately, add the --now flag or run 'systemctl start sshd' separately."
+
+  - type: multiple_choice
+    question: "Which journalctl command shows only error-level messages and above from the current boot?"
+    choices:
+      - "journalctl -b -p err"
+      - "journalctl -f -u errors"
+      - "journalctl --errors --boot"
+      - "journalctl -b --grep error"
+    answer: 0
+    explanation: "The -b flag limits output to the current boot and -p err filters by priority level, showing only messages with priority 'err' (error) or higher (critical, alert, emergency)."
+
+  - type: multiple_choice
+    question: "What does 'systemd-analyze blame' show you?"
+    choices:
+      - "Which user caused the most system errors"
+      - "A list of services sorted by how long they took to start during boot"
+      - "Failed services and the errors that caused them to fail"
+      - "The total amount of RAM used by each service"
+    answer: 1
+    explanation: "The 'systemd-analyze blame' command lists all services started during boot, sorted by how long each one took. This helps identify services that are slowing down your boot time."

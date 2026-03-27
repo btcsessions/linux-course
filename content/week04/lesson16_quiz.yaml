@@ -1,0 +1,42 @@
+lesson_id: 16
+questions:
+  - type: multiple_choice
+    question: "What is the UID of the root user on a Linux system?"
+    choices:
+      - "1"
+      - "0"
+      - "1000"
+      - "999"
+    answer: "0"
+    explanation: "The root superuser always has UID 0 on every Linux system."
+
+  - type: true_false
+    question: "The file /etc/passwd contains the hashed passwords of all user accounts."
+    answer: false
+    explanation: "Despite its name, /etc/passwd does not contain passwords. Hashed passwords are stored in /etc/shadow, which only root can read."
+
+  - type: fill_in_blank
+    question: "To see your numeric user ID, primary group, and all group memberships, you run: ____"
+    answer: "id"
+    accept: ["id", "id $(whoami)"]
+    explanation: "The id command displays your UID, GID, and all supplementary groups."
+
+  - type: multiple_choice
+    question: "Which group on CachyOS (and Arch Linux) grants a user the ability to use sudo?"
+    choices:
+      - "admin"
+      - "sudoers"
+      - "wheel"
+      - "root"
+    answer: "wheel"
+    explanation: "On Arch-based distributions including CachyOS, membership in the wheel group is the standard way to grant sudo privileges."
+
+  - type: multiple_choice
+    question: "What is the key advantage of using 'sudo' over 'su -' to perform administrative tasks?"
+    choices:
+      - "sudo is faster to type"
+      - "sudo does not require any password"
+      - "sudo elevates privileges for a single command and logs the action"
+      - "sudo gives you a permanent root shell"
+    answer: "sudo elevates privileges for a single command and logs the action"
+    explanation: "sudo follows the principle of least privilege by running only the specified command as root, and every invocation is logged for auditing."

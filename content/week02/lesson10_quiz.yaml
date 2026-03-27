@@ -1,0 +1,42 @@
+lesson_id: 10
+questions:
+  - type: multiple_choice
+    question: "What does `find . -name \"*.txt\"` do?"
+    choices:
+      - "Finds all .txt files in the current directory only"
+      - "Finds all .txt files in the current directory and all subdirectories"
+      - "Creates new .txt files"
+      - "Renames all .txt files"
+    answer: 1
+    explanation: "The `find` command recursively searches the current directory (`.`) and all subdirectories for files matching the pattern `*.txt`."
+
+  - type: fill_in_blank
+    question: "To search for files by name in a case-insensitive way with `find`, use the ___ flag instead of `-name`."
+    answer: "-iname"
+    accept: ["-iname", "iname"]
+    explanation: "The `-iname` flag works like `-name` but ignores case, so it matches `README.md`, `readme.md`, `Readme.md`, etc."
+
+  - type: true_false
+    question: "The `locate` command searches the filesystem in real time, just like `find`."
+    answer: false
+    explanation: "`locate` searches a pre-built database of filenames, which makes it very fast but potentially out of date. Use `sudo updatedb` to refresh the database."
+
+  - type: multiple_choice
+    question: "In `find . -name \"*.log\" -exec rm {} \\;`, what does `{}` represent?"
+    choices:
+      - "The current directory"
+      - "An empty file"
+      - "Each matching filename found by find"
+      - "The last argument passed to find"
+    answer: 2
+    explanation: "The `{}` is a placeholder that `find` replaces with each matching filename. So if find matches `app.log` and `error.log`, the `rm` command runs once for each file."
+
+  - type: multiple_choice
+    question: "Which `find` option limits how deep into subdirectories the search goes?"
+    choices:
+      - "-depth"
+      - "-maxdepth"
+      - "-level"
+      - "-recursive"
+    answer: 1
+    explanation: "The `-maxdepth` option limits how many levels of subdirectories `find` will descend into. For example, `-maxdepth 1` searches only the starting directory itself."
