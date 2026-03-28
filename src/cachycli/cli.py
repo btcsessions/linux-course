@@ -184,6 +184,16 @@ def sandbox() -> None:
 
 
 @main.command()
+@click.option("--host", default="127.0.0.1", help="Host to bind to.")
+@click.option("--port", "-p", default=8080, help="Port to serve on.")
+def web(host: str, port: int) -> None:
+    """Launch the web UI in your browser."""
+    from cachycli.web.app import run_web
+
+    run_web(host=host, port=port)
+
+
+@main.command()
 @click.confirmation_option(prompt="Are you sure you want to reset all progress?")
 def reset() -> None:
     """Reset all progress."""

@@ -13,6 +13,7 @@ depends=(
     'python-click'
     'python-yaml'
     'python-frontmatter'
+    'python-flask'
 )
 makedepends=(
     'python-build'

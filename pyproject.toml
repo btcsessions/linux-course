@@ -15,6 +15,7 @@ dependencies = [
     "click>=8.0",
     "pyyaml>=6.0",
     "python-frontmatter>=1.0",
+    "flask>=3.0",
 ]
 
 [project.scripts]
@@ -24,7 +25,7 @@ cachycli = "cachycli.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-cachycli = ["py.typed"]
+cachycli = ["py.typed", "web/templates/*", "web/static/css/*", "web/static/js/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CachyCLI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>CachyCLI</h1>
+            <p>Learn Linux, one lesson a day</p>
+        </div>
+        <div class="sidebar-nav">
+            <button id="nav-lessons" class="active" onclick="showLessons()">Lessons</button>
+            <button id="nav-progress" onclick="showProgress()">Progress</button>
+        </div>
+        <div class="sidebar-content" id="sidebar-list"></div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+        <div class="main-scroll" id="main-content">
+            <div class="dashboard fade-in" id="view-dashboard"></div>
+        </div>
+    </main>
+</div>
+
+<script src="/static/js/marked.min.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
