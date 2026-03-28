@@ -149,73 +149,88 @@ async function openLesson(id) {
     currentView = "lesson";
     renderSidebar();
 
-    const les = await api(`/api/lesson/${id}`);
+    const les = await api("/api/lesson/" + id);
     const main = document.getElementById("main-content");
 
-    const objHtml = les.objectives.map((o) => `<li>${o}</li>`).join("");
-    const cmdsHtml = les.commands.map((c) => `<span class="command-tag">${c}</span>`).join("");
-    const bodyHtml = marked.parse(les.body);
+    const objHtml = les.objectives.map(function(o) { return "<li>" + o + "</li>"; }).join("");
+    const cmdsHtml = les.commands.map(function(c) { return '<span class="command-tag">' + c + "</span>"; }).join("");
 
     const hasSandbox = les.sandbox_commands && les.sandbox_commands.length > 0;
 
-    main.innerHTML = `
-    <div class="lesson-view fade-in">
-        <div class="lesson-header">
-            <div class="lesson-breadcrumb">Week ${les.week} · Lesson ${les.id}</div>
-            <h2>${les.title}</h2>
-            <div class="lesson-meta">
-                <span>⏱ ${les.duration} min</span>
-                <span>${les.completed ? "✓ Completed" : "○ Not started"}</span>
-            </div>
-        </div>
+    // Build shell without markdown body to avoid backtick/template-literal breakage.
+    var shell = '<div class="lesson-view fade-in">' +
+        '<div class="lesson-header">' +
+            '<div class="lesson-breadcrumb">Week ' + les.week + ' &middot; Lesson ' + les.id + '</div>' +
+            '<h2>' + escapeHtml(les.title) + '</h2>' +
+            '<div class="lesson-meta">' +
+                '<span>&#9201; ' + les.duration + ' min</span>' +
+                '<span>' + (les.completed ? "&#10003; Completed" : "&#9675; Not started") + '</span>' +
+            '</div>' +
+        '</div>' +
+        '<div class="objectives">' +
+            '<h3>Learning Objectives</h3>' +
+            '<ul>' + objHtml + '</ul>' +
+        '</div>' +
+        '<div class="commands-bar">' + cmdsHtml + '</div>' +
+        '<div class="lesson-body" id="lesson-body"></div>';
 
-        <div class="objectives">
-            <h3>Learning Objectives</h3>
-            <ul>${objHtml}</ul>
-        </div>
+    if (hasSandbox) {
+        shell += '<div class="terminal-section">' +
+            '<h3>Practice Terminal</h3>' +
+            '<div class="terminal">' +
+                '<div class="terminal-titlebar">' +
+                    '<div class="terminal-dot red"></div>' +
+                    '<div class="terminal-dot yellow"></div>' +
+                    '<div class="terminal-dot green"></div>' +
+                    '<span>sandbox &mdash; CachyCLI</span>' +
+                '</div>' +
+                '<div class="terminal-body" id="terminal-body">' +
+                    '<div class="terminal-output" id="terminal-output"></div>' +
+                    '<div class="terminal-input-line">' +
+                        '<span class="terminal-prompt">$</span>' +
+                        '<input class="terminal-input" id="terminal-input" ' +
+                               'placeholder="Type a command..." ' +
+                               'autocomplete="off" spellcheck="false">' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+    }
 
-        <div class="commands-bar">${cmdsHtml}</div>
+    shell += '<div class="lesson-actions">';
+    if (!les.completed) {
+        shell += '<button class="btn btn-success" onclick="completeLesson(' + les.id + ')">&#10003; Mark Complete</button>';
+    }
+    shell += '<button class="btn btn-primary" onclick="openLessonQuiz(' + les.id + ')">Take Quiz &rarr;</button>';
+    if (les.id < 35) {
+        shell += '<button class="btn btn-secondary" onclick="openLesson(' + (les.id + 1) + ')">Next Lesson &rarr;</button>';
+    }
+    shell += '</div></div>';
 
-        <div class="lesson-body">${bodyHtml}</div>
+    main.innerHTML = shell;
 
-        ${hasSandbox ? `
-        <div class="terminal-section">
-            <h3>Practice Terminal</h3>
-            <div class="terminal">
-                <div class="terminal-titlebar">
-                    <div class="terminal-dot red"></div>
-                    <div class="terminal-dot yellow"></div>
-                    <div class="terminal-dot green"></div>
-                    <span>sandbox — CachyCLI</span>
-                </div>
-                <div class="terminal-body" id="terminal-body">
-                    <div class="terminal-output" id="terminal-output"></div>
-                    <div class="terminal-input-line">
-                        <span class="terminal-prompt">$</span>
-                        <input class="terminal-input" id="terminal-input"
-                               placeholder="Type a command..."
-                               autocomplete="off" spellcheck="false">
-                    </div>
-                </div>
-            </div>
-        </div>` : ""}
-
-        <div class="lesson-actions">
-            ${!les.completed ? `<button class="btn btn-success" onclick="completeLesson(${les.id})">✓ Mark Complete</button>` : ""}
-            <button class="btn btn-primary" onclick="openLessonQuiz(${les.id})">Take Quiz →</button>
-            ${les.id < 35 ? `<button class="btn btn-secondary" onclick="openLesson(${les.id + 1})">Next Lesson →</button>` : ""}
-        </div>
-    </div>`;
+    // Now inject the markdown body separately — safe from template literal issues.
+    document.getElementById("lesson-body").innerHTML = marked.parse(les.body || "");
 
     // Scroll to top
     main.scrollTop = 0;
 
     // Init sandbox if available
     if (hasSandbox) {
-        await initSandbox(les.sandbox_commands, les.sandbox_setup || "");
-        const input = document.getElementById("terminal-input");
-        input.addEventListener("keydown", handleTerminalKey);
-        input.focus();
+        try {
+            await initSandbox(les.sandbox_commands, les.sandbox_setup || "");
+            var input = document.getElementById("terminal-input");
+            if (input) {
+                input.addEventListener("keydown", handleTerminalKey);
+                input.focus();
+            }
+        } catch (err) {
+            console.error("Sandbox init failed:", err);
+            var output = document.getElementById("terminal-output");
+            if (output) {
+                output.innerHTML = '<span class="stderr">Sandbox failed to start: ' + escapeHtml(String(err)) + '</span>\n';
+            }
+        }
     }
 }
 
@@ -232,40 +247,51 @@ async function initSandbox(allowedCommands, setupScript) {
     if (sandboxActive) {
         await post("/api/sandbox/stop");
     }
-    const res = await post("/api/sandbox/start", {
+    var res = await post("/api/sandbox/start", {
         allowed_commands: allowedCommands,
         setup_script: setupScript,
     });
     sandboxActive = true;
     terminalHistory = [];
-    const output = document.getElementById("terminal-output");
-    output.innerHTML = `<span class="stdout" style="color:#86868b">Sandbox started. Allowed: ${allowedCommands.join(", ")}\nType commands to practice.\n\n</span>`;
+    var output = document.getElementById("terminal-output");
+    if (output) {
+        output.innerHTML = '<span class="stdout" style="color:#86868b">Sandbox started. Allowed: ' +
+            escapeHtml(allowedCommands.join(", ")) + '\nType commands to practice.\n\n</span>';
+    }
 }
 
 async function handleTerminalKey(e) {
     if (e.key !== "Enter") return;
-    const input = document.getElementById("terminal-input");
-    const cmd = input.value.trim();
+    var input = document.getElementById("terminal-input");
+    var cmd = input.value.trim();
     if (!cmd) return;
 
     input.value = "";
     terminalHistory.push(cmd);
 
-    const output = document.getElementById("terminal-output");
-    output.innerHTML += `<span class="cmd">$ ${escapeHtml(cmd)}</span>\n`;
+    var output = document.getElementById("terminal-output");
+    output.innerHTML += '<span class="cmd">$ ' + escapeHtml(cmd) + '</span>\n';
 
     if (cmd === "clear") {
         output.innerHTML = "";
         return;
     }
 
-    const res = await post("/api/sandbox/run", { command: cmd });
-    if (res.stdout) output.innerHTML += `<span class="stdout">${escapeHtml(res.stdout)}</span>`;
-    if (res.stderr) output.innerHTML += `<span class="stderr">${escapeHtml(res.stderr)}</span>\n`;
-    if (!res.stdout && !res.stderr) output.innerHTML += "\n";
+    try {
+        var res = await post("/api/sandbox/run", { command: cmd });
+        if (res.error) {
+            output.innerHTML += '<span class="stderr">' + escapeHtml(res.error) + '</span>\n';
+        } else {
+            if (res.stdout) output.innerHTML += '<span class="stdout">' + escapeHtml(res.stdout) + '</span>';
+            if (res.stderr) output.innerHTML += '<span class="stderr">' + escapeHtml(res.stderr) + '</span>\n';
+            if (!res.stdout && !res.stderr) output.innerHTML += "\n";
+        }
+    } catch (err) {
+        output.innerHTML += '<span class="stderr">Error: ' + escapeHtml(String(err)) + '</span>\n';
+    }
 
     // Scroll terminal to bottom
-    const body = document.getElementById("terminal-body");
+    var body = document.getElementById("terminal-body");
     body.scrollTop = body.scrollHeight;
 }
 
