@@ -17,6 +17,7 @@ from cachycli.core.scheduler import (
     next_lesson_id,
     week_progress,
 )
+from cachycli.utils.config import get_api_key, save_api_key
 from cachycli.utils.sandbox import Sandbox
 
 _WEEK_NAMES = [
@@ -313,6 +314,100 @@ def create_app() -> Flask:
             except Exception:
                 pass
         return jsonify({"ok": True})
+
+    # -- API: Settings ---------------------------------------------------------
+
+    @app.route("/api/settings", methods=["GET"])
+    def api_get_settings():
+        key = get_api_key()
+        # Only reveal whether a key is set, never the full key.
+        return jsonify({"has_api_key": bool(key), "api_key_preview": key[:8] + "..." if len(key) > 8 else ""})
+
+    @app.route("/api/settings", methods=["POST"])
+    def api_save_settings():
+        data = request.get_json() or {}
+        key = data.get("api_key", "").strip()
+        if not key:
+            return jsonify({"error": "API key is required."}), 400
+        save_api_key(key)
+        return jsonify({"ok": True})
+
+    # -- API: Chat (Claude AI assistant) ------------------------------------
+
+    @app.route("/api/chat", methods=["POST"])
+    def api_chat():
+        data = request.get_json() or {}
+        user_message = data.get("message", "").strip()
+        lesson_id = data.get("lesson_id")
+        chat_history = data.get("history", [])
+
+        if not user_message:
+            return jsonify({"error": "Message is required."}), 400
+
+        key = get_api_key()
+        if not key:
+            return jsonify({"error": "no_api_key"}), 400
+
+        # Build context from current lesson.
+        lesson_context = ""
+        if lesson_id:
+            try:
+                les = load_lesson(lesson_id)
+                lesson_context = (
+                    f"The student is currently on Lesson {les.id} (Week {les.week}): "
+                    f'"{les.title}".\n'
+                    f"Learning objectives: {', '.join(les.objectives)}\n"
+                    f"Key commands: {', '.join(les.commands)}\n\n"
+                    f"--- Lesson Content ---\n{les.body}\n--- End Lesson Content ---"
+                )
+            except FileNotFoundError:
+                pass
+
+        system_prompt = (
+            "You are CachyCLI Tutor, a friendly and knowledgeable Linux teaching assistant "
+            "embedded in the CachyCLI learning app. The student is learning Linux command-line "
+            "skills through a structured 7-week, 35-lesson curriculum on CachyOS (Arch-based).\n\n"
+            "Guidelines:\n"
+            "- Answer questions about the current lesson, Linux commands, and related concepts.\n"
+            "- Give practical examples using real commands they can try in the practice terminal.\n"
+            "- Keep answers concise but thorough — aim for 2-4 short paragraphs max.\n"
+            "- Use markdown formatting (backticks for commands, code blocks for examples).\n"
+            "- If the student asks about topics from future lessons, give a brief answer "
+            "but mention which lesson covers it in depth.\n"
+            "- Be encouraging and patient — they are learning.\n"
+            "- Reference CachyOS/Arch specifics when relevant (pacman, paru, systemd, etc.).\n"
+        )
+
+        if lesson_context:
+            system_prompt += f"\n{lesson_context}"
+
+        try:
+            import anthropic
+
+            client = anthropic.Anthropic(api_key=key)
+
+            # Build messages from chat history + new message.
+            messages = []
+            for msg in chat_history[-20:]:  # Keep last 20 messages for context.
+                messages.append({"role": msg["role"], "content": msg["content"]})
+            messages.append({"role": "user", "content": user_message})
+
+            response = client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=1024,
+                system=system_prompt,
+                messages=messages,
+            )
+
+            reply = response.content[0].text
+            return jsonify({"reply": reply})
+
+        except anthropic.AuthenticationError:
+            return jsonify({"error": "Invalid API key. Please update it in Settings."}), 401
+        except anthropic.RateLimitError:
+            return jsonify({"error": "Rate limited. Please wait a moment and try again."}), 429
+        except Exception as e:
+            return jsonify({"error": f"Chat error: {str(e)}"}), 500
 
     return app
 

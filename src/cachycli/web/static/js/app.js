@@ -17,6 +17,9 @@ let currentView = "dashboard";
 let currentLessonId = null;
 let terminalHistory = [];
 let sandboxActive = false;
+let chatHistory = [];
+let chatOpen = false;
+let hasApiKey = false;
 
 /* ── Init ───────────────────────────────────────────────────── */
 
@@ -24,6 +27,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     allLessons = await api("/api/lessons");
     renderSidebar();
     showProgress();
+    // Check if API key is configured.
+    var settings = await api("/api/settings");
+    hasApiKey = settings.has_api_key;
+    initChatPanel();
 });
 
 /* ── API helper ─────────────────────────────────────────────── */
@@ -483,4 +490,263 @@ async function submitQuiz() {
     </div>`;
 
     main.scrollTop = 0;
+}
+
+/* ── Chat Panel ────────────────────────────────────────────── */
+
+function initChatPanel() {
+    // Create the floating action button + chat panel.
+    var fab = document.createElement("button");
+    fab.id = "chat-fab";
+    fab.className = "chat-fab";
+    fab.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+    fab.onclick = toggleChat;
+    document.body.appendChild(fab);
+
+    var panel = document.createElement("div");
+    panel.id = "chat-panel";
+    panel.className = "chat-panel";
+    panel.innerHTML =
+        '<div class="chat-header">' +
+            '<div class="chat-header-left">' +
+                '<span class="chat-title">Ask Claude</span>' +
+                '<span class="chat-subtitle">AI Tutor</span>' +
+            '</div>' +
+            '<div class="chat-header-right">' +
+                '<button class="chat-settings-btn" onclick="openSettings()" title="Settings">' +
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' +
+                '</button>' +
+                '<button class="chat-close-btn" onclick="toggleChat()">&times;</button>' +
+            '</div>' +
+        '</div>' +
+        '<div class="chat-messages" id="chat-messages">' +
+            '<div class="chat-welcome">' +
+                '<div class="chat-welcome-icon">&#9670;</div>' +
+                '<p><strong>Hi! I\'m your CachyCLI tutor.</strong></p>' +
+                '<p>Ask me anything about the lesson you\'re on, Linux commands, or concepts you want to understand better.</p>' +
+            '</div>' +
+        '</div>' +
+        '<div class="chat-input-area">' +
+            '<input class="chat-input" id="chat-input" placeholder="Ask about this lesson..." ' +
+                   'autocomplete="off" spellcheck="false">' +
+            '<button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()">' +
+                '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' +
+            '</button>' +
+        '</div>';
+    document.body.appendChild(panel);
+
+    // Handle Enter key in chat input.
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Enter" && document.activeElement && document.activeElement.id === "chat-input") {
+            e.preventDefault();
+            sendChatMessage();
+        }
+    });
+
+    // Create settings modal.
+    var modal = document.createElement("div");
+    modal.id = "settings-modal";
+    modal.className = "settings-modal";
+    modal.innerHTML =
+        '<div class="settings-overlay" onclick="closeSettings()"></div>' +
+        '<div class="settings-dialog">' +
+            '<div class="settings-header">' +
+                '<h3>Settings</h3>' +
+                '<button class="settings-close" onclick="closeSettings()">&times;</button>' +
+            '</div>' +
+            '<div class="settings-body">' +
+                '<div class="settings-section">' +
+                    '<label class="settings-label">Anthropic API Key</label>' +
+                    '<p class="settings-hint">Required for the AI tutor. Get your key from <strong>console.anthropic.com</strong></p>' +
+                    '<div class="settings-key-row">' +
+                        '<input type="password" class="settings-input" id="settings-api-key" ' +
+                               'placeholder="sk-ant-..." autocomplete="off">' +
+                        '<button class="btn btn-primary" onclick="saveSettings()">Save</button>' +
+                    '</div>' +
+                    '<div id="settings-status"></div>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+    document.body.appendChild(modal);
+}
+
+function toggleChat() {
+    chatOpen = !chatOpen;
+    var panel = document.getElementById("chat-panel");
+    var fab = document.getElementById("chat-fab");
+    if (chatOpen) {
+        panel.classList.add("open");
+        fab.classList.add("hidden");
+        if (!hasApiKey) {
+            showApiKeyPromptInChat();
+        } else {
+            var input = document.getElementById("chat-input");
+            if (input) input.focus();
+        }
+    } else {
+        panel.classList.remove("open");
+        fab.classList.remove("hidden");
+    }
+}
+
+function showApiKeyPromptInChat() {
+    var msgs = document.getElementById("chat-messages");
+    msgs.innerHTML =
+        '<div class="chat-welcome">' +
+            '<div class="chat-welcome-icon">&#9881;</div>' +
+            '<p><strong>API Key Required</strong></p>' +
+            '<p>To chat with your AI tutor, you need an Anthropic API key.</p>' +
+            '<p>Get one at <strong>console.anthropic.com</strong>, then enter it below or in Settings.</p>' +
+            '<div style="margin-top:12px">' +
+                '<input type="password" class="settings-input" id="chat-api-key-input" ' +
+                       'placeholder="sk-ant-..." style="margin-bottom:8px" autocomplete="off">' +
+                '<button class="btn btn-primary" style="width:100%" onclick="saveKeyFromChat()">Save API Key</button>' +
+            '</div>' +
+            '<div id="chat-key-status"></div>' +
+        '</div>';
+}
+
+async function saveKeyFromChat() {
+    var input = document.getElementById("chat-api-key-input");
+    var status = document.getElementById("chat-key-status");
+    var key = input.value.trim();
+    if (!key) {
+        status.innerHTML = '<p style="color:var(--red);font-size:13px;margin-top:8px">Please enter an API key.</p>';
+        return;
+    }
+    var res = await post("/api/settings", { api_key: key });
+    if (res.ok) {
+        hasApiKey = true;
+        // Reset chat to welcome state.
+        var msgs = document.getElementById("chat-messages");
+        msgs.innerHTML =
+            '<div class="chat-welcome">' +
+                '<div class="chat-welcome-icon">&#9670;</div>' +
+                '<p><strong>Hi! I\'m your CachyCLI tutor.</strong></p>' +
+                '<p>Ask me anything about the lesson you\'re on, Linux commands, or concepts you want to understand better.</p>' +
+            '</div>';
+        chatHistory = [];
+        document.getElementById("chat-input").focus();
+    } else {
+        status.innerHTML = '<p style="color:var(--red);font-size:13px;margin-top:8px">' + escapeHtml(res.error || "Failed to save.") + '</p>';
+    }
+}
+
+async function sendChatMessage() {
+    var input = document.getElementById("chat-input");
+    var message = input.value.trim();
+    if (!message) return;
+
+    if (!hasApiKey) {
+        showApiKeyPromptInChat();
+        return;
+    }
+
+    input.value = "";
+    input.disabled = true;
+    document.getElementById("chat-send-btn").disabled = true;
+
+    // Clear welcome message if present.
+    var msgs = document.getElementById("chat-messages");
+    var welcome = msgs.querySelector(".chat-welcome");
+    if (welcome) welcome.remove();
+
+    // Add user message.
+    appendChatMessage("user", message);
+    chatHistory.push({ role: "user", content: message });
+
+    // Show typing indicator.
+    var typingEl = document.createElement("div");
+    typingEl.className = "chat-message assistant";
+    typingEl.id = "chat-typing";
+    typingEl.innerHTML = '<div class="chat-bubble assistant"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+    msgs.appendChild(typingEl);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    try {
+        var res = await post("/api/chat", {
+            message: message,
+            lesson_id: currentLessonId,
+            history: chatHistory.slice(0, -1), // Exclude current message (sent separately).
+        });
+
+        // Remove typing indicator.
+        var typing = document.getElementById("chat-typing");
+        if (typing) typing.remove();
+
+        if (res.error) {
+            if (res.error === "no_api_key") {
+                hasApiKey = false;
+                showApiKeyPromptInChat();
+            } else {
+                appendChatMessage("assistant", "Sorry, I ran into an error: " + res.error);
+            }
+        } else {
+            appendChatMessage("assistant", res.reply);
+            chatHistory.push({ role: "assistant", content: res.reply });
+        }
+    } catch (err) {
+        var typing = document.getElementById("chat-typing");
+        if (typing) typing.remove();
+        appendChatMessage("assistant", "Connection error. Please try again.");
+    }
+
+    input.disabled = false;
+    document.getElementById("chat-send-btn").disabled = false;
+    input.focus();
+}
+
+function appendChatMessage(role, content) {
+    var msgs = document.getElementById("chat-messages");
+    var div = document.createElement("div");
+    div.className = "chat-message " + role;
+
+    var bubble = document.createElement("div");
+    bubble.className = "chat-bubble " + role;
+
+    if (role === "assistant") {
+        bubble.innerHTML = marked.parse(content);
+    } else {
+        bubble.textContent = content;
+    }
+
+    div.appendChild(bubble);
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+/* ── Settings Modal ────────────────────────────────────────── */
+
+function openSettings() {
+    document.getElementById("settings-modal").classList.add("open");
+    document.getElementById("settings-status").innerHTML = "";
+    // If we have a key, show a hint.
+    if (hasApiKey) {
+        document.getElementById("settings-status").innerHTML =
+            '<p style="color:var(--green);font-size:13px;margin-top:8px">&#10003; API key is configured.</p>';
+    }
+}
+
+function closeSettings() {
+    document.getElementById("settings-modal").classList.remove("open");
+}
+
+async function saveSettings() {
+    var input = document.getElementById("settings-api-key");
+    var status = document.getElementById("settings-status");
+    var key = input.value.trim();
+    if (!key) {
+        status.innerHTML = '<p style="color:var(--red);font-size:13px;margin-top:8px">Please enter an API key.</p>';
+        return;
+    }
+    status.innerHTML = '<p style="color:var(--text-muted);font-size:13px;margin-top:8px">Saving...</p>';
+
+    var res = await post("/api/settings", { api_key: key });
+    if (res.ok) {
+        hasApiKey = true;
+        input.value = "";
+        status.innerHTML = '<p style="color:var(--green);font-size:13px;margin-top:8px">&#10003; API key saved successfully!</p>';
+    } else {
+        status.innerHTML = '<p style="color:var(--red);font-size:13px;margin-top:8px">' + escapeHtml(res.error || "Failed to save.") + '</p>';
+    }
 }

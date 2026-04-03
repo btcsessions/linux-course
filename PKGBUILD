@@ -14,6 +14,7 @@ depends=(
     'python-yaml'
     'python-frontmatter'
     'python-flask'
+    'python-anthropic'
 )
 makedepends=(
     'python-build'
