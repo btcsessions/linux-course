@@ -31,6 +31,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     var settings = await api("/api/settings");
     hasApiKey = settings.has_api_key;
     initChatPanel();
+    // Check for updates in background.
+    checkForUpdateBadge();
 });
 
 /* ── API helper ─────────────────────────────────────────────── */
@@ -513,9 +515,6 @@ function initChatPanel() {
                 '<span class="chat-subtitle">AI Tutor</span>' +
             '</div>' +
             '<div class="chat-header-right">' +
-                '<button class="chat-settings-btn" onclick="openSettings()" title="Settings">' +
-                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' +
-                '</button>' +
                 '<button class="chat-close-btn" onclick="toggleChat()">&times;</button>' +
             '</div>' +
         '</div>' +
@@ -735,6 +734,8 @@ function openSettings() {
         document.getElementById("settings-status").innerHTML =
             '<p style="color:var(--green);font-size:13px;margin-top:8px">&#10003; API key is configured.</p>';
     }
+    // Auto-check for updates when settings is opened.
+    checkForUpdate();
 }
 
 function closeSettings() {
@@ -763,6 +764,18 @@ async function saveSettings() {
 
 /* ── Update Manager ────────────────────────────────────────── */
 
+async function checkForUpdateBadge() {
+    try {
+        var res = await api("/api/update/check");
+        var badge = document.getElementById("sidebar-update-badge");
+        if (badge && !res.up_to_date && res.commits_behind > 0) {
+            badge.style.display = "block";
+        }
+    } catch (e) {
+        // Silent fail — badge just won't show.
+    }
+}
+
 async function checkForUpdate() {
     var info = document.getElementById("update-info");
     var status = document.getElementById("update-status");
@@ -784,6 +797,8 @@ async function checkForUpdate() {
             info.innerHTML = 'v' + escapeHtml(res.current_version) + ' <span style="color:var(--green)">&#10003; Up to date</span>';
             btn.textContent = "Check";
             btn.disabled = false;
+            var badge = document.getElementById("sidebar-update-badge");
+            if (badge) badge.style.display = "none";
         } else {
             info.innerHTML = 'v' + escapeHtml(res.current_version) + ' &mdash; <strong>' + res.commits_behind + ' update' + (res.commits_behind === 1 ? '' : 's') + ' available</strong>';
             btn.textContent = "Update Now";
