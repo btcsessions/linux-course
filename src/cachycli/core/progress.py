@@ -51,8 +51,9 @@ class QuizResult(NamedTuple):
 class ProgressDB:
     def __init__(self, db_path: Path | None = None) -> None:
         self._path = db_path or _default_db_path()
-        self._conn = sqlite3.connect(str(self._path))
+        self._conn = sqlite3.connect(str(self._path), timeout=10)
         self._conn.execute("PRAGMA journal_mode=WAL")
+        self._conn.execute("PRAGMA busy_timeout=5000")
         self._init_schema()
 
     def _init_schema(self) -> None:
