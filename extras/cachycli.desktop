@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=CachyCLI
+Comment=Linux Command Line Learning App
+Exec=sh -c 'xdg-open http://localhost:8080'
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Education;System;
+Keywords=linux;terminal;learning;cli;
