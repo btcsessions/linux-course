@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
@@ -408,6 +410,89 @@ def create_app() -> Flask:
             return jsonify({"error": "Rate limited. Please wait a moment and try again."}), 429
         except Exception as e:
             return jsonify({"error": f"Chat error: {str(e)}"}), 500
+
+    # -- API: Updates ----------------------------------------------------------
+
+    def _repo_root() -> Path:
+        """Walk up from this file to find the git repo root."""
+        d = Path(__file__).resolve().parent
+        while d != d.parent:
+            if (d / ".git").exists():
+                return d
+            d = d.parent
+        return Path(__file__).resolve().parent.parent.parent.parent
+
+    @app.route("/api/update/check", methods=["GET"])
+    def api_update_check():
+        repo = _repo_root()
+        try:
+            # Fetch latest from remote.
+            subprocess.run(
+                ["git", "fetch", "origin"],
+                cwd=str(repo), capture_output=True, timeout=15,
+            )
+            # Compare local HEAD to remote.
+            local = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=str(repo), capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            remote = subprocess.run(
+                ["git", "rev-parse", "@{u}"],
+                cwd=str(repo), capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            # Get current version.
+            from cachycli import __version__
+            behind = subprocess.run(
+                ["git", "rev-list", "--count", "HEAD..@{u}"],
+                cwd=str(repo), capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            return jsonify({
+                "current_version": __version__,
+                "up_to_date": local == remote,
+                "commits_behind": int(behind) if behind.isdigit() else 0,
+                "local_sha": local[:7],
+                "remote_sha": remote[:7],
+            })
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/api/update/apply", methods=["POST"])
+    def api_update_apply():
+        repo = _repo_root()
+        steps = []
+        try:
+            # Step 1: git pull
+            r = subprocess.run(
+                ["git", "pull", "origin"],
+                cwd=str(repo), capture_output=True, text=True, timeout=30,
+            )
+            steps.append({"step": "git pull", "ok": r.returncode == 0, "output": r.stdout + r.stderr})
+            if r.returncode != 0:
+                return jsonify({"ok": False, "steps": steps, "error": "git pull failed"})
+
+            # Step 2: pip install
+            r = subprocess.run(
+                [sys.executable, "-m", "pip", "install", "-e", ".", "--quiet"],
+                cwd=str(repo), capture_output=True, text=True, timeout=120,
+            )
+            steps.append({"step": "pip install", "ok": r.returncode == 0, "output": r.stdout + r.stderr})
+            if r.returncode != 0:
+                return jsonify({"ok": False, "steps": steps, "error": "pip install failed"})
+
+            # Step 3: restart service (if running under systemd)
+            r = subprocess.run(
+                ["systemctl", "--user", "restart", "cachycli.service"],
+                capture_output=True, text=True, timeout=10,
+            )
+            # Service restart is best-effort — may not be running as a service.
+            steps.append({"step": "restart service", "ok": r.returncode == 0,
+                          "output": r.stdout + r.stderr if r.returncode != 0 else "Restarting..."})
+
+            return jsonify({"ok": True, "steps": steps, "message": "Update complete! The page will reload."})
+
+        except Exception as e:
+            steps.append({"step": "error", "ok": False, "output": str(e)})
+            return jsonify({"ok": False, "steps": steps, "error": str(e)})
 
     return app
 

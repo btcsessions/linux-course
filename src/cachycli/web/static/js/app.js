@@ -565,6 +565,16 @@ function initChatPanel() {
                     '</div>' +
                     '<div id="settings-status"></div>' +
                 '</div>' +
+                '<div class="settings-divider"></div>' +
+                '<div class="settings-section">' +
+                    '<label class="settings-label">App Updates</label>' +
+                    '<p class="settings-hint">Check for and install the latest version of CachyCLI.</p>' +
+                    '<div class="settings-update-row">' +
+                        '<div id="update-info" class="update-info">Click to check for updates.</div>' +
+                        '<button class="btn btn-secondary" id="update-check-btn" onclick="checkForUpdate()">Check</button>' +
+                    '</div>' +
+                    '<div id="update-status"></div>' +
+                '</div>' +
             '</div>' +
         '</div>';
     document.body.appendChild(modal);
@@ -748,5 +758,80 @@ async function saveSettings() {
         status.innerHTML = '<p style="color:var(--green);font-size:13px;margin-top:8px">&#10003; API key saved successfully!</p>';
     } else {
         status.innerHTML = '<p style="color:var(--red);font-size:13px;margin-top:8px">' + escapeHtml(res.error || "Failed to save.") + '</p>';
+    }
+}
+
+/* ── Update Manager ────────────────────────────────────────── */
+
+async function checkForUpdate() {
+    var info = document.getElementById("update-info");
+    var status = document.getElementById("update-status");
+    var btn = document.getElementById("update-check-btn");
+    info.innerHTML = "Checking...";
+    status.innerHTML = "";
+    btn.disabled = true;
+
+    try {
+        var res = await api("/api/update/check");
+        if (res.error) {
+            info.innerHTML = "Error checking for updates.";
+            status.innerHTML = '<p style="color:var(--red);font-size:13px;margin-top:8px">' + escapeHtml(res.error) + '</p>';
+            btn.disabled = false;
+            return;
+        }
+
+        if (res.up_to_date) {
+            info.innerHTML = 'v' + escapeHtml(res.current_version) + ' <span style="color:var(--green)">&#10003; Up to date</span>';
+            btn.textContent = "Check";
+            btn.disabled = false;
+        } else {
+            info.innerHTML = 'v' + escapeHtml(res.current_version) + ' &mdash; <strong>' + res.commits_behind + ' update' + (res.commits_behind === 1 ? '' : 's') + ' available</strong>';
+            btn.textContent = "Update Now";
+            btn.disabled = false;
+            btn.onclick = applyUpdate;
+            btn.className = "btn btn-primary";
+        }
+    } catch (err) {
+        info.innerHTML = "Could not reach server.";
+        btn.disabled = false;
+    }
+}
+
+async function applyUpdate() {
+    var info = document.getElementById("update-info");
+    var status = document.getElementById("update-status");
+    var btn = document.getElementById("update-check-btn");
+    btn.disabled = true;
+    btn.textContent = "Updating...";
+    info.innerHTML = "Downloading and installing update...";
+    status.innerHTML = "";
+
+    try {
+        var res = await post("/api/update/apply");
+
+        var stepsHtml = "";
+        if (res.steps) {
+            for (var i = 0; i < res.steps.length; i++) {
+                var s = res.steps[i];
+                var icon = s.ok ? '<span style="color:var(--green)">&#10003;</span>' : '<span style="color:var(--red)">&#10007;</span>';
+                stepsHtml += '<div style="font-size:13px;margin-top:4px">' + icon + ' ' + escapeHtml(s.step) + '</div>';
+            }
+        }
+
+        if (res.ok) {
+            info.innerHTML = '<span style="color:var(--green)"><strong>Update successful!</strong></span>';
+            status.innerHTML = stepsHtml + '<p style="font-size:13px;margin-top:12px;color:var(--text-muted)">Reloading in 3 seconds...</p>';
+            setTimeout(function() { window.location.reload(); }, 3000);
+        } else {
+            info.innerHTML = '<span style="color:var(--red)">Update failed</span>';
+            status.innerHTML = stepsHtml + '<p style="color:var(--red);font-size:13px;margin-top:8px">' + escapeHtml(res.error || "Unknown error") + '</p>';
+            btn.disabled = false;
+            btn.textContent = "Retry";
+            btn.onclick = applyUpdate;
+        }
+    } catch (err) {
+        info.innerHTML = "Connection lost during update.";
+        status.innerHTML = '<p style="font-size:13px;margin-top:8px;color:var(--text-muted)">The service may be restarting. Try reloading the page in a few seconds.</p>';
+        setTimeout(function() { window.location.reload(); }, 5000);
     }
 }

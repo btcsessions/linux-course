@@ -1222,6 +1222,24 @@ body {
 
 .settings-input:focus { border-color: var(--accent); }
 
+.settings-divider {
+    height: 1px;
+    background: var(--border-light);
+    margin: 20px 0;
+}
+
+.settings-update-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.update-info {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
