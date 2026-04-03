@@ -9,30 +9,14 @@ objectives:
   - "Keep processes running after logout with nohup and disown"
 commands: ["&", jobs, fg, bg, "Ctrl+Z", nohup, disown]
 prerequisites: []
-sandbox_commands: [sleep, jobs, fg, bg, nohup, disown, ps, kill, cat, echo]
+sandbox_commands: [sleep, jobs, fg, bg, nohup, disown, ps, kill, cat, echo, ls, cd, pwd, grep, wc, touch, mkdir, whoami, date, clear, bash]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/demo
-  # Create a simple long-running script
-  cat > ~/demo/counter.sh <<'SCRIPT'
-  #!/bin/bash
-  for i in $(seq 1 60); do
-    echo "Tick $i at $(date +%H:%M:%S)" >> /tmp/counter.log
-    sleep 1
-  done
-  SCRIPT
-  chmod +x ~/demo/counter.sh
-  # Create a simulated download script
-  cat > ~/demo/download_sim.sh <<'SCRIPT'
-  #!/bin/bash
-  echo "Starting download simulation..."
-  for pct in $(seq 10 10 100); do
-    sleep 1
-    echo "Progress: ${pct}%"
-  done
-  echo "Download complete."
-  SCRIPT
-  chmod +x ~/demo/download_sim.sh
+  echo '#!/bin/bash' > counter.sh
+  echo 'for i in $(seq 1 10); do echo "Count: $i"; sleep 1; done' >> counter.sh
+  chmod +x counter.sh
+  echo "Try: sleep 30 &" > README.txt
+  echo "Then: jobs" >> README.txt
+  echo "Then: fg %1" >> README.txt
 ---
 # Job Control and Background Processes
 

@@ -9,12 +9,16 @@ objectives:
   - "Understand the difference between copying and moving"
 commands: [cp, cp -r, cp -i, mv, mv -i]
 prerequisites: []
-sandbox_commands: [cp, mv, ls, touch, mkdir]
+sandbox_commands: [cp, mv, ls, cd, pwd, cat, echo, touch, mkdir, whoami, hostname, date, clear]
 sandbox_setup: |
-  mkdir -p ~/practice/subdir
-  echo "Hello from file1" > ~/practice/file1.txt
-  echo "Hello from file2" > ~/practice/file2.txt
-  cd ~/practice
+  mkdir -p documents photos backup
+  echo "Important report" > documents/report.txt
+  echo "Meeting notes from Monday" > documents/notes.txt
+  echo "Project plan" > documents/plan.txt
+  echo "Beach sunset" > photos/beach.jpg
+  echo "Mountain view" > photos/mountain.jpg
+  echo "City skyline" > photos/city.jpg
+  echo "Practice copying and moving files!" > README.txt
 ---
 
 # Copying and Moving

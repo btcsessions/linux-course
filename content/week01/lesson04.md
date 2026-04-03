@@ -9,25 +9,23 @@ objectives:
   - "Show hidden files with ls -a and combine options effectively"
 commands: [ls, ls -l, ls -la, ls -lh, ls -R, ls -t]
 prerequisites: [3]
-sandbox_commands: [ls, pwd, cd]
+sandbox_commands: [ls, cd, pwd, whoami, hostname, date, cal, clear, echo, cat]
 sandbox_setup: |
-  mkdir -p /tmp/sandbox/myproject/src
-  mkdir -p /tmp/sandbox/myproject/docs
-  mkdir -p /tmp/sandbox/myproject/tests
-  mkdir -p /tmp/sandbox/myproject/.git
-  echo "# My Project" > /tmp/sandbox/myproject/README.md
-  echo "print('hello')" > /tmp/sandbox/myproject/src/main.py
-  echo "import main" > /tmp/sandbox/myproject/src/utils.py
-  echo "API docs" > /tmp/sandbox/myproject/docs/api.md
-  echo "test_main" > /tmp/sandbox/myproject/tests/test_main.py
-  echo "*.pyc" > /tmp/sandbox/myproject/.gitignore
-  echo "config" > /tmp/sandbox/myproject/.env
-  touch -t 202603250800 /tmp/sandbox/myproject/README.md
-  touch -t 202603260900 /tmp/sandbox/myproject/src/main.py
-  touch -t 202603261400 /tmp/sandbox/myproject/src/utils.py
-  touch -t 202603270700 /tmp/sandbox/myproject/docs/api.md
-  chmod 755 /tmp/sandbox/myproject/src/main.py
-  ln -sf /tmp/sandbox/myproject/README.md /tmp/sandbox/myproject/docs/readme_link.md
+  mkdir -p myproject/src myproject/docs myproject/tests
+  echo "fn main() {}" > myproject/src/main.rs
+  echo "# My Project" > myproject/docs/README.md
+  echo "test case 1" > myproject/tests/test1.py
+  echo "Short file" > small.txt
+  dd if=/dev/zero of=large_file.bin bs=1024 count=100 2>/dev/null
+  echo "Medium content for a medium file with some text" > medium.txt
+  touch .hidden_config
+  echo "secret=value" > .env
+  echo ".env" > .gitignore
+  touch -t 202301010000 old_file.txt
+  touch -t 202312310000 newer_file.txt
+  touch recent_file.txt
+  mkdir .cache
+  echo "cached data" > .cache/data.tmp
 ---
 
 # Listing Files with ls

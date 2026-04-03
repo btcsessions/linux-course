@@ -9,61 +9,27 @@ objectives:
   - "Build reusable text-processing pipelines for common tasks"
 commands: ["grep | sed | awk | sort | uniq"]
 prerequisites: []
-sandbox_commands: [grep, sed, awk, sort, uniq, cat, wc]
+sandbox_commands: [grep, sed, awk, sort, uniq, cat, wc, head, tail, cut, ls, cd, pwd, echo, touch, mkdir, cp, less, find, whoami, date, clear, file, tr, tee]
 sandbox_setup: |
-  mkdir -p /tmp/pipeline-practice
-  cat > /tmp/pipeline-practice/access.log <<'LOGEOF'
-  192.168.1.10 - - [15/Mar/2026:08:01:12 +0000] "GET /index.html HTTP/1.1" 200 5120
-  192.168.1.25 - - [15/Mar/2026:08:01:15 +0000] "GET /style.css HTTP/1.1" 200 1024
-  10.0.0.5 - - [15/Mar/2026:08:02:00 +0000] "POST /api/login HTTP/1.1" 200 256
-  192.168.1.10 - - [15/Mar/2026:08:02:22 +0000] "GET /dashboard HTTP/1.1" 200 8192
-  192.168.1.50 - - [15/Mar/2026:08:03:01 +0000] "GET /index.html HTTP/1.1" 200 5120
-  10.0.0.5 - - [15/Mar/2026:08:03:45 +0000] "GET /api/users HTTP/1.1" 403 128
-  192.168.1.10 - - [15/Mar/2026:08:04:10 +0000] "POST /api/data HTTP/1.1" 500 0
-  192.168.1.25 - - [15/Mar/2026:08:05:00 +0000] "GET /profile HTTP/1.1" 200 4096
-  10.0.0.5 - - [15/Mar/2026:08:05:30 +0000] "GET /index.html HTTP/1.1" 200 5120
-  192.168.1.50 - - [15/Mar/2026:08:06:00 +0000] "GET /about.html HTTP/1.1" 200 3072
-  192.168.1.10 - - [15/Mar/2026:08:06:15 +0000] "GET /style.css HTTP/1.1" 200 1024
-  192.168.1.25 - - [15/Mar/2026:08:07:00 +0000] "GET /dashboard HTTP/1.1" 200 8192
-  10.0.0.5 - - [15/Mar/2026:08:07:30 +0000] "POST /api/login HTTP/1.1" 401 64
-  192.168.1.10 - - [15/Mar/2026:08:08:00 +0000] "GET /index.html HTTP/1.1" 200 5120
-  192.168.1.50 - - [15/Mar/2026:08:08:30 +0000] "GET /contact.html HTTP/1.1" 404 0
-  10.0.0.5 - - [15/Mar/2026:08:09:00 +0000] "GET /api/users HTTP/1.1" 200 2048
-  192.168.1.25 - - [15/Mar/2026:08:09:30 +0000] "POST /api/data HTTP/1.1" 200 512
-  192.168.1.10 - - [15/Mar/2026:08:10:00 +0000] "GET /dashboard HTTP/1.1" 200 8192
-  192.168.1.50 - - [15/Mar/2026:08:10:30 +0000] "GET /index.html HTTP/1.1" 200 5120
-  10.0.0.5 - - [15/Mar/2026:08:11:00 +0000] "GET /style.css HTTP/1.1" 200 1024
-  LOGEOF
-  cat > /tmp/pipeline-practice/syslog.txt <<'SYSEOF'
-  Mar 15 08:01:12 cachyos systemd[1]: Started Network Manager.
-  Mar 15 08:01:13 cachyos NetworkManager[512]: <info> device (enp3s0): state change: disconnected -> prepare
-  Mar 15 08:01:15 cachyos NetworkManager[512]: <info> device (enp3s0): state change: prepare -> config
-  Mar 15 08:01:18 cachyos NetworkManager[512]: <info> device (enp3s0): state change: config -> ip-config
-  Mar 15 08:01:20 cachyos NetworkManager[512]: <info> device (enp3s0): state change: ip-config -> activated
-  Mar 15 08:01:20 cachyos systemd[1]: Started Bluetooth service.
-  Mar 15 08:02:00 cachyos sshd[1024]: Accepted publickey for alex from 192.168.1.10 port 54321
-  Mar 15 08:05:00 cachyos sshd[1025]: Failed password for root from 10.0.0.99 port 12345
-  Mar 15 08:05:01 cachyos sshd[1025]: Failed password for root from 10.0.0.99 port 12345
-  Mar 15 08:05:02 cachyos sshd[1025]: Failed password for root from 10.0.0.99 port 12345
-  Mar 15 08:10:00 cachyos pacman[2048]: Running 'pacman -Syu'
-  Mar 15 08:10:05 cachyos pacman[2048]: upgraded linux-cachyos (6.12.1-1 -> 6.12.2-1)
-  Mar 15 08:10:06 cachyos pacman[2048]: upgraded mesa (24.3.1-1 -> 24.3.2-1)
-  Mar 15 08:15:00 cachyos crond[256]: (root) CMD (/usr/bin/updatedb)
-  Mar 15 08:30:00 cachyos crond[256]: (root) CMD (/usr/bin/updatedb)
-  SYSEOF
-  cat > /tmp/pipeline-practice/sales.csv <<'SALESEOF'
-  date,product,quantity,price
-  2026-03-01,Widget,10,25.00
-  2026-03-01,Gadget,5,49.99
-  2026-03-02,Widget,8,25.00
-  2026-03-02,Gizmo,3,99.99
-  2026-03-03,Gadget,12,49.99
-  2026-03-03,Widget,6,25.00
-  2026-03-04,Gizmo,2,99.99
-  2026-03-04,Widget,15,25.00
-  2026-03-05,Gadget,7,49.99
-  2026-03-05,Widget,9,25.00
-  SALESEOF
+  echo "192.168.1.100 - - [15/Jan/2024:10:00:01] \"GET / HTTP/1.1\" 200 5120" > access.log
+  echo "192.168.1.101 - - [15/Jan/2024:10:00:05] \"POST /login HTTP/1.1\" 200 340" >> access.log
+  echo "192.168.1.100 - - [15/Jan/2024:10:01:12] \"GET /dashboard HTTP/1.1\" 200 8900" >> access.log
+  echo "10.0.0.50 - - [15/Jan/2024:10:02:30] \"GET /missing HTTP/1.1\" 404 0" >> access.log
+  echo "192.168.1.102 - - [15/Jan/2024:10:05:45] \"GET /api/users HTTP/1.1\" 200 2345" >> access.log
+  echo "192.168.1.100 - - [15/Jan/2024:10:10:00] \"GET /api/users HTTP/1.1\" 200 2345" >> access.log
+  echo "192.168.1.103 - - [15/Jan/2024:10:15:00] \"POST /login HTTP/1.1\" 401 120" >> access.log
+  echo "10.0.0.50 - - [15/Jan/2024:10:20:00] \"GET /admin HTTP/1.1\" 403 0" >> access.log
+  echo "192.168.1.101 - - [15/Jan/2024:10:25:00] \"GET / HTTP/1.1\" 200 5120" >> access.log
+  echo "192.168.1.100 - - [15/Jan/2024:10:30:00] \"GET / HTTP/1.1\" 200 5120" >> access.log
+  echo "Name,Department,Salary" > employees.csv
+  echo "Alice,Engineering,95000" >> employees.csv
+  echo "Bob,Marketing,72000" >> employees.csv
+  echo "Carol,Engineering,105000" >> employees.csv
+  echo "Dave,Sales,68000" >> employees.csv
+  echo "Eve,Engineering,98000" >> employees.csv
+  echo "Frank,Marketing,75000" >> employees.csv
+  echo "Grace,Sales,71000" >> employees.csv
+  echo "Practice pipelines!" > README.txt
 ---
 
 # Putting Text Tools Together

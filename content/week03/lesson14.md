@@ -9,41 +9,22 @@ objectives:
   - "Count lines, words, and bytes with wc"
 commands: [file, stat, wc, "wc -l", "wc -w", "wc -c"]
 prerequisites: []
-sandbox_commands: [file, stat, wc, ls, cat]
+sandbox_commands: [file, stat, wc, cat, less, head, tail, ls, cd, pwd, echo, touch, mkdir, cp, find, grep, whoami, date, clear]
 sandbox_setup: |
-  #!/bin/bash
-  # Create a plain text file
-  cat > ~/readme.txt <<'EOF'
-  This is a plain text file.
-  It contains several lines of text.
-  Each line has a few words.
-  The file command will identify this as ASCII text.
-  Here is line five of the file.
-  EOF
-  # Create a script file
-  cat > ~/backup.sh <<'SCRIPT'
-  #!/bin/bash
-  # A simple backup script
-  echo "Starting backup..."
-  tar czf /tmp/backup.tar.gz ~/documents
-  echo "Backup complete."
-  SCRIPT
-  chmod +x ~/backup.sh
-  # Create a binary-like file
-  dd if=/dev/urandom of=~/data.bin bs=256 count=1 2>/dev/null
-  # Create a directory for variety
-  mkdir -p ~/projects
-  # Create a symbolic link
-  ln -s ~/readme.txt ~/readme_link.txt
-  # Create a CSV file
-  cat > ~/scores.csv <<'CSV'
-  name,math,science,english
-  Alice,92,88,95
-  Bob,85,90,78
-  Carol,97,93,91
-  Dave,73,81,84
-  Eve,88,86,92
-  CSV
+  echo "Plain text file" > readme.txt
+  echo "#!/bin/bash" > script.sh
+  echo "echo 'Hello World'" >> script.sh
+  chmod +x script.sh
+  echo '{"name": "test", "version": "1.0"}' > data.json
+  echo "<html><body>Hello</body></html>" > page.html
+  echo "Line 1" > counted.txt
+  echo "Line 2 with more words" >> counted.txt
+  echo "Line 3 short" >> counted.txt
+  echo "Line 4 the final line of this file" >> counted.txt
+  mkdir empty_dir
+  ln -s readme.txt link_to_readme
+  printf '\x89PNG\r\n' > fake_image.png
+  echo "Explore file types!" > README.txt
 ---
 # File Metadata and Types
 

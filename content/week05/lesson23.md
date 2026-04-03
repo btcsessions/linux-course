@@ -10,43 +10,25 @@ objectives:
   - "Print specific line ranges with sed -n"
 commands: ["sed 's/foo/bar/'", "sed 's/foo/bar/g'", "sed -i", "sed '/^#/d'", "sed -n '5,10p'"]
 prerequisites: []
-sandbox_commands: [sed, cat, ls]
+sandbox_commands: [sed, grep, cat, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, less, find, wc, sort, uniq, cut, whoami, date, clear, file]
 sandbox_setup: |
-  mkdir -p /tmp/sed-practice
-  cat > /tmp/sed-practice/config.conf <<'CFGEOF'
-  # Application Configuration File
-  # Last modified: 2026-03-15
-  
-  hostname = localhost
-  port = 8080
-  # debug = true
-  log_level = INFO
-  max_connections = 100
-  database_host = db-server-01
-  database_port = 5432
-  database_name = production_db
-  # cache_enabled = false
-  timeout = 30
-  retry_count = 3
-  CFGEOF
-  cat > /tmp/sed-practice/names.csv <<'CSVEOF'
-  first_name,last_name,department
-  Alice,Johnson,Engineering
-  Bob,Smith,Marketing
-  Charlie,Brown,Engineering
-  Diana,Prince,Sales
-  Eve,Adams,Marketing
-  Frank,Castle,Engineering
-  Grace,Hopper,Sales
-  CSVEOF
-  cat > /tmp/sed-practice/messy.txt <<'MESSYEOF'
-  Hello    World
-  This  is   a   test
-  Too    many     spaces    here
-  Normal line
-  Another   messy    line
-  MESSYEOF
-  cp /tmp/sed-practice/config.conf /tmp/sed-practice/config.conf.bak
+  echo "# Application Config" > config.conf
+  echo "hostname=old-server" >> config.conf
+  echo "port=8080" >> config.conf
+  echo "# Debug mode" >> config.conf
+  echo "debug=true" >> config.conf
+  echo "log_level=info" >> config.conf
+  echo "database_host=localhost" >> config.conf
+  echo "" >> config.conf
+  echo "# Cache settings" >> config.conf
+  echo "cache_enabled=true" >> config.conf
+  echo "cache_ttl=3600" >> config.conf
+  for i in $(seq 1 20); do echo "Line $i: some content here" >> lines.txt; done
+  echo "Hello World" > greeting.txt
+  echo "hello world" >> greeting.txt
+  echo "HELLO WORLD" >> greeting.txt
+  echo "Hello World Hello World" >> greeting.txt
+  echo "Practice sed!" > README.txt
 ---
 
 # sed -- Stream Editing Basics

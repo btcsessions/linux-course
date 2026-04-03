@@ -8,19 +8,17 @@ objectives:
   - "Use essential nano shortcuts for cutting, pasting, searching, and getting help"
 commands: [nano]
 prerequisites: []
-sandbox_commands: [nano]
+sandbox_commands: [nano, cat, less, head, tail, ls, cd, pwd, echo, touch, mkdir, cp, find, grep, whoami, date, clear, wc]
 sandbox_setup: |
-  #!/bin/bash
-  cat > ~/practice.txt <<'EOF'
-  Welcome to the nano practice file.
-  This file has several lines for you to edit.
-  Try changing this line.
-  Add a new line below this one.
-  Delete this line entirely.
-  The quick brown fox jumps over the lazy dog.
-  CachyOS is a performance-focused Arch-based distribution.
-  Practice makes perfect.
-  EOF
+  echo "This is a practice file for nano editing." > practice.txt
+  echo "Try editing this line." >> practice.txt
+  echo "Add new lines below this one." >> practice.txt
+  echo "" >> practice.txt
+  echo "# Sample Config" > config.txt
+  echo "setting1=value1" >> config.txt
+  echo "setting2=value2" >> config.txt
+  echo "setting3=value3" >> config.txt
+  echo "Edit these files with nano!" > README.txt
 ---
 # Text Editors -- nano
 

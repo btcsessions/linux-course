@@ -9,19 +9,16 @@ objectives:
   - "Save and quit using :w, :q, :wq, and the emergency exit :q!"
 commands: [vim, i, Esc, ":w", ":q", ":wq", ":q!", h, j, k, l, dd, u]
 prerequisites: []
-sandbox_commands: [vim, cat, ls]
+sandbox_commands: [vim, nano, cat, less, head, tail, ls, cd, pwd, echo, touch, mkdir, cp, find, grep, whoami, date, clear, wc]
 sandbox_setup: |
-  #!/bin/bash
-  cat > ~/vim_practice.txt <<'EOF'
-  Welcome to vim practice.
-  This is line two.
-  Edit this line to say something new.
-  Here is line four.
-  This line should be deleted.
-  The quick brown fox jumps over the lazy dog.
-  CachyOS ships with vim by default.
-  Happy editing!
-  EOF
+  echo "Welcome to vim practice!" > vim_practice.txt
+  echo "This is line 2 - try editing me." >> vim_practice.txt
+  echo "This is line 3 - try deleting me with dd." >> vim_practice.txt
+  echo "This is line 4 - try undoing with u." >> vim_practice.txt
+  echo "This is line 5 - the last line." >> vim_practice.txt
+  echo "Another file to practice with." > another.txt
+  echo "Practice opening, editing, and saving." >> another.txt
+  echo "Try vim!" > README.txt
 ---
 # Introduction to vim (Survival Mode)
 

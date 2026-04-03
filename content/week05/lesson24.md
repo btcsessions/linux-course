@@ -10,53 +10,25 @@ objectives:
   - "Use awk with custom field separators via -F"
 commands: ["sed '3,5s/a/b/'", "awk '{print $1}'", "awk -F: '{print $1}'", "awk '/pattern/ {print}'"]
 prerequisites: []
-sandbox_commands: [sed, awk, cat]
+sandbox_commands: [awk, sed, grep, cat, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, less, find, wc, sort, uniq, cut, whoami, date, clear, file]
 sandbox_setup: |
-  mkdir -p /tmp/awk-practice
-  cat > /tmp/awk-practice/passwd-sample <<'PWEOF'
-  root:x:0:0:root:/root:/bin/bash
-  daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
-  bin:x:2:2:bin:/bin:/usr/sbin/nologin
-  sys:x:3:3:sys:/dev:/usr/sbin/nologin
-  nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
-  alex:x:1000:1000:Alex Thompson:/home/alex:/bin/bash
-  maria:x:1001:1001:Maria Garcia:/home/maria:/bin/zsh
-  jake:x:1002:1002:Jake Wilson:/home/jake:/bin/fish
-  sara:x:1003:1003:Sara Chen:/home/sara:/bin/bash
-  PWEOF
-  cat > /tmp/awk-practice/scores.txt <<'SCEOF'
-  Alice Math 95
-  Bob Math 82
-  Charlie Math 78
-  Alice Science 88
-  Bob Science 91
-  Charlie Science 85
-  Alice English 92
-  Bob English 76
-  Charlie English 89
-  SCEOF
-  cat > /tmp/awk-practice/employees.txt <<'EMPEOF'
-  ID    Name          Department    Salary
-  101   Alice         Engineering   85000
-  102   Bob           Marketing     72000
-  103   Charlie       Engineering   91000
-  104   Diana         Sales         68000
-  105   Eve           Marketing     75000
-  106   Frank         Engineering   88000
-  107   Grace         Sales         71000
-  108   Hank          Engineering   95000
-  EMPEOF
-  cat > /tmp/awk-practice/access.log <<'AEOF'
-  192.168.1.10 GET /index.html 200 1024
-  192.168.1.25 POST /api/login 200 512
-  10.0.0.5 GET /about.html 200 2048
-  192.168.1.10 GET /style.css 200 4096
-  192.168.1.25 GET /dashboard 403 128
-  10.0.0.5 GET /contact.html 404 0
-  192.168.1.10 POST /api/data 500 0
-  10.0.0.5 GET /index.html 200 1024
-  192.168.1.25 GET /profile 200 2048
-  AEOF
+  echo "root:x:0:0:root:/root:/bin/bash" > passwd_sample
+  echo "daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin" >> passwd_sample
+  echo "user:x:1000:1000:User Name:/home/user:/bin/bash" >> passwd_sample
+  echo "nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin" >> passwd_sample
+  echo "www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin" >> passwd_sample
+  echo "Name    Age  City       Score" > scores.txt
+  echo "Alice   30   Portland   95" >> scores.txt
+  echo "Bob     25   Seattle    87" >> scores.txt
+  echo "Carol   35   Denver     92" >> scores.txt
+  echo "Dave    28   Austin     78" >> scores.txt
+  echo "Eve     32   Boston     88" >> scores.txt
+  echo "192.168.1.100 - - [15/Jan/2024:10:00:01] \"GET /index.html HTTP/1.1\" 200 1234" > access.log
+  echo "192.168.1.101 - - [15/Jan/2024:10:00:05] \"POST /api/data HTTP/1.1\" 201 567" >> access.log
+  echo "192.168.1.100 - - [15/Jan/2024:10:01:12] \"GET /style.css HTTP/1.1\" 200 890" >> access.log
+  echo "10.0.0.50 - - [15/Jan/2024:10:02:30] \"GET /index.html HTTP/1.1\" 404 0" >> access.log
+  echo "192.168.1.102 - - [15/Jan/2024:10:05:45] \"GET /api/users HTTP/1.1\" 200 2345" >> access.log
+  echo "Practice awk!" > README.txt
 ---
 
 # Advanced sed and awk Introduction

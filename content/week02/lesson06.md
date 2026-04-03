@@ -9,9 +9,11 @@ objectives:
   - "Apply Linux file and directory naming conventions and best practices"
 commands: [touch, mkdir, mkdir -p]
 prerequisites: []
-sandbox_commands: [touch, mkdir, ls, pwd]
+sandbox_commands: [touch, mkdir, ls, cd, pwd, cat, echo, whoami, hostname, date, clear]
 sandbox_setup: |
-  cd ~
+  echo "Practice creating files and directories here!" > README.txt
+  mkdir existing_dir
+  echo "I already exist" > existing_dir/hello.txt
 ---
 
 # Creating Files and Directories

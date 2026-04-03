@@ -10,38 +10,29 @@ objectives:
   - "Combine regex elements to write precise search patterns"
 commands: [grep -E, egrep]
 prerequisites: []
-sandbox_commands: [grep, cat]
+sandbox_commands: [grep, cat, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, less, find, wc, sort, uniq, cut, whoami, date, clear, file, egrep]
 sandbox_setup: |
-  cat > /tmp/regex-practice/data.txt <<'DATAEOF'
-  alice@example.com
-  bob.smith@company.org
-  INVALID-EMAIL
-  charlie123@domain.net
-  phone: 555-1234
-  phone: 555-5678
-  phone: (555) 867-5309
-  IP: 192.168.1.1
-  IP: 10.0.0.255
-  IP: 999.999.999.999
-  error: file not found
-  ERROR: connection refused
-  Error: permission denied
-  2026-03-15 server started
-  2026-13-45 invalid date
-  version 1.0.0
-  version 2.11.3
-  version 10.0.1-beta
-  The quick brown fox jumps over the lazy dog
-  The Quick Brown Fox
-  123-45-6789
-  456.78.9012
-  abc
-  abbc
-  abbbc
-  ac
-  adc
-  DATAEOF
-  mkdir -p /tmp/regex-practice
+  echo "john.doe@email.com" > data.txt
+  echo "jane_smith@company.org" >> data.txt
+  echo "Phone: 555-123-4567" >> data.txt
+  echo "Phone: 555-987-6543" >> data.txt
+  echo "IP: 192.168.1.1" >> data.txt
+  echo "IP: 10.0.0.255" >> data.txt
+  echo "Date: 2024-01-15" >> data.txt
+  echo "Date: 2024-12-31" >> data.txt
+  echo "Price: \$19.99" >> data.txt
+  echo "Price: \$142.50" >> data.txt
+  echo "# This is a comment" >> data.txt
+  echo "  # Indented comment" >> data.txt
+  echo "Normal line of text" >> data.txt
+  echo "Another normal line" >> data.txt
+  echo "ERROR: file not found" >> data.txt
+  echo "warning: low disk space" >> data.txt
+  echo "INFO: process started" >> data.txt
+  echo "3 apples" >> data.txt
+  echo "15 oranges" >> data.txt
+  echo "200 bananas" >> data.txt
+  echo "Practice regex!" > README.txt
 ---
 
 # Regular Expressions for grep

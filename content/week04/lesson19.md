@@ -9,18 +9,14 @@ objectives:
   - "Understand why changing ownership requires sudo"
 commands: [chown, "chown user:group", chgrp, "chown -R"]
 prerequisites: []
-sandbox_commands: [ls, stat, chown, chgrp, sudo, touch, mkdir, id]
+sandbox_commands: [chown, chgrp, chmod, id, groups, whoami, cat, less, grep, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, find, wc, sort, cut, stat, file, clear, date]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/ownlab/shared
-  echo "Web page content" > ~/ownlab/index.html
-  echo "Application log" > ~/ownlab/app.log
-  echo "Database config" > ~/ownlab/db.conf
-  echo "Shared doc 1" > ~/ownlab/shared/notes.txt
-  echo "Shared doc 2" > ~/ownlab/shared/plan.txt
-  chmod 644 ~/ownlab/index.html ~/ownlab/app.log ~/ownlab/db.conf
-  chmod 644 ~/ownlab/shared/notes.txt ~/ownlab/shared/plan.txt
-  chmod 755 ~/ownlab/shared
+  echo "File to change ownership" > myfile.txt
+  echo "Another file" > another.txt
+  mkdir mydir
+  echo "Dir content" > mydir/content.txt
+  echo "Note: chown requires root privileges." > README.txt
+  echo "You can see current ownership with ls -l" >> README.txt
 ---
 # Ownership with chown and chgrp
 

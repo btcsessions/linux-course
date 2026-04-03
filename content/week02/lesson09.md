@@ -9,16 +9,22 @@ objectives:
   - "Combine globs with commands like ls, cp, and mv"
 commands: [ls, cp, mv]
 prerequisites: []
-sandbox_commands: [ls, cp, mv, touch, echo]
+sandbox_commands: [ls, cp, mv, rm, touch, mkdir, echo, cd, pwd, cat, rmdir, whoami, date, clear]
 sandbox_setup: |
-  mkdir -p ~/practice/reports
-  touch ~/practice/file1.txt ~/practice/file2.txt ~/practice/file3.txt
-  touch ~/practice/file1.log ~/practice/file2.log ~/practice/file3.log
-  touch ~/practice/image.png ~/practice/photo.jpg ~/practice/icon.gif
-  touch ~/practice/report_a.csv ~/practice/report_b.csv ~/practice/report_c.csv
-  touch ~/practice/notes.md ~/practice/readme.md
-  touch ~/practice/script.sh ~/practice/deploy.sh
-  cd ~/practice
+  touch file1.txt file2.txt file3.txt
+  touch report_jan.csv report_feb.csv report_mar.csv
+  touch image1.jpg image2.jpg image3.png
+  touch notes_a.md notes_b.md notes_c.md
+  touch data.log error.log access.log
+  touch script.sh backup.sh deploy.sh
+  mkdir -p output archive
+  echo "January data" > report_jan.csv
+  echo "February data" > report_feb.csv
+  echo "March data" > report_mar.csv
+  echo "Log entry 1" > data.log
+  echo "Error: something failed" > error.log
+  echo "200 OK /index.html" > access.log
+  echo "Practice wildcards!" > README.txt
 ---
 
 # Wildcards and Globbing

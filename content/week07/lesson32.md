@@ -9,10 +9,14 @@ objectives:
   - "Clean the package cache with paccache and pacman -Sc"
 commands: [pacman -Syu, paru -S, paru -Ss, paccache -r, pacman -Sc]
 prerequisites: []
-sandbox_commands: [pacman -Syu, paru -Ss, paccache -h]
+sandbox_commands: [cat, ls, grep, echo, head, tail, wc, sort, cd, pwd, find, less, whoami, date, clear, sed, awk, cut]
 sandbox_setup: |
-  # Sandbox for safe exploration of update commands
-  echo "sandbox: update commands are available in read-only mode"
+  echo "System update commands must be run in your real terminal." > README.txt
+  echo "" >> README.txt
+  echo "Key commands to try in your CachyOS terminal:" >> README.txt
+  echo "  sudo pacman -Syu       # full system update" >> README.txt
+  echo "  paru -Ss <keyword>     # search AUR" >> README.txt
+  echo "  paru -Sua              # update AUR packages" >> README.txt
 ---
 
 # System Updates and the AUR

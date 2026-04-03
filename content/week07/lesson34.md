@@ -9,12 +9,14 @@ objectives:
   - "Diagnose connections with ss, dig, nslookup, and traceroute"
 commands: [ping, curl, wget, ip addr, ip route, ss -tlnp, dig, nslookup, traceroute]
 prerequisites: []
-sandbox_commands: [ip addr, ip route, ss -tlnp, dig, nslookup]
+sandbox_commands: [ip, ss, cat, ls, grep, echo, head, tail, wc, cd, pwd, find, whoami, date, clear, sort]
 sandbox_setup: |
-  # Set up sample files for curl/wget practice
-  mkdir -p /tmp/netlab
-  echo "Hello from the network lab" > /tmp/netlab/index.html
-  echo "sandbox: networking query commands available"
+  echo "Network commands work best in your real terminal." > README.txt
+  echo "" >> README.txt
+  echo "Safe commands to try here:" >> README.txt
+  echo "  ip addr      # show network interfaces" >> README.txt
+  echo "  ip route     # show routing table" >> README.txt
+  echo "  ss -tlnp     # show listening ports" >> README.txt
 ---
 
 # Networking Basics from the CLI

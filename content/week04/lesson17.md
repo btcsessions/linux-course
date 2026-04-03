@@ -9,20 +9,21 @@ objectives:
   - "Recognise special permissions: setuid, setgid, and the sticky bit"
 commands: [ls -l, stat]
 prerequisites: []
-sandbox_commands: [ls, stat, cat, touch, mkdir]
+sandbox_commands: [id, groups, whoami, cat, less, grep, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, find, wc, sort, cut, stat, file, clear, date, chmod]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/permlab
-  echo "Hello, World!" > ~/permlab/readme.txt
-  echo '#!/bin/bash' > ~/permlab/greet.sh
-  echo 'echo "Hi from greet.sh"' >> ~/permlab/greet.sh
-  chmod 755 ~/permlab/greet.sh
-  chmod 644 ~/permlab/readme.txt
-  mkdir ~/permlab/docs
-  chmod 750 ~/permlab/docs
-  echo "secret" > ~/permlab/docs/internal.txt
-  chmod 600 ~/permlab/docs/internal.txt
-  ln -s ~/permlab/readme.txt ~/permlab/link_to_readme
+  echo "Public file" > public.txt
+  chmod 644 public.txt
+  echo "Private file" > private.txt
+  chmod 600 private.txt
+  echo "#!/bin/bash" > script.sh
+  echo "echo Hello" >> script.sh
+  chmod 755 script.sh
+  mkdir shared_dir personal_dir
+  chmod 755 shared_dir
+  chmod 700 personal_dir
+  echo "Shared content" > shared_dir/readme.txt
+  echo "Personal content" > personal_dir/secret.txt
+  echo "Explore permissions with ls -l!" > README.txt
 ---
 # Understanding File Permissions
 

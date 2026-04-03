@@ -10,22 +10,26 @@ objectives:
   - "Convert stdin to command arguments with xargs"
 commands: ["|", tee, xargs]
 prerequisites: []
-sandbox_commands: [cat, echo, ls, grep, sort, wc, head, tail, uniq, tee, xargs, cut, tr]
+sandbox_commands: [cat, echo, ls, grep, sort, wc, head, tail, uniq, tee, xargs, cut, tr, cd, pwd, touch, mkdir, cp, mv, find, sed, awk, whoami, date, clear, file, stat]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/demo
-  # Create a web server access log
-  for i in $(seq 1 80); do
-    ip="192.168.1.$((RANDOM % 20 + 1))"
-    code=$( (( RANDOM % 5 == 0 )) && echo 404 || echo 200 )
-    echo "$ip - - [2026-03-27:10:${i}:00] \"GET /page$((RANDOM % 10)) HTTP/1.1\" $code" >> ~/demo/access.log
+  for i in $(seq 1 50); do
+    ip="192.168.1.$((RANDOM % 20 + 100))"
+    code=$((RANDOM % 3))
+    status="200"
+    if [ $code -eq 1 ]; then status="404"; fi
+    if [ $code -eq 2 ]; then status="500"; fi
+    echo "$ip - - [15/Jan/2024:10:$(printf '%02d' $((i % 60))):00] \"GET /page$((i % 10)) HTTP/1.1\" $status $((RANDOM % 5000 + 100))" >> access.log
   done
-  # Create a word list
-  echo -e "banana\napple\ncherry\napple\nbanana\ndate\napple\nelderberry\ncherry\napple" > ~/demo/words.txt
-  # Create some numbered files
-  for n in 1 2 3 4 5; do
-    echo "Content of file $n" > ~/demo/file${n}.txt
-  done
+  echo "apple" > words.txt
+  echo "banana" >> words.txt
+  echo "CHERRY" >> words.txt
+  echo "date" >> words.txt
+  echo "elderberry" >> words.txt
+  echo "apple" >> words.txt
+  echo "banana" >> words.txt
+  mkdir output
+  touch file1.txt file2.txt file3.txt file4.txt file5.txt
+  echo "Practice pipes!" > README.txt
 ---
 # Pipes -- Connecting Commands
 

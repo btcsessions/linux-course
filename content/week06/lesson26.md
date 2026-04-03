@@ -10,16 +10,22 @@ objectives:
   - "Redirect stderr with 2> and combine streams with 2>&1"
 commands: [">", ">>", "<", "2>", "2>&1", "&>", /dev/null]
 prerequisites: []
-sandbox_commands: [cat, echo, ls, grep, sort, wc]
+sandbox_commands: [cat, echo, ls, grep, sort, wc, head, tail, cd, pwd, touch, mkdir, cp, find, sed, awk, uniq, cut, whoami, date, clear, file, stat, tr]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/demo
-  echo -e "apple\nbanana\ncherry\ndate\nelderberry" > ~/demo/fruits.txt
-  echo -e "Charlie\nAlice\nBob\nDiana" > ~/demo/names.txt
-  mkdir -p ~/demo/subdir
-  echo "secret data" > ~/demo/subdir/hidden.txt
-  # Create a file that will produce errors when accessed
-  chmod 000 ~/demo/subdir/hidden.txt
+  echo "Line 1: stdout goes here" > sample.txt
+  echo "Line 2: another line" >> sample.txt
+  echo "Line 3: third line" >> sample.txt
+  echo "apple" > words.txt
+  echo "banana" >> words.txt
+  echo "cherry" >> words.txt
+  echo "date" >> words.txt
+  echo "elderberry" >> words.txt
+  echo "#!/bin/bash" > broken_script.sh
+  echo "echo 'This goes to stdout'" >> broken_script.sh
+  echo "echo 'This is an error' >&2" >> broken_script.sh
+  chmod +x broken_script.sh
+  mkdir output
+  echo "Practice redirection!" > README.txt
 ---
 # Standard Streams and Redirection
 

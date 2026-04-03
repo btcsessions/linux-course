@@ -9,28 +9,29 @@ objectives:
   - "Execute commands on found files with find -exec"
 commands: [find, locate, plocate]
 prerequisites: []
-sandbox_commands: [find, ls]
+sandbox_commands: [find, ls, cd, pwd, cat, echo, touch, mkdir, cp, mv, rm, rmdir, whoami, date, clear, grep]
 sandbox_setup: |
-  mkdir -p ~/practice/project/{src,tests,docs,config,logs}
-  mkdir -p ~/practice/project/src/{components,utils}
-  touch ~/practice/project/src/main.py
-  touch ~/practice/project/src/app.py
-  touch ~/practice/project/src/components/header.py
-  touch ~/practice/project/src/components/footer.py
-  touch ~/practice/project/src/utils/helpers.py
-  touch ~/practice/project/tests/test_main.py
-  touch ~/practice/project/tests/test_app.py
-  touch ~/practice/project/docs/readme.md
-  touch ~/practice/project/docs/guide.md
-  touch ~/practice/project/docs/api.txt
-  touch ~/practice/project/config/settings.conf
-  touch ~/practice/project/config/database.conf
-  echo "debug info line 1" > ~/practice/project/logs/app.log
-  echo "error on line 42" > ~/practice/project/logs/error.log
-  dd if=/dev/zero of=~/practice/project/logs/large.log bs=1024 count=200 2>/dev/null
-  touch ~/practice/project/.gitignore
-  touch ~/practice/project/src/.env
-  cd ~/practice
+  mkdir -p project/src project/docs project/tests project/build
+  mkdir -p config logs data/raw data/processed
+  echo "fn main() {}" > project/src/main.rs
+  echo "mod utils;" > project/src/utils.rs
+  echo "# README" > project/docs/README.md
+  echo "# API Docs" > project/docs/api.md
+  echo "test 1" > project/tests/test_main.rs
+  echo "test 2" > project/tests/test_utils.rs
+  echo "build artifact" > project/build/output.bin
+  echo "app.conf" > config/app.conf
+  echo "db.conf" > config/db.conf
+  echo "nginx.conf" > config/nginx.conf
+  echo "info log" > logs/app.log
+  echo "error log" > logs/error.log
+  echo "raw data 1" > data/raw/input1.csv
+  echo "raw data 2" > data/raw/input2.csv
+  echo "processed" > data/processed/output.csv
+  dd if=/dev/zero of=data/raw/bigfile.bin bs=1024 count=200 2>/dev/null
+  touch -t 202301010000 project/docs/old_notes.txt
+  touch project/docs/new_notes.txt
+  echo "Practice find!" > README.txt
 ---
 
 # Finding Files with find and locate

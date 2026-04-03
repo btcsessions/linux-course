@@ -10,68 +10,34 @@ objectives:
   - "Extract specific fields from structured data with cut"
 commands: [diff, "diff -u", sort, "sort -n", "sort -r", uniq, "cut -d -f"]
 prerequisites: []
-sandbox_commands: [diff, sort, uniq, cut, cat, ls]
+sandbox_commands: [diff, sort, uniq, cut, file, stat, wc, cat, less, head, tail, ls, cd, pwd, echo, touch, mkdir, cp, find, grep, whoami, date, clear]
 sandbox_setup: |
-  #!/bin/bash
-  # Create two similar files for diffing
-  cat > ~/original.txt <<'EOF'
-  # Server Configuration
-  host=localhost
-  port=8080
-  debug=true
-  log_level=INFO
-  max_connections=50
-  timeout=30
-  EOF
-  cat > ~/modified.txt <<'EOF'
-  # Server Configuration
-  host=192.168.1.100
-  port=8080
-  debug=false
-  log_level=WARNING
-  max_connections=100
-  timeout=30
-  database_url=postgres://localhost:5432/app
-  EOF
-  # Create a file with duplicates for sort and uniq
-  cat > ~/access.log <<'LOG'
-  192.168.1.10
-  10.0.0.5
-  192.168.1.10
-  172.16.0.1
-  10.0.0.5
-  10.0.0.5
-  192.168.1.10
-  172.16.0.1
-  192.168.1.50
-  10.0.0.5
-  LOG
-  # Create a CSV file for cut
-  cat > ~/employees.csv <<'CSV'
-  name,department,salary,city
-  Alice,Engineering,95000,Portland
-  Bob,Marketing,72000,Seattle
-  Carol,Engineering,105000,Portland
-  Dave,Sales,68000,Denver
-  Eve,Marketing,78000,Seattle
-  Frank,Engineering,92000,Austin
-  Grace,Sales,71000,Denver
-  CSV
-  # Create a numeric data file
-  cat > ~/scores.txt <<'SCORES'
-  85
-  92
-  78
-  100
-  65
-  92
-  88
-  71
-  95
-  88
-  78
-  100
-  SCORES
+  echo "alpha=true" > original.conf
+  echo "beta=false" >> original.conf
+  echo "gamma=100" >> original.conf
+  echo "delta=hello" >> original.conf
+  cp original.conf modified.conf
+  sed -i 's/beta=false/beta=true/' modified.conf
+  echo "epsilon=new" >> modified.conf
+  echo "banana" > fruits.txt
+  echo "apple" >> fruits.txt
+  echo "cherry" >> fruits.txt
+  echo "apple" >> fruits.txt
+  echo "banana" >> fruits.txt
+  echo "date" >> fruits.txt
+  echo "cherry" >> fruits.txt
+  echo "Name:Age:City" > people.csv
+  echo "Alice:30:Portland" >> people.csv
+  echo "Bob:25:Seattle" >> people.csv
+  echo "Carol:35:Denver" >> people.csv
+  echo "Dave:28:Austin" >> people.csv
+  echo "100" > numbers.txt
+  echo "5" >> numbers.txt
+  echo "42" >> numbers.txt
+  echo "7" >> numbers.txt
+  echo "99" >> numbers.txt
+  echo "23" >> numbers.txt
+  echo "Practice sorting and comparing!" > README.txt
 ---
 # Comparing and Sorting Files
 

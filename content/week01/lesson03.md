@@ -9,24 +9,22 @@ objectives:
   - "Leverage tab completion to save time and avoid typos"
 commands: [cd, cd ~, cd .., cd -, cd /absolute/path]
 prerequisites: [2]
-sandbox_commands: [cd, ls, pwd]
+sandbox_commands: [cd, pwd, ls, whoami, hostname, date, cal, clear, echo, cat]
 sandbox_setup: |
-  mkdir -p /tmp/sandbox/projects/website/css
-  mkdir -p /tmp/sandbox/projects/website/js
-  mkdir -p /tmp/sandbox/projects/python-app/src
-  mkdir -p /tmp/sandbox/projects/python-app/tests
-  mkdir -p /tmp/sandbox/documents/school/math
-  mkdir -p /tmp/sandbox/documents/school/history
-  mkdir -p /tmp/sandbox/documents/work
-  mkdir -p /tmp/sandbox/pictures/2025
-  mkdir -p /tmp/sandbox/pictures/2026
-  echo "index page" > /tmp/sandbox/projects/website/index.html
-  echo "styles" > /tmp/sandbox/projects/website/css/style.css
-  echo "main script" > /tmp/sandbox/projects/python-app/src/main.py
-  echo "test file" > /tmp/sandbox/projects/python-app/tests/test_main.py
-  echo "homework" > /tmp/sandbox/documents/school/math/homework1.txt
-  echo "essay" > /tmp/sandbox/documents/school/history/essay.txt
-  echo "notes" > /tmp/sandbox/documents/work/meeting_notes.txt
+  mkdir -p projects/website/css projects/website/js projects/website/images
+  mkdir -p projects/app/src projects/app/tests
+  mkdir -p documents/work documents/personal
+  mkdir -p pictures/vacation pictures/family
+  echo "body { color: red; }" > projects/website/css/style.css
+  echo "console.log('hello');" > projects/website/js/app.js
+  echo "index page" > projects/website/index.html
+  echo "main code" > projects/app/src/main.py
+  echo "test code" > projects/app/tests/test_main.py
+  echo "Work report" > documents/work/report.txt
+  echo "Shopping list" > documents/personal/shopping.txt
+  echo "Beach photo" > pictures/vacation/beach.jpg
+  echo "Family photo" > pictures/family/dinner.jpg
+  echo "Welcome to the sandbox!" > README.txt
 ---
 
 # Navigating with cd

@@ -9,24 +9,14 @@ objectives:
   - "Chain commands with &&, ||, and ; for conditional and sequential execution"
 commands: [history, "Ctrl+R", "!!", "!$", "!n", "$()", "$(( ))", "&&", "||"]
 prerequisites: []
-sandbox_commands: [history, echo, cat, ls, grep, date, wc, mkdir, touch, basename]
+sandbox_commands: [history, echo, cat, ls, grep, date, wc, mkdir, touch, basename, cd, pwd, sort, head, tail, find, whoami, clear, sed, awk]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/demo
-  # Pre-populate some history so students have something to search
-  echo "echo Hello World" >> ~/.bash_history
-  echo "ls -la /etc" >> ~/.bash_history
-  echo "grep root /etc/passwd" >> ~/.bash_history
-  echo "cat /etc/hostname" >> ~/.bash_history
-  echo "pacman -Qs linux" >> ~/.bash_history
-  echo "find /var/log -name '*.log' -mtime -1" >> ~/.bash_history
-  echo "systemctl status NetworkManager" >> ~/.bash_history
-  echo "ip addr show" >> ~/.bash_history
-  # Create some files for exercises
-  echo "server01" > ~/demo/hosts.txt
-  echo "server02" >> ~/demo/hosts.txt
-  echo "server03" >> ~/demo/hosts.txt
-  for i in 1 2 3 4 5; do echo "Log entry $i" > ~/demo/log_$i.txt; done
+  mkdir -p project/src project/docs
+  echo "main code" > project/src/main.py
+  echo "utils code" > project/src/utils.py
+  echo "readme" > project/docs/README.md
+  touch file1.txt file2.txt file3.txt
+  echo "Practice history and efficiency!" > README.txt
 ---
 # Shell History and Efficiency
 

@@ -9,15 +9,16 @@ objectives:
   - "Distinguish between absolute paths and relative paths"
 commands: [pwd, ls]
 prerequisites: [1]
-sandbox_commands: [pwd, ls, echo, cd]
+sandbox_commands: [pwd, ls, whoami, hostname, date, cal, clear, echo, cd]
 sandbox_setup: |
-  mkdir -p /tmp/sandbox/documents/reports
-  mkdir -p /tmp/sandbox/documents/notes
-  mkdir -p /tmp/sandbox/pictures/vacation
-  mkdir -p /tmp/sandbox/music
-  echo "Hello world" > /tmp/sandbox/documents/readme.txt
-  echo "Q1 Sales" > /tmp/sandbox/documents/reports/q1.txt
-  echo "Meeting notes" > /tmp/sandbox/documents/notes/meeting.txt
+  mkdir -p home/user/documents home/user/pictures home/user/downloads
+  mkdir -p etc var/log tmp usr/bin
+  echo "Sample config" > etc/config.conf
+  echo "System log entry 1" > var/log/syslog
+  echo "Hello world" > home/user/documents/readme.txt
+  echo "My photo list" > home/user/pictures/list.txt
+  echo "Downloaded file" > home/user/downloads/file.zip
+  echo "Welcome" > welcome.txt
 ---
 
 # Where Am I? -- pwd and the Filesystem Tree

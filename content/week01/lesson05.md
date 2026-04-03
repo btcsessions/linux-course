@@ -9,9 +9,13 @@ objectives:
   - "Use type, which, whereis, and apropos to discover and locate commands"
 commands: [man, --help, info, type, which, whereis, apropos]
 prerequisites: [4]
-sandbox_commands: [man, which, type, whereis, apropos, ls, echo, pwd]
+sandbox_commands: [man, which, type, whereis, apropos, ls, cd, pwd, whoami, hostname, date, cal, clear, echo, cat, help]
 sandbox_setup: |
-  echo "Use 'man ls' or 'ls --help' to explore command documentation" > /tmp/sandbox/help_reminder.txt
+  echo "Practice looking up help for commands!" > README.txt
+  mkdir docs
+  echo "Use 'man ls' to learn about listing files" > docs/tips.txt
+  echo "Use 'which python3' to find where python lives" > docs/exercises.txt
+  echo "Remember: --help works on almost every command" > docs/reminder.txt
 ---
 
 # Getting Help -- man, --help, and info

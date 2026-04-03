@@ -9,16 +9,14 @@ objectives:
   - "Send signals to processes with kill, kill -9, and killall"
 commands: [ps, "ps aux", top, htop, kill, "kill -9", killall, pgrep]
 prerequisites: []
-sandbox_commands: [ps, top, kill, pgrep, grep, ls]
+sandbox_commands: [ps, kill, pgrep, chown, chgrp, chmod, id, groups, whoami, cat, less, grep, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, find, wc, sort, cut, stat, file, clear, date, sleep]
 sandbox_setup: |
-  #!/bin/bash
-  # Start a few background processes for students to discover and manage
-  sleep 3600 &
-  echo $! > /tmp/sleep1.pid
-  sleep 7200 &
-  echo $! > /tmp/sleep2.pid
-  (while true; do echo "working" > /dev/null; sleep 5; done) &
-  echo $! > /tmp/worker.pid
+  sleep 300 &
+  sleep 300 &
+  sleep 300 &
+  echo "Three background processes started." > README.txt
+  echo "Use 'ps' or 'ps aux' to see them." >> README.txt
+  echo "Use 'kill <PID>' to stop them." >> README.txt
 ---
 # Process Basics
 

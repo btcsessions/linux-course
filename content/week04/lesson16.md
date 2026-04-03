@@ -9,12 +9,15 @@ objectives:
   - "Switch users with su and execute commands as root with sudo"
 commands: [id, groups, su, sudo, "cat /etc/passwd", "cat /etc/group", whoami]
 prerequisites: []
-sandbox_commands: [id, groups, whoami, cat, less, grep]
+sandbox_commands: [id, groups, whoami, cat, less, grep, ls, cd, pwd, echo, touch, mkdir, head, tail, find, wc, sort, cut, clear, date]
 sandbox_setup: |
-  #!/bin/bash
-  # Create sample passwd and group files for safe exploration
-  cp /etc/passwd ~/sample_passwd
-  cp /etc/group ~/sample_group
+  cp /etc/passwd sample_passwd 2>/dev/null || echo "root:x:0:0:root:/root:/bin/bash" > sample_passwd
+  echo "user:x:1000:1000:User:/home/user:/bin/bash" >> sample_passwd
+  echo "nobody:x:65534:65534:Nobody:/nonexistent:/usr/sbin/nologin" >> sample_passwd
+  cp /etc/group sample_group 2>/dev/null || echo "root:x:0:" > sample_group
+  echo "wheel:x:10:user" >> sample_group
+  echo "users:x:100:user" >> sample_group
+  echo "Practice exploring users and groups!" > README.txt
 ---
 # Users and Groups
 

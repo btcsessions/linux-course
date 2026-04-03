@@ -9,10 +9,20 @@ objectives:
   - "Understand CachyOS boot process and common services"
 commands: [systemctl status, systemctl start, systemctl enable, systemctl list-units, journalctl, journalctl -u, journalctl -f]
 prerequisites: []
-sandbox_commands: [systemctl status, systemctl list-units, journalctl --no-pager]
+sandbox_commands: [cat, ls, grep, echo, head, tail, wc, cd, pwd, find, sort, whoami, date, clear, sed, awk, cut, less]
 sandbox_setup: |
-  # Set up a sandbox for exploring systemctl and journalctl
-  echo "sandbox: systemctl and journalctl read commands are available"
+  echo "systemd commands must be run in your real terminal." > README.txt
+  echo "" >> README.txt
+  echo "Key commands to try in CachyOS:" >> README.txt
+  echo "  systemctl status sshd" >> README.txt
+  echo "  systemctl list-units --type=service" >> README.txt
+  echo "  journalctl -u NetworkManager --no-pager -n 20" >> README.txt
+  echo "" >> README.txt
+  echo "Sample journalctl output:" > sample_journal.txt
+  echo "Jan 15 10:00:01 cachyos systemd[1]: Started NetworkManager." >> sample_journal.txt
+  echo "Jan 15 10:00:02 cachyos NetworkManager[450]: <info> starting..." >> sample_journal.txt
+  echo "Jan 15 10:00:03 cachyos NetworkManager[450]: <info> WiFi enabled" >> sample_journal.txt
+  echo "Jan 15 10:00:05 cachyos NetworkManager[450]: <info> connected to MyWiFi" >> sample_journal.txt
 ---
 
 # systemd Services and Logs on CachyOS

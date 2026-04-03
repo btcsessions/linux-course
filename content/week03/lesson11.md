@@ -9,31 +9,27 @@ objectives:
   - "Monitor log files in real time with tail -f"
 commands: [cat, less, more, head, "head -n", tail, "tail -n", "tail -f"]
 prerequisites: []
-sandbox_commands: [cat, less, head, tail, ls]
+sandbox_commands: [cat, less, more, head, tail, ls, cd, pwd, echo, touch, mkdir, cp, find, grep, whoami, date, clear, wc]
 sandbox_setup: |
-  #!/bin/bash
-  # Create a 50-line sample file
-  for i in $(seq 1 50); do
-    echo "Line $i: This is sample content for demonstration purposes." >> ~/sample.txt
-  done
-  # Create a fake log file
+  for i in $(seq 1 50); do echo "Line $i: This is sample content for viewing practice." >> sample.txt; done
+  echo "=== Application Log ===" > app.log
   for i in $(seq 1 100); do
-    ts=$(date -d "-$((100 - i)) minutes" '+%Y-%m-%d %H:%M:%S' 2>/dev/null || date '+%Y-%m-%d %H:%M:%S')
+    ts="2024-01-$(printf '%02d' $((i % 28 + 1))) 10:$(printf '%02d' $((i % 60))):00"
     level="INFO"
-    if (( i % 10 == 0 )); then level="WARNING"; fi
-    if (( i % 25 == 0 )); then level="ERROR"; fi
-    echo "$ts [$level] Event number $i occurred in the application." >> ~/app.log
+    if [ $((i % 7)) -eq 0 ]; then level="ERROR"; fi
+    if [ $((i % 5)) -eq 0 ]; then level="WARN"; fi
+    echo "$ts [$level] Process $((i % 10)): Event number $i occurred" >> app.log
   done
-  # Create a short config-style file
-  cat > ~/config.conf <<'CONF'
-  # Application Configuration
-  app_name=MyApp
-  version=2.1.0
-  debug=false
-  log_level=INFO
-  max_connections=100
-  timeout=30
-  CONF
+  echo "First,Last,Age,City" > data.csv
+  echo "Alice,Smith,30,Portland" >> data.csv
+  echo "Bob,Jones,25,Seattle" >> data.csv
+  echo "Carol,Lee,35,Denver" >> data.csv
+  echo "Dave,Kim,28,Austin" >> data.csv
+  echo "Eve,Chen,32,Boston" >> data.csv
+  echo "Short file with just a few lines." > short.txt
+  echo "Line 2 of the short file." >> short.txt
+  echo "Line 3 of the short file." >> short.txt
+  echo "Practice viewing files!" > README.txt
 ---
 # Viewing File Contents
 

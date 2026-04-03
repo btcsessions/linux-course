@@ -10,28 +10,18 @@ objectives:
   - "Create and use aliases to shorten repetitive commands"
 commands: [env, printenv, export, echo, source, alias]
 prerequisites: []
-sandbox_commands: [env, printenv, export, echo, source, alias, cat, grep, bash]
+sandbox_commands: [env, printenv, export, echo, source, alias, cat, grep, bash, ls, cd, pwd, touch, mkdir, cp, find, sed, awk, sort, head, tail, wc, whoami, date, clear]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/demo/bin
-  echo '#!/bin/bash' > ~/demo/bin/hello
-  echo 'echo "Hello from $USER on $(hostname)!"' >> ~/demo/bin/hello
-  chmod +x ~/demo/bin/hello
-  # Create a sample .bashrc snippet
-  cat > ~/demo/sample_bashrc <<'CONF'
-  # ~/.bashrc - executed for interactive non-login shells
-
-  # User-specific aliases
-  alias ll='ls -lah --color=auto'
-  alias gs='git status'
-  alias update='sudo pacman -Syu'
-
-  # Add personal scripts to PATH
-  export PATH="$HOME/bin:$PATH"
-
-  # Custom prompt
-  export PS1='\u@\h:\w\$ '
-  CONF
+  mkdir -p bin
+  echo '#!/bin/bash' > bin/hello.sh
+  echo 'echo "Hello from $USER at $(date)"' >> bin/hello.sh
+  chmod +x bin/hello.sh
+  echo '# Sample bashrc' > sample_bashrc
+  echo 'export EDITOR=nano' >> sample_bashrc
+  echo 'alias ll="ls -la"' >> sample_bashrc
+  echo 'alias gs="git status"' >> sample_bashrc
+  echo 'export PATH="$HOME/bin:$PATH"' >> sample_bashrc
+  echo "Practice env vars!" > README.txt
 ---
 # Environment Variables and the Shell
 

@@ -9,18 +9,17 @@ objectives:
   - "Remove empty directories with rmdir"
 commands: [rm, rm -i, rm -r, rm -rf, rmdir]
 prerequisites: []
-sandbox_commands: [rm, rmdir, ls, touch, mkdir]
+sandbox_commands: [rm, rmdir, ls, cd, pwd, cat, echo, touch, mkdir, cp, mv, whoami, date, clear]
 sandbox_setup: |
-  mkdir -p ~/practice/old_project/src
-  mkdir -p ~/practice/old_project/docs
-  mkdir -p ~/practice/empty_dir
-  touch ~/practice/junk1.txt
-  touch ~/practice/junk2.txt
-  touch ~/practice/junk3.log
-  touch ~/practice/old_project/src/main.py
-  touch ~/practice/old_project/docs/notes.txt
-  echo "disposable" > ~/practice/tempfile.txt
-  cd ~/practice
+  mkdir -p trash_me/subdir empty_dir keep_this
+  echo "Delete me" > trash_me/file1.txt
+  echo "Delete me too" > trash_me/file2.txt
+  echo "Nested file" > trash_me/subdir/nested.txt
+  echo "Temp file 1" > temp1.txt
+  echo "Temp file 2" > temp2.txt
+  echo "Temp file 3" > temp3.txt
+  echo "Important - don't delete!" > keep_this/important.txt
+  echo "Practice safe deletion here" > README.txt
 ---
 
 # Removing Files and Directories

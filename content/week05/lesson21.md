@@ -10,68 +10,32 @@ objectives:
   - "Apply basic regular expressions in grep patterns"
 commands: [grep, grep -i, grep -n, grep -v, grep -c, grep -r, grep -l]
 prerequisites: []
-sandbox_commands: [grep, cat, ls]
+sandbox_commands: [grep, cat, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, less, find, wc, sort, uniq, cut, whoami, date, clear, file]
 sandbox_setup: |
-  mkdir -p /tmp/grep-practice/logs
-  cat > /tmp/grep-practice/server.log <<'LOGEOF'
-  2026-03-01 08:15:22 INFO Server started on port 8080
-  2026-03-01 08:15:23 INFO Loading configuration from /etc/app/config.yaml
-  2026-03-01 08:16:01 WARNING Disk usage at 85 percent
-  2026-03-01 08:17:44 ERROR Failed to connect to database on host db01
-  2026-03-01 08:17:45 INFO Retrying database connection...
-  2026-03-01 08:17:46 INFO Database connection established
-  2026-03-01 08:20:10 WARNING Memory usage above threshold
-  2026-03-01 08:25:33 INFO User alice logged in from 192.168.1.10
-  2026-03-01 08:30:12 INFO User bob logged in from 192.168.1.25
-  2026-03-01 08:35:00 ERROR Timeout waiting for response from api.example.com
-  2026-03-01 08:40:22 INFO User charlie logged in from 10.0.0.5
-  2026-03-01 08:45:15 WARNING SSL certificate expires in 7 days
-  2026-03-01 08:50:00 INFO Scheduled backup started
-  2026-03-01 08:55:30 INFO Backup completed successfully
-  2026-03-01 09:00:01 ERROR Disk write failed on /dev/sda2
-  LOGEOF
-  cat > /tmp/grep-practice/users.txt <<'USREOF'
-  alice:x:1001:1001:Alice Johnson:/home/alice:/bin/bash
-  bob:x:1002:1002:Bob Smith:/home/bob:/bin/zsh
-  charlie:x:1003:1003:Charlie Brown:/home/charlie:/bin/bash
-  diana:x:1004:1004:Diana Prince:/home/diana:/bin/fish
-  eve:x:1005:1005:Eve Adams:/home/eve:/bin/bash
-  frank:x:1006:1006:Frank Castle:/home/frank:/bin/zsh
-  USREOF
-  cat > /tmp/grep-practice/readme.txt <<'RDEOF'
-  Project README
-  ==============
-  This project is a web application built with Python.
-  It uses Flask for the backend and React for the frontend.
-
-  Installation
-  ------------
-  1. Install python3 and pip
-  2. Run pip install -r requirements.txt
-  3. Set the DATABASE_URL environment variable
-  4. Run python3 app.py
-
-  The application listens on port 5000 by default.
-  You can change the port with the PORT environment variable.
-  For production, use gunicorn instead of the built-in server.
-
-  Contributing
-  ------------
-  Please read CONTRIBUTING.md before submitting a pull request.
-  All Python code must pass flake8 and black formatting.
-  RDEOF
-  cat > /tmp/grep-practice/logs/app1.log <<'A1EOF'
-  ERROR: connection refused
-  INFO: request handled in 52ms
-  ERROR: timeout after 30s
-  INFO: health check passed
-  A1EOF
-  cat > /tmp/grep-practice/logs/app2.log <<'A2EOF'
-  INFO: service started
-  WARNING: deprecated API called
-  ERROR: null pointer exception
-  INFO: request handled in 12ms
-  A2EOF
+  echo "=== Server Log ===" > server.log
+  echo "2024-01-15 10:00:01 INFO Server started on port 8080" >> server.log
+  echo "2024-01-15 10:00:05 INFO Connection from 192.168.1.100" >> server.log
+  echo "2024-01-15 10:01:12 WARNING Slow query detected: 2.5s" >> server.log
+  echo "2024-01-15 10:02:30 ERROR Database connection timeout" >> server.log
+  echo "2024-01-15 10:02:31 ERROR Retry attempt 1 failed" >> server.log
+  echo "2024-01-15 10:03:00 INFO Connection restored" >> server.log
+  echo "2024-01-15 10:05:45 WARNING High memory usage: 85%" >> server.log
+  echo "2024-01-15 10:10:00 INFO Scheduled backup started" >> server.log
+  echo "2024-01-15 10:10:30 ERROR Backup failed: disk full" >> server.log
+  echo "2024-01-15 10:15:00 INFO Cleanup process completed" >> server.log
+  mkdir -p src config
+  echo "# Main application" > src/main.py
+  echo "import os" >> src/main.py
+  echo "# TODO: add logging" >> src/main.py
+  echo "def start(): pass" >> src/main.py
+  echo "# TODO: implement auth" >> src/main.py
+  echo "# Utility functions" > src/utils.py
+  echo "def helper(): pass" >> src/utils.py
+  echo "# TODO: add tests" >> src/utils.py
+  echo "port=8080" > config/app.conf
+  echo "# debug=true" >> config/app.conf
+  echo "host=localhost" >> config/app.conf
+  echo "Practice grep!" > README.txt
 ---
 
 # grep Fundamentals

@@ -9,15 +9,16 @@ objectives:
   - "Monitor disk health and find large files consuming space"
 commands: [df -h, du -sh, du -sh *, lsblk, mount, findmnt]
 prerequisites: []
-sandbox_commands: [df -h, du -sh, lsblk, findmnt, mount]
+sandbox_commands: [df, du, ls, cat, echo, head, tail, wc, sort, cd, pwd, find, grep, mkdir, touch, whoami, date, clear]
 sandbox_setup: |
-  # Create sample directory structure for du exploration
-  mkdir -p /tmp/disklab/logs /tmp/disklab/data /tmp/disklab/cache
-  dd if=/dev/zero of=/tmp/disklab/logs/app.log bs=1K count=512 2>/dev/null
-  dd if=/dev/zero of=/tmp/disklab/data/records.db bs=1K count=2048 2>/dev/null
-  dd if=/dev/zero of=/tmp/disklab/cache/thumb1.jpg bs=1K count=128 2>/dev/null
-  dd if=/dev/zero of=/tmp/disklab/cache/thumb2.jpg bs=1K count=256 2>/dev/null
-  echo "Disk lab ready in /tmp/disklab"
+  mkdir -p project/src project/docs project/build project/node_modules
+  echo "small" > project/src/main.py
+  echo "small" > project/docs/readme.md
+  dd if=/dev/zero of=project/build/output.bin bs=1024 count=500 2>/dev/null
+  dd if=/dev/zero of=project/node_modules/big_dep.js bs=1024 count=1000 2>/dev/null
+  dd if=/dev/zero of=project/node_modules/another.js bs=1024 count=800 2>/dev/null
+  echo "Try: du -sh * to see directory sizes" > README.txt
+  echo "Try: du -sh project/* to drill down" >> README.txt
 ---
 
 # Disk and Storage

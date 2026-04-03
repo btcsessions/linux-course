@@ -9,26 +9,20 @@ objectives:
   - "Apply permission changes recursively with -R"
 commands: [chmod, "chmod +x", "chmod 755", "chmod -R"]
 prerequisites: []
-sandbox_commands: [chmod, ls, touch, mkdir, stat]
+sandbox_commands: [chmod, id, groups, whoami, cat, less, grep, ls, cd, pwd, echo, touch, mkdir, cp, head, tail, find, wc, sort, cut, stat, file, clear, date]
 sandbox_setup: |
-  #!/bin/bash
-  mkdir -p ~/chmodlab/project
-  echo '#!/bin/bash' > ~/chmodlab/deploy.sh
-  echo 'echo "Deploying..."' >> ~/chmodlab/deploy.sh
-  chmod 644 ~/chmodlab/deploy.sh
-  echo "Configuration data" > ~/chmodlab/app.conf
-  chmod 644 ~/chmodlab/app.conf
-  echo "Sensitive credentials" > ~/chmodlab/secrets.env
-  chmod 644 ~/chmodlab/secrets.env
-  echo "Public readme" > ~/chmodlab/README
-  chmod 644 ~/chmodlab/README
-  echo "Project file 1" > ~/chmodlab/project/main.py
-  echo "Project file 2" > ~/chmodlab/project/utils.py
-  echo "Project file 3" > ~/chmodlab/project/test.py
-  chmod 666 ~/chmodlab/project/main.py
-  chmod 666 ~/chmodlab/project/utils.py
-  chmod 666 ~/chmodlab/project/test.py
-  chmod 777 ~/chmodlab/project
+  echo "#!/bin/bash" > myscript.sh
+  echo "echo 'Hello World'" >> myscript.sh
+  chmod 644 myscript.sh
+  echo "Config data" > config.txt
+  chmod 666 config.txt
+  echo "Secret data" > secret.txt
+  chmod 644 secret.txt
+  mkdir project
+  echo "Project file 1" > project/file1.txt
+  echo "Project file 2" > project/file2.txt
+  chmod 644 project/file1.txt project/file2.txt
+  echo "Practice chmod!" > README.txt
 ---
 # Changing Permissions with chmod
 

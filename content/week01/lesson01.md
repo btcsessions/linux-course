@@ -9,10 +9,13 @@ objectives:
   - "Run your first commands: whoami, hostname, date, cal, clear, echo"
 commands: [whoami, hostname, date, cal, clear, echo]
 prerequisites: []
-sandbox_commands: [whoami, hostname, date, cal, clear, echo]
+sandbox_commands: [whoami, hostname, date, cal, clear, echo, ls]
 sandbox_setup: |
-  # No special setup needed for lesson 1
-  echo "Welcome to the terminal sandbox!" > /tmp/welcome.txt
+  echo "Welcome to the CachyCLI sandbox!" > welcome.txt
+  echo "This is a sample file." > sample.txt
+  mkdir documents pictures
+  echo "My notes" > documents/notes.txt
+  echo "Photo list" > pictures/photos.txt
 ---
 
 # Welcome to the Terminal

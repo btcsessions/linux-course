@@ -10,11 +10,22 @@ objectives:
   - "Understand dependency handling and CachyOS-specific repositories"
 commands: [pacman -S, pacman -Rs, pacman -Ss, pacman -Qi, pacman -Ql, pacman -Syu]
 prerequisites: []
-sandbox_commands: [pacman -Ss, pacman -Qi, pacman -Ql, pacman -Q, pacman -Si]
+sandbox_commands: [cat, ls, grep, echo, head, tail, wc, sort, cd, pwd, find, less, whoami, date, clear, sed, awk, cut]
 sandbox_setup: |
-  # Create a fake pacman database for safe querying practice
-  mkdir -p /tmp/fakepkg
-  echo "sandbox: pacman query commands are available for exploration"
+  echo "pacman commands must be run in your real terminal (not sandbox)." > README.txt
+  echo "" >> README.txt
+  echo "Try these commands in your CachyOS terminal:" >> README.txt
+  echo "  pacman -Ss firefox    # search for packages" >> README.txt
+  echo "  pacman -Qi bash       # info about installed package" >> README.txt
+  echo "  pacman -Ql coreutils  # list files in a package" >> README.txt
+  echo "" >> README.txt
+  echo "Sample pacman -Qi output:" > sample_pacman_output.txt
+  echo "Name            : bash" >> sample_pacman_output.txt
+  echo "Version         : 5.2.026-2" >> sample_pacman_output.txt
+  echo "Description     : The GNU Bourne Again shell" >> sample_pacman_output.txt
+  echo "Architecture    : x86_64" >> sample_pacman_output.txt
+  echo "Installed Size  : 8.30 MiB" >> sample_pacman_output.txt
+  echo "Depends On      : readline  glibc  ncurses" >> sample_pacman_output.txt
 ---
 
 # pacman -- Installing and Removing Packages
