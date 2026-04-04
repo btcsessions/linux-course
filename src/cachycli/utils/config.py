@@ -55,17 +55,34 @@ def get_api_key() -> str:
 
 def save_api_key(key: str) -> None:
     """Save the Anthropic API key to the config file."""
+    _save_config_value("anthropic_api_key", key)
+
+
+def get_update_remote() -> str:
+    """Return the preferred git remote for updates."""
+    if _CONFIG_FILE.exists():
+        with open(_CONFIG_FILE, "rb") as f:
+            data = tomllib.load(f)
+        return data.get("update_remote", "origin")
+    return "origin"
+
+
+def save_update_remote(remote: str) -> None:
+    """Save the preferred git remote for updates."""
+    _save_config_value("update_remote", remote)
+
+
+def _save_config_value(key: str, value: str | int | bool) -> None:
+    """Save a single key to the config file."""
     _CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Load existing config if present.
     existing: dict = {}
     if _CONFIG_FILE.exists():
         with open(_CONFIG_FILE, "rb") as f:
             existing = tomllib.load(f)
 
-    existing["anthropic_api_key"] = key
+    existing[key] = value
 
-    # Write back as TOML (simple key=value, no third-party writer needed).
     lines: list[str] = []
     for k, v in existing.items():
         if isinstance(v, bool):

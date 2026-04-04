@@ -19,7 +19,7 @@ from cachycli.core.scheduler import (
     next_lesson_id,
     week_progress,
 )
-from cachycli.utils.config import get_api_key, save_api_key
+from cachycli.utils.config import get_api_key, get_update_remote, save_api_key, save_update_remote
 from cachycli.utils.sandbox import Sandbox
 
 _WEEK_NAMES = [
@@ -322,8 +322,30 @@ def create_app() -> Flask:
     @app.route("/api/settings", methods=["GET"])
     def api_get_settings():
         key = get_api_key()
-        # Only reveal whether a key is set, never the full key.
-        return jsonify({"has_api_key": bool(key), "api_key_preview": key[:8] + "..." if len(key) > 8 else ""})
+        # List available git remotes.
+        remotes = []
+        try:
+            repo = _repo_root()
+            r = subprocess.run(
+                ["git", "remote", "-v"],
+                cwd=str(repo), capture_output=True, text=True, timeout=5,
+            )
+            seen = set()
+            for line in r.stdout.strip().splitlines():
+                parts = line.split()
+                if len(parts) >= 2 and parts[0] not in seen:
+                    seen.add(parts[0])
+                    # Clean up (fetch)/(push) suffix from URL.
+                    url = parts[1]
+                    remotes.append({"name": parts[0], "url": url})
+        except Exception:
+            pass
+        return jsonify({
+            "has_api_key": bool(key),
+            "api_key_preview": key[:8] + "..." if len(key) > 8 else "",
+            "remotes": remotes,
+            "update_remote": get_update_remote(),
+        })
 
     @app.route("/api/settings", methods=["POST"])
     def api_save_settings():
@@ -332,6 +354,15 @@ def create_app() -> Flask:
         if not key:
             return jsonify({"error": "API key is required."}), 400
         save_api_key(key)
+        return jsonify({"ok": True})
+
+    @app.route("/api/settings/remote", methods=["POST"])
+    def api_save_remote():
+        data = request.get_json() or {}
+        remote = data.get("remote", "").strip()
+        if not remote:
+            return jsonify({"error": "Remote name is required."}), 400
+        save_update_remote(remote)
         return jsonify({"ok": True})
 
     # -- API: Chat (Claude AI assistant) ------------------------------------
@@ -425,33 +456,40 @@ def create_app() -> Flask:
     @app.route("/api/update/check", methods=["GET"])
     def api_update_check():
         repo = _repo_root()
+        remote_name = get_update_remote()
         try:
-            # Fetch latest from remote.
+            # Get current branch name.
+            branch = subprocess.run(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                cwd=str(repo), capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            # Fetch latest from configured remote.
             subprocess.run(
-                ["git", "fetch", "origin"],
+                ["git", "fetch", remote_name],
                 cwd=str(repo), capture_output=True, timeout=15,
             )
-            # Compare local HEAD to remote.
+            # Compare local HEAD to remote branch.
             local = subprocess.run(
                 ["git", "rev-parse", "HEAD"],
                 cwd=str(repo), capture_output=True, text=True, timeout=5,
             ).stdout.strip()
-            remote = subprocess.run(
-                ["git", "rev-parse", "@{u}"],
+            remote_ref = f"{remote_name}/{branch}"
+            remote_sha = subprocess.run(
+                ["git", "rev-parse", remote_ref],
                 cwd=str(repo), capture_output=True, text=True, timeout=5,
             ).stdout.strip()
-            # Get current version.
             from cachycli import __version__
             behind = subprocess.run(
-                ["git", "rev-list", "--count", "HEAD..@{u}"],
+                ["git", "rev-list", "--count", f"HEAD..{remote_ref}"],
                 cwd=str(repo), capture_output=True, text=True, timeout=5,
             ).stdout.strip()
             return jsonify({
                 "current_version": __version__,
-                "up_to_date": local == remote,
+                "up_to_date": local == remote_sha,
                 "commits_behind": int(behind) if behind.isdigit() else 0,
                 "local_sha": local[:7],
-                "remote_sha": remote[:7],
+                "remote_sha": remote_sha[:7],
+                "remote_name": remote_name,
             })
         except Exception as e:
             return jsonify({"error": str(e)}), 500
@@ -459,11 +497,16 @@ def create_app() -> Flask:
     @app.route("/api/update/apply", methods=["POST"])
     def api_update_apply():
         repo = _repo_root()
+        remote_name = get_update_remote()
         steps = []
         try:
-            # Step 1: git pull
+            # Step 1: git pull from configured remote
+            branch = subprocess.run(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                cwd=str(repo), capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
             r = subprocess.run(
-                ["git", "pull", "origin"],
+                ["git", "pull", remote_name, branch],
                 cwd=str(repo), capture_output=True, text=True, timeout=30,
             )
             steps.append({"step": "git pull", "ok": r.returncode == 0, "output": r.stdout + r.stderr})

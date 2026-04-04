@@ -566,6 +566,14 @@ function initChatPanel() {
                 '</div>' +
                 '<div class="settings-divider"></div>' +
                 '<div class="settings-section">' +
+                    '<label class="settings-label">Update Source</label>' +
+                    '<p class="settings-hint">Choose which remote to pull updates from.</p>' +
+                    '<select class="settings-select" id="settings-remote" onchange="saveRemote()">' +
+                        '<option value="origin">Loading...</option>' +
+                    '</select>' +
+                '</div>' +
+                '<div class="settings-divider"></div>' +
+                '<div class="settings-section">' +
                     '<label class="settings-label">App Updates</label>' +
                     '<p class="settings-hint">Check for and install the latest version of CachyCLI.</p>' +
                     '<div class="settings-update-row">' +
@@ -726,7 +734,7 @@ function appendChatMessage(role, content) {
 
 /* ── Settings Modal ────────────────────────────────────────── */
 
-function openSettings() {
+async function openSettings() {
     document.getElementById("settings-modal").classList.add("open");
     document.getElementById("settings-status").innerHTML = "";
     // If we have a key, show a hint.
@@ -734,6 +742,23 @@ function openSettings() {
         document.getElementById("settings-status").innerHTML =
             '<p style="color:var(--green);font-size:13px;margin-top:8px">&#10003; API key is configured.</p>';
     }
+    // Populate remote dropdown.
+    try {
+        var settings = await api("/api/settings");
+        var select = document.getElementById("settings-remote");
+        if (settings.remotes && settings.remotes.length > 0) {
+            var opts = "";
+            for (var i = 0; i < settings.remotes.length; i++) {
+                var r = settings.remotes[i];
+                var selected = r.name === settings.update_remote ? " selected" : "";
+                // Shorten URL for display.
+                var shortUrl = r.url.replace(/https?:\/\//, "").replace(/\.git$/, "");
+                opts += '<option value="' + escapeHtml(r.name) + '"' + selected + '>' +
+                    escapeHtml(r.name) + ' (' + escapeHtml(shortUrl) + ')</option>';
+            }
+            select.innerHTML = opts;
+        }
+    } catch (e) {}
     // Auto-check for updates when settings is opened.
     checkForUpdate();
 }
@@ -760,6 +785,14 @@ async function saveSettings() {
     } else {
         status.innerHTML = '<p style="color:var(--red);font-size:13px;margin-top:8px">' + escapeHtml(res.error || "Failed to save.") + '</p>';
     }
+}
+
+async function saveRemote() {
+    var select = document.getElementById("settings-remote");
+    var remote = select.value;
+    await post("/api/settings/remote", { remote: remote });
+    // Re-check for updates from the new remote.
+    checkForUpdate();
 }
 
 /* ── Update Manager ────────────────────────────────────────── */
